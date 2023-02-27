@@ -16,12 +16,14 @@ import MarketScreen from './screens/MarketScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+let basketNumber= 0;
+
 const TabNavigator = () => {
+
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
         let iconName = '';
-
         if (route.name === 'Accueil') {
           iconName = 'home';
         } else if (route.name === 'Market') {
@@ -42,7 +44,7 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name="Accueil" component={HomeScreen} />
       <Tab.Screen name="Market" component={MarketScreen} />
-      <Tab.Screen name="Panier" component={BasketScreen} />
+      <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: `${basketNumber}`}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
     </Tab.Navigator>
