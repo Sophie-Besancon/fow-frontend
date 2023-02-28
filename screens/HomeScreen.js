@@ -9,11 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-<<<<<<< HEAD
 import UserConnect from '../components/UserConnect';
-=======
-import Header from '../components/Header';
->>>>>>> Sophie
 
 
 
