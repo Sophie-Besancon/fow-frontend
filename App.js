@@ -11,12 +11,18 @@ import BasketScreen from './screens/BasketScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import MarketScreen from './screens/MarketScreen';
 
-
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import articles from './reducers/articles';
+import users from './reducers/users';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 let basketNumber= 0;
+const store = configureStore({
+  reducer: { articles, users },
+ });
 
 const TabNavigator = () => {
 
@@ -55,11 +61,13 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
+    <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   </NavigationContainer>
+  </Provider>
   );
 }
 

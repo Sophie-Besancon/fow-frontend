@@ -3,24 +3,57 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  Modal,
-  Pressable,
   TextInput,
   TouchableOpacity,
-  Button,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { AntDesign } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { addUser } from "../reducers/users";
 
 export default function UserConnect() {
+  const [mailAdressSignin, setMailAdressSignin] = useState(null);
+
+  const [username, setUsername] = useState(null);
+  const [mailAdressSignup, setMailAdressSignup] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [passwordConfirm, setPasswordConfirm] = useState(null);
+  const [message, setMessage] = useState(null);
+  const dispatch = useDispatch();
+
+  console.log("username", username);
+  console.log("mailAdressSignup", mailAdressSignup);
+  console.log("password", password);
+  console.log("message", message);
+
+  const handleSignUp = () => {
+    if (password === passwordConfirm) {
+      dispatch(
+        addUser({
+          username: username,
+          mailAddress: mailAdressSignup,
+          password: password,
+        })
+      );
+      setMessage("✅ Félicitations ! Votre compte a été créé !");
+    } else {
+      setMessage("❌ Vérifiez votre mot de passe");
+    }
+  };
+
+  const handleSignIn = () => {};
+
   return (
     <View style={styles.mainContainer}>
       <View style={styles.signinContent}>
-        <Text style={styles.titleConnect}>Connectez-vous</Text>
+        <View style={styles.title_signin}>
+          <AntDesign name="user" size={30} color="black" style={styles.icon} />
+          <Text style={styles.titleConnect}>Connectez-vous</Text>
+        </View>
         <TextInput
           placeholder="Adresse mail"
           style={styles.input}
           keyboardType="email-address"
+          onChangeText={(value) => setMailAdressSignin(value)}
         />
         <TextInput
           placeholder="Mot de passe"
@@ -34,26 +67,42 @@ export default function UserConnect() {
       </View>
 
       <View style={styles.signupContent}>
-        <Text style={styles.titleConnect}>Inscrivez-vous !</Text>
-        <TextInput placeholder="Nom d'utilisateur" style={styles.input} />
+        <View style={styles.title_signup}>
+          <AntDesign
+            name="adduser"
+            size={30}
+            color="black"
+            style={styles.icon}
+          />
+          <Text style={styles.titleConnect}>Inscrivez-vous !</Text>
+        </View>
+        <TextInput
+          placeholder="Nom d'utilisateur"
+          style={styles.input}
+          onChangeText={(value) => setUsername(value)}
+        />
         <TextInput
           placeholder="Adresse mail"
           style={styles.input}
           keyboardType="email-address"
+          onChangeText={(value) => setMailAdressSignup(value)}
         />
         <TextInput
           placeholder="Mot de passe"
           style={styles.input}
           secureTextEntry={true}
+          onChangeText={(value) => setPassword(value)}
         />
         <TextInput
           placeholder="Répétez votre mot de passe"
           style={styles.input}
           secureTextEntry={true}
+          onChangeText={(value) => setPasswordConfirm(value)}
         />
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
           <Text style={styles.text}>M'inscrire</Text>
         </TouchableOpacity>
+        {message}
       </View>
     </View>
   );
@@ -66,10 +115,8 @@ const styles = StyleSheet.create({
   },
   signinContent: {
     paddingBottom: 40,
-    borderBottomColor:"#bebebe",
-    borderBottomWidth:1
-  },
-  signupContent: {
+    borderBottomColor: "#bebebe",
+    borderBottomWidth: 1,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -83,13 +130,13 @@ const styles = StyleSheet.create({
     borderColor: "gray",
   },
   signupContent: {
-    paddingTop:40,
+    paddingTop: 40,
   },
   titleConnect: {
     alignSelf: "center",
     fontSize: 25,
-    fontFamily:'arial',
-    fontWeight:'bold'
+    fontFamily: "Arial",
+    fontWeight: "bold",
   },
   button: {
     alignSelf: "center",
@@ -98,7 +145,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 8,
     backgroundColor: "#4B7285",
-    width:120
+    width: 120,
   },
   text: {
     alignSelf: "center",
@@ -108,5 +155,20 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     paddingRight: 10,
     fontSize: 10,
+  },
+  title_signup: {
+    alignSelf: "center",
+    flexDirection: "row",
+  },
+  title_signup: {
+    alignSelf: "center",
+    flexDirection: "row",
+  },
+  title_signin: {
+    alignSelf: "center",
+    flexDirection: "row",
+  },
+  icon: {
+    paddingRight: 10,
   },
 });
