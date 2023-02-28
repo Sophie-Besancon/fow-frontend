@@ -8,7 +8,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import UserConnect from '../components/UserConnect';
 
 
 
