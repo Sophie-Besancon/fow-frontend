@@ -25,7 +25,6 @@ export default function HomeScreen({ navigation }) {
       </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('ContinentScreen')} style={styles.button} activeOpacity={0.8}>
       </TouchableOpacity> 
-      
     </KeyboardAvoidingView>
   )
 }
