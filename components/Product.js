@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Button,
+  ScrollView,
 } from "react-native";
 import Header from "./Header";
 import { AntDesign } from "@expo/vector-icons";
@@ -17,6 +18,7 @@ export default function Product() {
   return (
     <View style={styles.container}>
       <Header />
+      <ScrollView>
       <View style={styles.productContainer}>
         <Image
           source={{
@@ -26,7 +28,7 @@ export default function Product() {
           resizeMode="cover"
           alignSelf="center"
         />
-        <View style={styles.othersImages}>
+        <View style={styles.othersImages} alignSelf="center">
           <Image
             source={{
               uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
@@ -54,7 +56,9 @@ export default function Product() {
         </View>
         <View style={styles.isLikeContent}>
           <Text style={styles.category}>Catégorie : Sucré</Text>
+          <TouchableOpacity>
           <AntDesign name="hearto" size={24} color="grey" />
+          </TouchableOpacity>
         </View>
         <View style={styles.priceContainer}>
           <View>
@@ -81,6 +85,7 @@ export default function Product() {
           éveillera vos papilles gustatives.
         </Text>
       </View>
+      </ScrollView>
     </View>
   );
 }
