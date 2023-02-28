@@ -10,6 +10,7 @@ import {
     SafeAreaView,
   } from 'react-native';
 import Header from '../components/Header'
+import Card from '../components/Card'
   
   
   export default function MarketScreen() {
@@ -21,6 +22,7 @@ import Header from '../components/Header'
           <View>
           <Text>Welcome on FOW / MarketScreen</Text>
           </View>
+          <Card/>
       </KeyboardAvoidingView>
 
     )

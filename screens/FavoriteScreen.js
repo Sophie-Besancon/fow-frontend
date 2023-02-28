@@ -7,13 +7,15 @@ import {
     TextInput,
     TouchableOpacity,
   } from 'react-native';
+import Product from '../components/Product';
   
   
   export default function FavoriteScreen() {
   
     return (
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <Text>Welcome on FOW / FavoriteScreen</Text>
+          <Product/>
+
       </KeyboardAvoidingView>
     )
   }
