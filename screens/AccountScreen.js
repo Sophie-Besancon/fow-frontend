@@ -7,13 +7,14 @@ import {
     TextInput,
     TouchableOpacity,
   } from 'react-native';
-  
+  import UserConnect from '../components/UserConnect';
+
   
   export default function AccountScreen() {
   
     return (
       <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <Text>Welcome on FOW / AccountScreen</Text>
+          <UserConnect/>
       </KeyboardAvoidingView>
     )
   }

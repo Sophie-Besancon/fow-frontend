@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -7,17 +7,18 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
-import UserConnect from '../components/UserConnect';
+import Header from '../components/Header';
 
 
 
-export default function HomeScreen({ navigation }) {
+
+export default function HomeScreen() {
 
   const [searchProduct, setSearchProduct] = useState('');
   const [searchResult, setSearchResult] = useState(null);
-
+  const [travelMode, setTravelMode] = useState(false);
   const handleSearch = () => {
     fetch(`http://192.168.1.88:3000/articles/${searchProduct}`)
       .then((response) => response.json())
@@ -33,22 +34,23 @@ export default function HomeScreen({ navigation }) {
   // return <View><Text>Afficher le produit: {product.name}</Text></View>
   // })
 
-
+  
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Header />
+      {!travelMode ? <>
       <View style={styles.inputContainer}>
         <TextInput placeholder="Rechercher un produit" onChangeText={(value) => setSearchProduct(value)} value={searchProduct} style={styles.input} />
         <TouchableOpacity onPress={console.log("coucou")} style={styles.inputButton} activeOpacity={0.8}>
           <Text style={styles.textButton}>Rechercher</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={console.log("coucou2")} style={styles.continentButton} activeOpacity={0.8}>
+      <TouchableOpacity onPress={() => setTravelMode(true)} style={styles.continentButton} activeOpacity={0.8}>
           <Text style={styles.textButton}>Voyager avec nous !</Text>
         </TouchableOpacity>
       {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
-      <TouchableOpacity onPress={() => navigation.navigate('ContinentScreen')} style={styles.button} activeOpacity={0.8}>
-      </TouchableOpacity>
+      <Image style={styles.image} source={require('../assets/voyage1.jpg')} />
+      </> : <View><Text>Hello</Text></View>}
     </KeyboardAvoidingView>
   )
 }
@@ -76,7 +78,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#4B7285',
     height: 40,
     margin: 5,
-    borderWidth: 0.2,
     padding: 10,
     borderRadius: 8,
   },
@@ -87,9 +88,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#FC9F30',
     height: 40,
     margin: 15,
-    borderWidth: 0.2,
     padding: 10,
     borderRadius: 8,
     fontWeight: 900,
   },
+  image: {
+    height: "50%",
+    width:"100%",
+    borderRadius: 8,
+    margin: 15,
+    
+  }
 })
