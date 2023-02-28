@@ -50,6 +50,11 @@ export default function HomeScreen({ navigation }) {
       {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
       <TouchableOpacity onPress={() => navigation.navigate('ContinentScreen')} style={styles.button} activeOpacity={0.8}>
       </TouchableOpacity>
+<<<<<<< HEAD
+=======
+        <TouchableOpacity onPress={() => navigation.navigate('ContinentScreen')} style={styles.button} activeOpacity={0.8}>
+      </TouchableOpacity> 
+>>>>>>> thibault
     </KeyboardAvoidingView>
   )
 }
