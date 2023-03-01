@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { View, Text, StyleSheet, Image, Modal, Pressable, TextInput, TouchableOpacity} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 
 const Header = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -13,14 +14,19 @@ const Header = (props) => {
     setModalVisible(false);
   };
 
+  const user = useSelector((state) => state.users.value[0].firstname);
+
+  
+
+
   return (
     <View style={styles.headerContainer}>
       <FontAwesome name='align-justify' onPress={() => setModalVisible(!modalVisible)} size={25} color='#4B7285' />
       <Image style={styles.image} source={require('../assets/logo-fow.png')} />
       <View style={styles.userIconContainer}>
-      <FontAwesome name='user-o' size={15} color='red' />
-      <Text style={styles.userIconText}>déconnecté</Text>
-      </View>
+        <FontAwesome name='user-o' size={20} color={user?'green':'red'} />
+        <Text style={styles.userIconText}>{user?`Bonjour ${user}`:'Déconnecté'}</Text>
+        </View>
       <Modal visible={modalVisible} animationType="none" transparent>
        <View style={styles.centeredView}>
          <View style={styles.modalView}>
@@ -91,7 +97,7 @@ export default Header;
       alignItems:"center",
     },
     userIconText: {
-      color: "red",
-      fontSize: 10,
+      paddingTop:5,
+      fontSize: 12,
     }
   })
