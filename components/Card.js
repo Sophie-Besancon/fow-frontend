@@ -11,22 +11,26 @@ import {
   ImageBackground,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import image from '../assets/image.jpg'
+
+
 
 const Card = (props) => {
   return (
     <View style={styles.cardContainer}>
-
+        <ImageBackground source={image} resizeMode="cover" style={styles.backgroundImage}>
         <View style={styles.imgCardContainer}>
           <View style={styles.textImgCardContainer}>
             <View style={styles.splitContainerFlag}>
-              <Text>{props.flag}</Text>
+            <Image source={require('../assets/la-france.png')}/>
             </View>
             <View style={styles.splitContainerPrice}>
-              <Text>{props.price}</Text>
+              <Text>{props.price}€</Text>
             </View>
+
           </View>
         </View>
-
+        </ImageBackground>
       <View style={styles.bottomCardContainer}>
         <View style={styles.nameProductContainer}>
           <Text>{props.name}</Text>
@@ -35,19 +39,19 @@ const Card = (props) => {
           <FontAwesome
             name="info-circle"
             size={20}
-            color="#000000"
+            color="#4B7285"
             style={styles.deleteIcon}
           />
           <FontAwesome
             name="heart-o"
             size={20}
-            color="#000000"
+            color="#4B7285"
             style={styles.deleteIcon}
           />
           <FontAwesome
             name="cart-plus"
             size={20}
-            color="#000000"
+            color="#4B7285"
             style={styles.deleteIcon}
           />
         </View>
@@ -60,19 +64,24 @@ export default Card;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: "green",
-    width: "100%",
+    marginTop: 70,
+    width: 325,
     height: 250,
+
   },
   imgCardContainer: {
     alignSelf: "center",
-    backgroundColor: "yellow",
-    width: "90%",
-    height: "70%",
-    marginTop: 10,
+    width: 290,
+    height: 190,
+    borderWidth: 2,
+    borderBottomWidth: 1,
+    borderColor: '#4B7285',
+    backgroundColor:'rgba(75, 114, 133, 0.2)',
   },
+
+
   textImgCardContainer: {
-    backgroundColor: "red",
+
     flexDirection: "row",
     height: "15%",
   },
@@ -80,7 +89,7 @@ const styles = StyleSheet.create({
     width: "50%",
     paddingLeft: 105,
     justifyContent: "center",
-    backgroundColor: "blue",
+
   },
   splitContainerFlag: {
     width: "50%",
@@ -88,10 +97,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomCardContainer: {
-    backgroundColor: "blue",
-    width: "90%",
-    height: "24%",
+    width: 290,
+    height: 65,
     alignSelf: "center",
+    borderWidth: 2,
+    borderTopWidth: 1,
+    borderColor: '#4B7285',
   },
   nameProductContainer: {
     height: "30%",
