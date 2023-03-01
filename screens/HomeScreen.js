@@ -31,22 +31,22 @@ export default function HomeScreen() {
   // return <View><Text>Afficher le produit: {product.name}</Text></View>
   // })
 
-  
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Header />
       {!travelMode ? <>
-      <View style={styles.inputContainer}>
-        <TextInput placeholder="Rechercher un produit" onChangeText={(value) => setSearchProduct(value)} value={searchProduct} style={styles.input} />
-        <TouchableOpacity onPress={console.log("coucou")} style={styles.inputButton} activeOpacity={0.8}>
-          <Text style={styles.textButton}>Rechercher</Text>
-        </TouchableOpacity>
-      </View>
-      <TouchableOpacity onPress={() => setTravelMode(true)} style={styles.continentButton} activeOpacity={0.8}>
+        <View style={styles.inputContainer}>
+          <TextInput placeholder="Rechercher un produit" onChangeText={(value) => setSearchProduct(value)} value={searchProduct} style={styles.input} />
+          <TouchableOpacity onPress={console.log("coucou")} style={styles.inputButton} activeOpacity={0.8}>
+            <Text style={styles.textButton}>Rechercher</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity onPress={() => setTravelMode(true)} style={styles.continentButton} activeOpacity={0.8}>
           <Text style={styles.textButton}>Voyager avec nous !</Text>
         </TouchableOpacity>
-      {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
-      <Image style={styles.image} source={require('../assets/voyage1.jpg')} />
+        {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
+        <Image style={styles.image} source={require('../assets/voyage1.jpg')} resizeMode="cover" />
       </> : <View><Text>Hello</Text></View>}
     </KeyboardAvoidingView>
   )
@@ -87,13 +87,13 @@ const styles = StyleSheet.create({
     margin: 15,
     padding: 10,
     borderRadius: 8,
-    fontWeight: 900,
   },
   image: {
-    height: "50%",
-    width:"100%",
-    borderRadius: 8,
+    height: "40%",
+    width:"90%",
+    borderRadius: 40,
     margin: 15,
-    
+    borderRadius: 40,
+    borderWidth: 3,
   }
 })
