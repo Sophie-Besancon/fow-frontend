@@ -24,7 +24,7 @@ const Header = (props) => {
       <FontAwesome name='align-justify' onPress={() => setModalVisible(!modalVisible)} size={25} color='#4B7285' />
       <Image style={styles.image} source={require('../assets/logo-fow.png')} />
       <View style={styles.userIconContainer}>
-        <FontAwesome name='user-o' size={20} color={user?'green':'red'} />
+        <FontAwesome name='user-o' size={20} color={user?'#175732':'gray'} />
         <Text style={styles.userIconText}>{user?`Bonjour ${user}`:'Déconnecté'}</Text>
         </View>
       <Modal visible={modalVisible} animationType="none" transparent>
@@ -99,5 +99,6 @@ export default Header;
     userIconText: {
       paddingTop:5,
       fontSize: 12,
+      color:'gray'
     }
   })
