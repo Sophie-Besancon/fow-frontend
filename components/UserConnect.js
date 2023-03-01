@@ -9,41 +9,71 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { addUser } from "../reducers/users";
+import { useSelector } from "react-redux";
 
 export default function UserConnect() {
-  const [mailAdressSignin, setMailAdressSignin] = useState(null);
+  const [mailSignin, setMailSignin] = useState(null);
 
-  const [username, setUsername] = useState(null);
-  const [mailAdressSignup, setMailAdressSignup] = useState(null);
+  const [firstname, setFirstname] = useState(null);
+  const [lastname, setLastname] = useState(null);
+  const [mailSignup, setMailSignup] = useState(null);
   const [password, setPassword] = useState(null);
   const [passwordConfirm, setPasswordConfirm] = useState(null);
   const [message, setMessage] = useState(null);
   const dispatch = useDispatch();
 
-  console.log("username", username);
-  console.log("mailAdressSignup", mailAdressSignup);
-  console.log("password", password);
-  console.log("message", message);
+  const user = useSelector((state) => state.users.value[0].firstname);
+  console.log("user ", user);
 
-  const handleSignUp = () => {
-    if (password === passwordConfirm) {
-      dispatch(
-        addUser({
-          username: username,
-          mailAddress: mailAdressSignup,
+  //envoi d'un fetch (asynchrone) lors de la validation de l'inscription
+  const handleSignUp = async () => {
+    if (
+      firstname != null &&
+      lastname != null &&
+      mailSignup != null &&
+      password != null &&
+      password === passwordConfirm
+    ) {
+      await fetch("https://fow-backend.vercel.app/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstname: firstname,
+          lastname: lastname,
+          mail: mailSignup,
           password: password,
-        })
-      );
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("data :", data);
+          setFirstname("");
+          setLastname("");
+          setMailSignup("");
+          setPassword("");
+          setPasswordConfirm("");
+          dispatch(addUser(firstname));
+        });
       setMessage("✅ Félicitations ! Votre compte a été créé !");
     } else {
       setMessage("❌ Vérifiez votre mot de passe");
     }
   };
 
-  const handleSignIn = () => {};
+  /*-------   FIN handleSignUp -------*/
+
+  const handleSignIn = () => {
+        if (mail!=null && password!=null){
+            
+        }
+
+  };
 
   return (
     <View style={styles.mainContainer}>
+      {/* ****************************** SIGN IN ****************************** */}
       <View style={styles.signinContent}>
         <View style={styles.title_signin}>
           <AntDesign name="user" size={30} color="black" style={styles.icon} />
@@ -53,18 +83,21 @@ export default function UserConnect() {
           placeholder="Adresse mail"
           style={styles.input}
           keyboardType="email-address"
-          onChangeText={(value) => setMailAdressSignin(value)}
+          onChangeText={(value) => setMailSignin(value)}
+          autoCorrect={false}
         />
         <TextInput
           placeholder="Mot de passe"
           style={styles.input}
           secureTextEntry={true}
+          autoCorrect={false}
         />
         <Text style={styles.forgetPassword}>Mot de passe oublié</Text>
         <TouchableOpacity style={styles.button}>
           <Text style={styles.text}>Me connecter</Text>
         </TouchableOpacity>
       </View>
+      {/* ****************************** SIGN UP ****************************** */}
 
       <View style={styles.signupContent}>
         <View style={styles.title_signup}>
@@ -77,33 +110,43 @@ export default function UserConnect() {
           <Text style={styles.titleConnect}>Inscrivez-vous !</Text>
         </View>
         <TextInput
-          placeholder="Nom d'utilisateur"
+          placeholder="Prénom"
           style={styles.input}
-          onChangeText={(value) => setUsername(value)}
+          onChangeText={(value) => setFirstname(value)}
+          autoCorrect={false} // enleve l'autocorrection
+        />
+        <TextInput
+          placeholder="Nom"
+          style={styles.input}
+          onChangeText={(value) => setLastname(value)}
+          autoCorrect={false}
         />
         <TextInput
           placeholder="Adresse mail"
           style={styles.input}
           keyboardType="email-address"
-          onChangeText={(value) => setMailAdressSignup(value)}
+          onChangeText={(value) => setMailSignup(value)}
+          autoCorrect={false}
         />
         <TextInput
           placeholder="Mot de passe"
           style={styles.input}
           secureTextEntry={true}
           onChangeText={(value) => setPassword(value)}
+          autoCorrect={false}
         />
         <TextInput
           placeholder="Répétez votre mot de passe"
           style={styles.input}
           secureTextEntry={true}
           onChangeText={(value) => setPasswordConfirm(value)}
+          autoCorrect={false}
         />
         <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
           <Text style={styles.text}>M'inscrire</Text>
         </TouchableOpacity>
-        {message}
       </View>
+      <Text>{user ? message : ""}</Text>
     </View>
   );
 }
@@ -114,7 +157,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   signinContent: {
-    paddingBottom: 40,
+    paddingBottom: 30,
     borderBottomColor: "#bebebe",
     borderBottomWidth: 1,
     justifyContent: "center",
@@ -122,7 +165,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    margin: 12,
+    margin: 5,
     borderWidth: 0.2,
     padding: 10,
     borderRadius: 8,
@@ -130,12 +173,11 @@ const styles = StyleSheet.create({
     borderColor: "gray",
   },
   signupContent: {
-    paddingTop: 40,
+    paddingTop: 30,
   },
   titleConnect: {
     alignSelf: "center",
     fontSize: 25,
-    fontFamily: "Arial",
     fontWeight: "bold",
   },
   button: {
