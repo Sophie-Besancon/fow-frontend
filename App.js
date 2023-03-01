@@ -10,6 +10,7 @@ import AccountScreen from './screens/AccountScreen';
 import BasketScreen from './screens/BasketScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import MarketScreen from './screens/MarketScreen';
+// import ContinentScreen from './screens/ContinentScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -57,13 +58,13 @@ const TabNavigator = () => {
   );
 };
 
-//<Stack.Screen name="Home" component={HomeScreen} />
-
 export default function App() {
   return (
     <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
+    {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+  {/* <Stack.Screen name="Continent" component={ContinentScreen} /> */}
     <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   </NavigationContainer>

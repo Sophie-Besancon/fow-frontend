@@ -10,12 +10,14 @@ import {
   View,
 } from 'react-native';
 import Header from '../components/Header';
+import Carousel from 'react-native-snap-carousel';
 
 export default function HomeScreen() {
 
   const [searchProduct, setSearchProduct] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [travelMode, setTravelMode] = useState(false);
+
   const handleSearch = () => {
     fetch(`http://192.168.1.88:3000/articles/${searchProduct}`)
       .then((response) => response.json())
@@ -31,23 +33,80 @@ export default function HomeScreen() {
   // return <View><Text>Afficher le produit: {product.name}</Text></View>
   // })
 
-  
-  return (
+  const handleContinent = () => {
+    setTravelMode(true)
+    // navigation.navigate('ContinentScreen');
+  }
+
+  // const travelPicture = async () => {
+  //   const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
+  //   const formData = new FormData();
+        // const allTravelPhotos= []
+  //   formData.append('photoFromFront', {
+  //     uri: photo.uri,
+  //     name: 'photo.jpg',
+  //     type: 'image/jpeg',
+  //   });
+  //   console.log('photo', photo);
+    
+  //   fetch('http://res.cloudinary.com/dzyz3cifr', {
+  //     method: 'POST',
+  //     body: formData,
+  //   }).then((response) => response.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       if (data.result) {
+  //         allTravelPhotos.push(data.url)
+  //       } else {
+  //         console.log('error')
+  //       }
+  //     });
+
+
+  // renderItem({ item, index }) {
+  //   return (
+  //     <View style={styles.imageContainer}>
+  //        <Image style={styles.image} source={item} resizeMode="cover" />
+  //     </View>
+  //   );
+  // }
+
+   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Header />
-      {!travelMode ? <>
       <View style={styles.inputContainer}>
         <TextInput placeholder="Rechercher un produit" onChangeText={(value) => setSearchProduct(value)} value={searchProduct} style={styles.input} />
         <TouchableOpacity onPress={console.log("coucou")} style={styles.inputButton} activeOpacity={0.8}>
           <Text style={styles.textButton}>Rechercher</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => setTravelMode(true)} style={styles.continentButton} activeOpacity={0.8}>
-          <Text style={styles.textButton}>Voyager avec nous !</Text>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={() => handleContinent()} style={styles.continentButton} activeOpacity={0.8}>
+        <Text style={styles.textButton}>Voyager avec nous !</Text>
+      </TouchableOpacity>
       {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
-      <Image style={styles.image} source={require('../assets/voyage1.jpg')} />
-      </> : <View><Text>Hello</Text></View>}
+      <Image style={styles.image} source={require('../assets/voyage1.jpg')} resizeMode="cover" />
+      {/* <View style={styles.container}>
+        <Carousel
+          ref={(c) => { this._carousel = c; }}
+          data={images}
+          renderItem={this._renderItem}
+          sliderWidth={sliderWidth}
+          itemWidth={itemWidth}
+          onSnapToItem={(index) => this.setState({ activeIndex: index })}
+        />
+
+        <View style={styles.navigationContainer}>
+          <TouchableOpacity onPress={() => this._carousel.snapToPrev()}>
+            <Text style={styles.navigationText}>{'<'}</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.navigationText}>{this.state.activeIndex + 1} / {images.length}</Text>
+
+          <TouchableOpacity onPress={() => this._carousel.snapToNext()}>
+            <Text style={styles.navigationText}>{'>'}</Text>
+          </TouchableOpacity>
+        </View>
+      </View> */}
     </KeyboardAvoidingView>
   )
 }
@@ -84,16 +143,16 @@ const styles = StyleSheet.create({
   continentButton: {
     backgroundColor: '#FC9F30',
     height: 40,
-    margin: 15,
+    margin: 20,
     padding: 10,
     borderRadius: 8,
-    fontWeight: 900,
   },
   image: {
-    height: "50%",
-    width:"100%",
-    borderRadius: 8,
-    margin: 15,
-    
+    height: "40%",
+    width: "90%",
+    borderRadius: 40,
+    margin: 20,
+    borderWidth: 3,
+    borderColor: "#4B7285",
   }
 })
