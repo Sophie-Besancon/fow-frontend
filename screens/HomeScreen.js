@@ -8,11 +8,12 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import Header from '../components/Header';
-import Carousel from 'react-native-snap-carousel';
+import Carousel from 'react-native-reanimated-carousel'
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
 
   const [searchProduct, setSearchProduct] = useState('');
   const [searchResult, setSearchResult] = useState(null);
@@ -35,20 +36,21 @@ export default function HomeScreen() {
 
   const handleContinent = () => {
     setTravelMode(true)
+    navigation.navigate('Continent');
     // navigation.navigate('ContinentScreen');
   }
 
   // const travelPicture = async () => {
   //   const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
   //   const formData = new FormData();
-        // const allTravelPhotos= []
+  // const allTravelPhotos= []
   //   formData.append('photoFromFront', {
   //     uri: photo.uri,
   //     name: 'photo.jpg',
   //     type: 'image/jpeg',
   //   });
   //   console.log('photo', photo);
-    
+
   //   fetch('http://res.cloudinary.com/dzyz3cifr', {
   //     method: 'POST',
   //     body: formData,
@@ -63,15 +65,16 @@ export default function HomeScreen() {
   //     });
 
 
-  // renderItem({ item, index }) {
-  //   return (
-  //     <View style={styles.imageContainer}>
-  //        <Image style={styles.image} source={item} resizeMode="cover" />
-  //     </View>
-  //   );
-  // }
+  const width = Dimensions.get('window').width;
+  const images = [
+    <Image style={styles.image} source={require('../assets/VoyageEurope.jpg')} resizeMode="cover" />,
+    <Image style={styles.image} source={require('../assets/VoyageOceanie.jpg')} resizeMode="cover" />,
+    <Image style={styles.image} source={require('../assets/VoyageAmerique.jpg')} resizeMode="cover" />,
+    <Image style={styles.image} source={require('../assets/VoyageAsie.jpg')} resizeMode="cover" />,
+    <Image style={styles.image} source={require('../assets/VoyageAfrique.jpg')} resizeMode="cover" />,
+  ]
 
-   return (
+  return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Header />
       <View style={styles.inputContainer}>
@@ -84,29 +87,17 @@ export default function HomeScreen() {
         <Text style={styles.textButton}>Voyager avec nous !</Text>
       </TouchableOpacity>
       {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
-      <Image style={styles.image} source={require('../assets/voyage1.jpg')} resizeMode="cover" />
-      {/* <View style={styles.container}>
-        <Carousel
-          ref={(c) => { this._carousel = c; }}
-          data={images}
-          renderItem={this._renderItem}
-          sliderWidth={sliderWidth}
-          itemWidth={itemWidth}
-          onSnapToItem={(index) => this.setState({ activeIndex: index })}
-        />
-
-        <View style={styles.navigationContainer}>
-          <TouchableOpacity onPress={() => this._carousel.snapToPrev()}>
-            <Text style={styles.navigationText}>{'<'}</Text>
-          </TouchableOpacity>
-
-          <Text style={styles.navigationText}>{this.state.activeIndex + 1} / {images.length}</Text>
-
-          <TouchableOpacity onPress={() => this._carousel.snapToNext()}>
-            <Text style={styles.navigationText}>{'>'}</Text>
-          </TouchableOpacity>
-        </View>
-      </View> */}
+      <Carousel
+        loop
+        width={width}
+        height={width*2}
+        autoPlay={true}
+        pagingEnabled
+        data={images}
+        scrollAnimationDuration={2500}
+        onSnapToItem={(index) => console.log('current index:', index)}
+        renderItem={({index}) => images[index]}
+      />
     </KeyboardAvoidingView>
   )
 }

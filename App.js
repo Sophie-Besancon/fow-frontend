@@ -10,7 +10,7 @@ import AccountScreen from './screens/AccountScreen';
 import BasketScreen from './screens/BasketScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import MarketScreen from './screens/MarketScreen';
-// import ContinentScreen from './screens/ContinentScreen';
+import ContinentScreen from './screens/ContinentScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -24,6 +24,31 @@ let basketNumber= 0;
 const store = configureStore({
   reducer: { articles, users },
  });
+
+ const HomeNavigator = () => {
+
+  return (
+    <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName = '';
+        if (route.name === 'Accueil') {
+          iconName = 'home';
+        } else if (route.name === 'Continent') {
+          iconName = 'globe';
+        }
+
+        return <FontAwesome name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#FC9F30',
+      tabBarInactiveTintColor: '#4B7285',
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+    })}>
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Continent" component={ContinentScreen} />
+    </Tab.Navigator>
+  );
+};
 
 const TabNavigator = () => {
 
@@ -49,7 +74,7 @@ const TabNavigator = () => {
       tabBarInactiveTintColor: '#4B7285',
       headerShown: false,
     })}>
-      <Tab.Screen name="Accueil" component={HomeScreen} />
+      <Tab.Screen name="Accueil" component={HomeNavigator} />
       <Tab.Screen name="Market" component={MarketScreen} />
       <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: `${basketNumber}`}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
@@ -64,8 +89,7 @@ export default function App() {
     <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
     {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
-  {/* <Stack.Screen name="Continent" component={ContinentScreen} /> */}
-    <Stack.Screen name="TabNavigator" component={TabNavigator} />
+      <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   </NavigationContainer>
   </Provider>

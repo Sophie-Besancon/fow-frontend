@@ -32,10 +32,21 @@ export default function ContinentScreen({navigation}) {
     return (
         <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <Header />
+            <View>
+                <Text>Hello</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.continentButton} activeOpacity={0.8}>
+                    <Text style={styles.textButton}>Retour</Text>
+                </TouchableOpacity>
+            </View>
         </KeyboardAvoidingView>
     )
 }
 
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+        backgroundColor: '#ffffff',
+        alignItems: 'center',
+        flexDirection: 'column',
+      },
 })
