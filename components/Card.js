@@ -11,26 +11,27 @@ import {
   ImageBackground,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import image from '../assets/image.jpg'
-
-
+import image from "../assets/image.jpg";
 
 const Card = (props) => {
   return (
     <View style={styles.cardContainer}>
-        <ImageBackground source={image} resizeMode="cover" style={styles.backgroundImage}>
+      <ImageBackground
+        source={image}
+        resizeMode="cover"
+        style={styles.backgroundImage}
+      >
         <View style={styles.imgCardContainer}>
           <View style={styles.textImgCardContainer}>
             <View style={styles.splitContainerFlag}>
-            <Image source={require('../assets/la-france.png')}/>
+              <Image source={require("../assets/la-france.png")} />
             </View>
             <View style={styles.splitContainerPrice}>
               <Text>{props.price}€</Text>
             </View>
-
           </View>
         </View>
-        </ImageBackground>
+      </ImageBackground>
       <View style={styles.bottomCardContainer}>
         <View style={styles.nameProductContainer}>
           <Text>{props.name}</Text>
@@ -67,7 +68,6 @@ const styles = StyleSheet.create({
     marginTop: 70,
     width: 325,
     height: 250,
-
   },
   imgCardContainer: {
     alignSelf: "center",
@@ -75,13 +75,11 @@ const styles = StyleSheet.create({
     height: 190,
     borderWidth: 2,
     borderBottomWidth: 1,
-    borderColor: '#4B7285',
-    backgroundColor:'rgba(75, 114, 133, 0.2)',
+    borderColor: "#4B7285",
+    backgroundColor: "rgba(75, 114, 133, 0.2)",
   },
 
-
   textImgCardContainer: {
-
     flexDirection: "row",
     height: "15%",
   },
@@ -89,7 +87,6 @@ const styles = StyleSheet.create({
     width: "50%",
     paddingLeft: 105,
     justifyContent: "center",
-
   },
   splitContainerFlag: {
     width: "50%",
@@ -102,7 +99,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderWidth: 2,
     borderTopWidth: 1,
-    borderColor: '#4B7285',
+    borderColor: "#4B7285",
   },
   nameProductContainer: {
     height: "30%",
