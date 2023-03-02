@@ -11,23 +11,30 @@ import {
   ImageBackground,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import image from '../assets/mica-ilinca-zacusca-vinete-aubergines-200g.jpg'
 
 
 
 const Card = (props) => {
+
+let backgroundImg = {uri:`${props.image}`}
+//console.log(props.flag)
+//console.log(`../assets/${props.flag}.png`)
+// let city = require(`../assets/${props.flag}.png`)
+ //console.log(city)
+
+
+
   return (
     <View style={styles.cardContainer}>
-        <ImageBackground source={image} resizeMode="cover" style={styles.backgroundImage}>
+        <ImageBackground source={backgroundImg} resizeMode="cover" style={styles.backgroundImage}>
         <View style={styles.imgCardContainer}>
           <View style={styles.textImgCardContainer}>
             <View style={styles.splitContainerFlag}>
-            <Image source={require('../assets/la-france.png')}/>
+            <Image source={require('../assets/italy.png')}/>
             </View>
             <View style={styles.splitContainerPrice}>
-              <Text>{props.price}€</Text>
+              <Text style={styles.price}>{props.price}€</Text>
             </View>
-
           </View>
         </View>
         </ImageBackground>
@@ -40,19 +47,16 @@ const Card = (props) => {
             name="info-circle"
             size={20}
             color="#4B7285"
-            style={styles.deleteIcon}
           />
           <FontAwesome
             name="heart-o"
             size={20}
             color="#4B7285"
-            style={styles.deleteIcon}
           />
           <FontAwesome
             name="cart-plus"
             size={20}
             color="#4B7285"
-            style={styles.deleteIcon}
           />
         </View>
       </View>
@@ -64,55 +68,54 @@ export default Card;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginTop: 70,
-    width: 325,
-    height: 250,
-
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 20,
+    width: '95%',
+    padding: 8,
+    borderWidth: 1,
+    borderRadius: 7,
   },
+
   imgCardContainer: {
     alignSelf: "center",
-    width: 290,
+    width: '90%',
     height: 190,
-    borderWidth: 2,
-    borderBottomWidth: 1,
-    borderColor: '#4B7285',
-    backgroundColor:'rgba(75, 114, 133, 0.1)',
   },
 
-
   textImgCardContainer: {
-
     flexDirection: "row",
     height: "15%",
   },
+
   splitContainerPrice: {
     width: "50%",
     paddingLeft: 105,
     justifyContent: "center",
-
   },
+  
   splitContainerFlag: {
     width: "50%",
-    paddingLeft: 10,
+    marginTop: 10,
     justifyContent: "center",
   },
+
   bottomCardContainer: {
-    width: 290,
+    width: '100%',
     height: 65,
     alignSelf: "center",
-    borderWidth: 2,
-    borderTopWidth: 1,
-    borderColor: '#4B7285',
+    padding: 8,
   },
+
   nameProductContainer: {
-    height: "30%",
-    marginLeft: 40,
-    marginTop: 10,
+    marginBottom: 10,
   },
   buttonProductContainer: {
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     flexDirection: "row",
     height: "50%",
   },
 });
+
+
