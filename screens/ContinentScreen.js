@@ -9,35 +9,16 @@ import {
     View,
 } from 'react-native';
 import Header from '../components/Header';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function ContinentScreen({navigation}) {
-
-    const continentsData = [
-        { name: "Amérique", imageName: "amérique" },
-        { name: "Océanie", imageName: "" },
-        { name: "Europe", imageName: "" },
-        { name: "Afrique", imageName: "" },
-        { name: "Asie", imageName: "" },
-    ]
-
-    const Continents = continentsData.map((continent, i) => {
-        return (
-            <View>
-                <Text>{continent.name}</Text>
-                <Image style={styles.image} source={require("../assets/amérique.jpg")} resizeMode="cover" onPress={console.log("HellofromContinent")} />
-            </View>
-        )
-    })
+export default function ContinentScreen({ navigation }) {
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <Header />
-            <View>
-                <Text>Hello</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.continentButton} activeOpacity={0.8}>
-                    <Text style={styles.textButton}>Retour</Text>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton} activeOpacity={0.8}>
+                <Ionicons name="md-arrow-back-circle-outline" size={20} color="white" /><Text style={styles.textButton}> Retour </Text>
+            </TouchableOpacity>
         </KeyboardAvoidingView>
     )
 }
@@ -48,5 +29,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         alignItems: 'center',
         flexDirection: 'column',
-      },
+    },
+    textButton: {
+        color: '#ffffff',
+    },
+    backButton: {
+        backgroundColor: '#4B7285',
+        height: 40,
+        margin: 10,
+        marginLeft: 20,
+        padding: 10,
+        borderRadius: 8,
+        flexDirection: "row",
+        alignSelf: "left",
+    },
 })

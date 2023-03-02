@@ -64,14 +64,16 @@ export default function HomeScreen({ navigation }) {
   //       }
   //     });
 
-
+  const handleNavigation = (destination) => {
+    navigation.navigate('Market', {destination: destination})
+  }
   const width = Dimensions.get('window').width;
   const images = [
-    <Image style={styles.image} source={require('../assets/VoyageEurope.jpg')} resizeMode="cover" />,
-    <Image style={styles.image} source={require('../assets/VoyageOceanie.jpg')} resizeMode="cover" />,
-    <Image style={styles.image} source={require('../assets/VoyageAmerique.jpg')} resizeMode="cover" />,
-    <Image style={styles.image} source={require('../assets/VoyageAsie.jpg')} resizeMode="cover" />,
-    <Image style={styles.image} source={require('../assets/VoyageAfrique.jpg')} resizeMode="cover" />,
+    <TouchableOpacity onPress={()=>handleNavigation("Europe")} ><Image style={styles.image} source={require('../assets/VoyageEurope.jpg')} resizeMode="cover"/></TouchableOpacity>,
+    <TouchableOpacity onPress={()=>handleNavigation("Océanie")}><Image style={styles.image} source={require('../assets/VoyageOceanie.jpg')} resizeMode="cover" /></TouchableOpacity>,
+    <TouchableOpacity onPress={()=>handleNavigation("Amérique")}><Image style={styles.image} source={require('../assets/VoyageAmerique.jpg')} resizeMode="cover" /></TouchableOpacity>,
+    <TouchableOpacity onPress={()=>handleNavigation("Asie")}><Image style={styles.image} source={require('../assets/VoyageAsie.jpg')} resizeMode="cover" /></TouchableOpacity>,
+    <TouchableOpacity onPress={()=>handleNavigation("Afrique")}><Image style={styles.image} source={require('../assets/VoyageAfrique.jpg')} resizeMode="cover" /></TouchableOpacity>,
   ]
 
   return (
@@ -84,7 +86,7 @@ export default function HomeScreen({ navigation }) {
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={() => handleContinent()} style={styles.continentButton} activeOpacity={0.8}>
-        <Text style={styles.textButton}>Voyager avec nous !</Text>
+        <Text style={styles.textButton}>Découvrez nos nouveautés 🎉 </Text>
       </TouchableOpacity>
       {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
       <Carousel
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     width: '90%',
     backgroundColor: '#ffffff',
     paddingLeft: 10,
-    marginTop: 10,
+    marginTop: 15,
     borderRadius: 8,
     borderColor: "#4B7285",
     borderWidth: 1,
@@ -134,16 +136,16 @@ const styles = StyleSheet.create({
   continentButton: {
     backgroundColor: '#FC9F30',
     height: 40,
-    margin: 20,
+    margin: 25,
     padding: 10,
     borderRadius: 8,
   },
   image: {
-    height: "40%",
+    height: "62%",
     width: "90%",
     borderRadius: 40,
     margin: 20,
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: "#4B7285",
   }
 })
