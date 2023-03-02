@@ -11,7 +11,7 @@ import {
   ImageBackground,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import image from '../assets/image.jpg'
+import image from '../assets/mica-ilinca-zacusca-vinete-aubergines-200g.jpg'
 
 
 
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderBottomWidth: 1,
     borderColor: '#4B7285',
-    backgroundColor:'rgba(75, 114, 133, 0.2)',
+    backgroundColor:'rgba(75, 114, 133, 0.1)',
   },
 
 
