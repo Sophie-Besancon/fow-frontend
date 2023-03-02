@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
     height: 190,
     borderWidth: 2,
     borderBottomWidth: 1,
-    borderColor: "#4B7285",
-    backgroundColor: "rgba(75, 114, 133, 0.2)",
+    borderColor: '#4B7285',
+    backgroundColor:'rgba(75, 114, 133, 0.1)',
   },
 
   textImgCardContainer: {
