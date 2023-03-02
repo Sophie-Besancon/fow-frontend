@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }) {
   const [searchProduct, setSearchProduct] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [travelMode, setTravelMode] = useState(false);
-
+  
   const handleSearch = () => {
     fetch(`http://192.168.1.88:3000/articles/${searchProduct}`)
       .then((response) => response.json())

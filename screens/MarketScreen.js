@@ -47,7 +47,7 @@ export default function MarketScreen({ route }) {
   }, [continent, category]);
 
   const cards = articlesData.map((data, i) => {
-    return <Card key={i} price={data.price} name={data.name} flag={data.flag} background={data.image} />;
+    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} />;
   });
 
   return (
@@ -150,3 +150,5 @@ const styles = StyleSheet.create({
     //textAlign: 'center',
   },
 })
+
+

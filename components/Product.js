@@ -6,103 +6,105 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Button
+  Button,
 } from "react-native";
 import Header from "./Header";
 import { AntDesign } from "@expo/vector-icons";
-import { ImageGallery } from '@georstat/react-native-image-gallery';
+import { ImageGallery } from "@georstat/react-native-image-gallery";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const images = [
   {
     id: 1,
-    url: 'https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg',
+    url: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
   },
   {
     id: 2,
-    url: 'https://www.uswayoflife.fr/3170-large_default/kit-kat-strawberry.jpg',
+    url: "https://www.uswayoflife.fr/3170-large_default/kit-kat-strawberry.jpg",
   },
-  
-]
-
-
+  {
+    id: 3,
+    url: "https://www.tokyo-smart.com/4864-large_default/kit-kat-fraise-amao.jpg",
+  },
+];
 
 export default function Product() {
-
   const [isLike, setIsLike] = useState(true);
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
-
 
   const openGallery = () => setIsOpen(true);
   const closeGallery = () => setIsOpen(false);
   /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
 
-  const handleCountLess = ()=>{
-    if (count > 0){
-      setCount(count-1)
+  const handleCountLess = () => {
+    if (count > 0) {
+      setCount(count - 1);
     }
-  }
+  };
 
-  const handleCountMore = ()=>{
-    if (count<99){
-      setCount(count+1)
+  const handleCountMore = () => {
+    if (count < 99) {
+      setCount(count + 1);
     }
-  }
+  };
+
+  const imagesDisplay = images.map((element, i) => {
+    return (
+      <>
+        <TouchableOpacity onPress={openGallery}>
+          <Image
+            source={{
+              uri: element.url,
+            }}
+            resizeMode="cover"
+            style={styles.imagesDisplay}
+            key={i}
+          />
+        </TouchableOpacity>
+      </>
+    );
+  });
+
   /* *********************** FIN INCREM / DECREM ******************************** */
-  
 
-  
   return (
     <View style={styles.container}>
       <Header />
       <ScrollView>
-        <View style={styles.productContainer}> 
+        <View style={styles.productContainer}>
+          {/*           <TouchableOpacity>
+          <MaterialIcons name="keyboard-backspace" size={32} color="black" />
+          <Text>Retour</Text>
+          </TouchableOpacity> */}
+          <TouchableOpacity onPress={openGallery}>
+            <Image
+              source={{
+                uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
+              }}
+              style={{ width: 300, height: 300 }}
+              resizeMode="cover"
+              alignSelf="center"
+            />
+          </TouchableOpacity>
 
-        <Button onPress={openGallery} title="Voir la galerie" alignSelf="center"/>
-        <ImageGallery close={closeGallery} isOpen={isOpen} images={images} />
-
-          <Image
-            source={{
-              uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
-            }}
-            style={{ width: 250, height: 250 }}
-            resizeMode="cover"
-            alignSelf="center"
+          <View style={styles.imagesContainer}>{imagesDisplay}</View>
+          <ImageGallery
+            close={closeGallery}
+            isOpen={isOpen}
+            images={images}
+            thumbSize={80}
+            thumbColor="#F39C12"
           />
-          <View style={styles.othersImages} alignSelf="center">
-
-
-
-            <Image
-              source={{
-                uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
-              }}
-              style={{ width: 100, height: 100 }}
-            />
-            <Image
-              source={{
-                uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
-              }}
-              style={{ width: 100, height: 100 }}
-            />
-            <Image
-              source={{
-                uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
-              }}
-              style={{ width: 100, height: 100 }}
-            />
-            <Image
-              source={{
-                uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
-              }}
-              style={{ width: 100, height: 100 }}
-            />
-          </View>
           <View style={styles.isLikeContent}>
             <Text style={styles.category}>Catégorie : Sucré</Text>
-            <TouchableOpacity onPress={()=>setIsLike(!isLike)}>
-             {isLike?<AntDesign name="heart" size={24} color="#E74C3C" />:<AntDesign name="hearto" size={24} color="#E74C3C" />}
-           </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsLike(!isLike)}>
+              {isLike ? (
+                <AntDesign name="heart" size={24} color="#E74C3C" />
+              ) : (
+                <AntDesign name="hearto" size={24} color="#E74C3C" />
+              )}
+            </TouchableOpacity>
           </View>
           <View style={styles.priceContainer}>
             <View>
@@ -130,11 +132,11 @@ export default function Product() {
           </Text>
           <View style={styles.addBasketContainer}>
             <View style={styles.countContainer}>
-              <TouchableOpacity onPress={()=>handleCountLess()}>
+              <TouchableOpacity onPress={() => handleCountLess()}>
                 <AntDesign name="minuscircleo" size={24} color="black" />
               </TouchableOpacity>
               <Text style={styles.counter}>{count}</Text>
-              <TouchableOpacity onPress={()=>handleCountMore()}>
+              <TouchableOpacity onPress={() => handleCountMore()}>
                 <AntDesign name="pluscircleo" size={24} color="black" />
               </TouchableOpacity>
             </View>
@@ -155,7 +157,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  productContainer: {},
   titleArticle: {
     alignSelf: "flex-start",
     fontSize: 35,
@@ -163,15 +164,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingTop: 15,
   },
-  othersImages: {
-    flexDirection: "row",
-  },
-  category: {},
   isLikeContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingLeft: 25,
-    paddingRight: 35,
+    paddingRight: 25,
+    paddingTop: 15,
   },
   descriptionTitle: {
     paddingLeft: 25,
@@ -226,5 +224,14 @@ const styles = StyleSheet.create({
   },
   addToBasketText: {
     color: "white",
+  },
+  imagesDisplay: {
+    width: 80,
+    height: 80,
+  },
+  imagesContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignContent: "center",
   },
 });
