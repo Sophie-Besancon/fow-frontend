@@ -6,14 +6,36 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Button
 } from "react-native";
 import Header from "./Header";
 import { AntDesign } from "@expo/vector-icons";
+import { ImageGallery } from '@georstat/react-native-image-gallery';
+
+const images = [
+  {
+    id: 1,
+    url: 'https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg',
+  },
+  {
+    id: 2,
+    url: 'https://www.uswayoflife.fr/3170-large_default/kit-kat-strawberry.jpg',
+  },
+  
+]
+
+
 
 export default function Product() {
 
   const [isLike, setIsLike] = useState(true);
   const [count, setCount] = useState(0)
+  const [isOpen, setIsOpen] = useState(false);
+
+
+  const openGallery = () => setIsOpen(true);
+  const closeGallery = () => setIsOpen(false);
+  /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
 
   const handleCountLess = ()=>{
     if (count > 0){
@@ -26,12 +48,19 @@ export default function Product() {
       setCount(count+1)
     }
   }
+  /* *********************** FIN INCREM / DECREM ******************************** */
+  
+
   
   return (
     <View style={styles.container}>
       <Header />
       <ScrollView>
-        <View style={styles.productContainer}>
+        <View style={styles.productContainer}> 
+
+        <Button onPress={openGallery} title="Voir la galerie" alignSelf="center"/>
+        <ImageGallery close={closeGallery} isOpen={isOpen} images={images} />
+
           <Image
             source={{
               uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
@@ -41,6 +70,9 @@ export default function Product() {
             alignSelf="center"
           />
           <View style={styles.othersImages} alignSelf="center">
+
+
+
             <Image
               source={{
                 uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",

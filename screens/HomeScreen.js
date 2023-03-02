@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import Header from '../components/Header';
-import Carousel from 'react-native-snap-carousel';
+//import Carousel from 'react-native-snap-carousel';
 
 export default function HomeScreen() {
 
