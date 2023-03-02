@@ -27,9 +27,13 @@ import { useEffect, useState } from "react";
           });
         }, []);
 
+        //const flags = [{mexico:"{require('../assets/mexico.png')}", italy:"require('../assets/italy.png')"}]
+        //console.log(flags[0].mexico)
         const cards = articlesData.map((data, i) => {
-        console.log('data',data, i)
-        return <Card key={i} price={data.price} name={data.name} flag={data.flag} background={data.image} />;
+        //console.log('data',data, i)
+        //console.log(data.countryName)
+        //flag={flags[0].mexico} 
+        return <Card key={i} price={data.price} name={data.name} image={data.image[0]} />;
         });
 
     return (
@@ -50,9 +54,10 @@ import { useEffect, useState } from "react";
   
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
       backgroundColor: '#ffffff',
       alignItems: 'center',
+      justifyContent: 'center',
       flexDirection: 'column',
     },
   })
+
