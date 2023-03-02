@@ -34,7 +34,7 @@ export default function MarketScreen({ route }) {
   //useEffect qui appelle une route pour récuperer les articles en fonction des paramètres continent et catégorie
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
-    fetch("http://192.168.1.88:3000/articles/", {
+    fetch("http://192.168.1.14:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category }),
