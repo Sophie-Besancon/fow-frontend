@@ -52,7 +52,7 @@ export default function Product() {
   const imagesDisplay = images.map((element, i) => {
     return (
       <>
-        <TouchableOpacity onPress={openGallery}>
+        <TouchableOpacity onPress={openGallery} key={i}>
           <Image
             source={{
               uri: element.url,

@@ -124,7 +124,7 @@ export default function UserConnect() {
           placeholder="Prénom"
           style={styles.input}
           onChangeText={(value) => setFirstname(value)}
-          autoCorrect={false} // enleve l'autocorrection
+          autoCorrect={false}
           value={firstname}
           selectTextOnFocus={true}
         />

@@ -4,7 +4,9 @@ const initialState = {
   value: [
     {
         firstname:null,
-        tokenUser:null,
+        token:null,
+
+
     }
   ],
 };
@@ -14,9 +16,10 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-        console.log('action payload :', action.payload.firstname);
+        console.log('action payload :', action.payload);
       state.value[0].firstname=action.payload.firstname;
       state.value[0].token=action.payload.token;
+
     },
   },
 });

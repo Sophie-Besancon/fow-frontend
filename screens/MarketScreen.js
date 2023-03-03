@@ -25,7 +25,7 @@ export default function MarketScreen({ route }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   //useEffet qui détecte un params venu HomeScreen (click sur une image de continent)
-/*   useEffect(() => {
+   useEffect(() => {
     if (route.params?.destination) {
       setContinent(route.params?.destination)
     }
@@ -44,7 +44,7 @@ export default function MarketScreen({ route }) {
           setArticlesData(data.filteredArticles)
         }
       });
-  }, [continent, category]); */
+  }, [continent, category]);
 
   const cards = articlesData.map((data, i) => {
     return <Card key={i} price={data.price} name={data.name} image={data.image[0]} />;
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: "row",
     alignSelf: "left",
+    
   },
   textButton: {
     color: '#ffffff',
