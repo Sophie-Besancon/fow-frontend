@@ -1,98 +1,172 @@
 import {
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-  } from 'react-native';
-  import Header from '../components/Header'
-  import FontAwesome from "react-native-vector-icons/FontAwesome";
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Header from '../components/Header'
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
+export default function BasketScreen() {
+
+  const basketData = [
+    { name: "mikado", quantity: 2, price: 3.99 },
+    { name: "mochi au chocolat", quantity: 3, price: 5.70 },
+  ]
+
+  const numberFormatFunction = new Intl.NumberFormat("fr-FR", {maximumSignificantDigits: 2});
+
+  let deliveryCost = 7.99;
+  let totalOrder= 0;
+
+  const basketArticles = basketData.map((data, i) => {
+    const totalPerArticle = basketData[i].quantity * basketData[i].price;
+    totalOrder = totalOrder + totalPerArticle 
+    return (<View style={styles.tableContainerRow} key={i}>
+      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.name}</Text></View>
+      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.quantity}</Text></View>
+      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.price.toFixed(2)}</Text></View>
+      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{totalPerArticle}</Text></View>
+    </View>)
+  })
+
   
-  export default function BasketScreen() {
-  
-    return (
-      <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-                 <Header/>
-        <View style={styles.statusContainer}>
-        <FontAwesome
-            name="shopping-basket"
-            size={20}
-            color="#000000"
-            style={styles.deleteIcon}
-          />
-          <FontAwesome
-          name="user"
-          size={20}
-          color="#000000"
-          style={styles.deleteIcon}
-        />
-        <FontAwesome
-        name="money"
-        size={20}
-        color="#000000"
-        style={styles.deleteIcon}
-      />
+
+  return (
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <Header />
+      <View style={styles.statusContainer}>
+        <FontAwesome name="shopping-basket" size={20} color="#FC9F30" style={styles.deleteIcon} />
+        <FontAwesome name="user" size={20} color="#4B7285" style={styles.deleteIcon} />
+        <FontAwesome name="money" size={20} color="#4B7285" style={styles.deleteIcon} />
+      </View>
+      <Text style={styles.textContainer}>Résumé de votre commande</Text>
+      <View style={styles.tableContainer}>
+        <View style={styles.tableContainerRowTitle}>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Produit</Text></View>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Quantité</Text></View>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>PU (€)</Text></View>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Total (€)</Text></View>
         </View>
-        <View style={styles.textContainer}>
-          <Text>Résumé de votre commande</Text>
-          </View>
-          <View style={styles.tableContainer}>
-            <Text>1.2.3</Text>
-          </View>
-          <View style={styles.totalContainer}>
-            <Text>4.5.6</Text>
-          </View>
-          <TouchableOpacity style={styles.buttonContainer}>
-            <Text style={styles.buttonText}>Étape suivante</Text>
-          </TouchableOpacity>
-      </KeyboardAvoidingView>
-    )
-  }
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#ffffff',
-      alignItems: 'center',
-      flexDirection: 'column',
-    },
-    statusContainer:{
-      width:'50%',
-      flexDirection:'row',
-      justifyContent: 'space-around',
-      alignItems: 'space-between',
-      marginTop: 30,
-    },
-    textContainer:{
-      marginTop: 30,
-    },
-    tableContainer:{
-      marginTop: 30,
-      backgroundColor:"green",
-      width:"90%",
-      height: "35%"
-    },
-    totalContainer:{
-      marginTop: 10,
-      backgroundColor:"yellow",
-      width:"90%",
-      height:"15%",
-    },
-    buttonContainer:{
+        {basketArticles}
+      </View>
+      <View style={styles.deliveryCostContainer}>
+        <View style={styles.deliveryCostContainerText}><Text>Frais de port</Text></View>
+        <View style={styles.deliveryCost}><Text style={styles.tableProductText}>{basketData.length > 9 ? {deliveryCost} : 0}€</Text></View>
+      </View>
+      <View style={styles.totalContainer}>
+        <View ><Text style={styles.tableTitleText}>Total de la commande</Text></View>
+        <View ><Text style={styles.tableTitleText}>{totalOrder + deliveryCost}€</Text></View>
+      </View>
+      <TouchableOpacity style={styles.buttonContainer}>
+        <Text style={styles.buttonText}>Étape suivante</Text>
+      </TouchableOpacity>
+    </KeyboardAvoidingView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  statusContainer: {
+    width: '50%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'space-between',
     marginTop: 30,
-    alignSelf: "center",
+  },
+  textContainer: {
+    marginTop: 30,
+    fontSize: 16,
+  },
+  tableContainer: {
+    marginTop: 10,
+    width: "90%",
+
+    flexDirection: 'column',
+  },
+  tableContainerRowTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 15,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    backgroundColor: '#4B7285',
+  },
+  tableContainerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    alignItems: "center",
+  },
+  tableTitleTextContainer: {
+    flex: 1,
+  },
+  tableTitleText: {
+    fontWeight: "800",
+    fontSize: 14,
+    color: "white",
+    textAlign: 'center',
+
+  },
+  tableProductTextContainer: {
+    flex: 1,
+  },
+  tableProductText: {
+    textAlign: 'center',
+  },
+  deliveryCostContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 15,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    width: "85%",
+  },
+
+  totalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    backgroundColor: '#4B7285',
+    width: "85%",
+  },
+
+
+  buttonContainer: {
+    marginTop: 30,
+    alignSelf: "flex-end",
     height: 40,
     margin: 10,
     padding: 10,
     borderRadius: 8,
     backgroundColor: "#4B7285",
-    width:120,
-    },
-    buttonText: {
-      alignSelf: "center",
-      color: "white",
-    },
-  })
+    width: 120,
+  },
+  buttonText: {
+    alignSelf: "center",
+    color: "white",
+  },
+})

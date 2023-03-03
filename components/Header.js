@@ -118,13 +118,13 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   firstText: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
     flexWrap: "wrap",
     color: "#4B7285",
   },
   secondText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
     color: "#FC9F30",
   },
