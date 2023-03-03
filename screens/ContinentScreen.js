@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 8,
         flexDirection: "row",
-        alignSelf: "left",
+        alignSelf: "flex-start",
     },
 })

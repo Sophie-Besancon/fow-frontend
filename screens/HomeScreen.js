@@ -40,30 +40,6 @@ export default function HomeScreen({ navigation }) {
     // navigation.navigate('ContinentScreen');
   }
 
-  // const travelPicture = async () => {
-  //   const photo = await cameraRef.takePictureAsync({ quality: 0.3 });
-  //   const formData = new FormData();
-  // const allTravelPhotos= []
-  //   formData.append('photoFromFront', {
-  //     uri: photo.uri,
-  //     name: 'photo.jpg',
-  //     type: 'image/jpeg',
-  //   });
-  //   console.log('photo', photo);
-
-  //   fetch('http://res.cloudinary.com/dzyz3cifr', {
-  //     method: 'POST',
-  //     body: formData,
-  //   }).then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       if (data.result) {
-  //         allTravelPhotos.push(data.url)
-  //       } else {
-  //         console.log('error')
-  //       }
-  //     });
-
   const handleNavigation = (destination) => {
     navigation.navigate('Market', {destination: destination})
   }
@@ -97,7 +73,7 @@ export default function HomeScreen({ navigation }) {
         pagingEnabled
         data={images}
         scrollAnimationDuration={2500}
-        onSnapToItem={(index) => console.log('current index:', index)}
+        // onSnapToItem={(index) => console.log('current index:', index)}
         renderItem={({index}) => images[index]}
       />
     </KeyboardAvoidingView>
@@ -132,6 +108,7 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: '#ffffff',
+    fontWeight: 'bold',
   },
   continentButton: {
     backgroundColor: '#FC9F30',
@@ -139,6 +116,7 @@ const styles = StyleSheet.create({
     margin: 25,
     padding: 10,
     borderRadius: 8,
+    
   },
   image: {
     height: "62%",
