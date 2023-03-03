@@ -53,20 +53,20 @@ export default function MarketScreen({ route }) {
   }, [continent, category]);
 
   const cards = articlesData.map((data, i) => {
-    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} />;
+    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} />;
   });
 
   return (
 
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+<KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Header />
-      <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.filterButton} activeOpacity={0.8}>
+      <TouchableOpacity  onPress={() => setModalVisible(!modalVisible)} style={styles.filterButton}  activeOpacity={0.8}  > 
         <AntDesign name="filter" size={20} color="white" />
         <Text style={styles.textButton}> filtrer </Text>
-      </TouchableOpacity>
+     </TouchableOpacity>  
       <ScrollView style={styles.scrollView}>
         {cards}
-      </ScrollView>
+      </ScrollView> 
       <View style={styles.centeredView}>
         <Modal
           animationType="fade"
@@ -113,7 +113,6 @@ export default function MarketScreen({ route }) {
         </Modal>
       </View >
     </KeyboardAvoidingView >
-
 
   )
 }
