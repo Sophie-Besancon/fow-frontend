@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import {
   View,
   Text,
@@ -11,26 +12,49 @@ import {
   ImageBackground,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
-
+import { AntDesign } from "@expo/vector-icons";
+import { canBookMark, addArticle, removeArticle } from '../reducers/users';
 
 const Card = (props) => {
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.value);
+  const [isLike, setIsLike] = useState(false);
+  //console.log( props.id)
 
-let backgroundImg = {uri:`${props.image}`}
-//console.log(props.flag)
-//console.log(`../assets/${props.flag}.png`)
-// let city = require(`../assets/${props.flag}.png`)
- //console.log(city)
+  let backgroundImg = { uri: `${props.image}` };
+  //console.log(props.flag)
+  //console.log(`../assets/${props.flag}.png`)
+  // let city = require(`../assets/${props.flag}.png`)
+  //console.log(city)
 
 
+  const handleLike = () => {
+    if(users.token){
+      setIsLike(!isLike)
+      fetch("http://192.168.1.14:3000/users/token", {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: users.token, articleId: props.id }),
+      }).then((response) =>
+        response.json()).then((data) => {
+          console.log(data.canBookmark)
+          console.log(data.articlesinBasket)
+          dispatch(canBookMark(data.canBookmark))
+          dispatch(addArticle(data.articlesinBasket))
+        });
+      }
+      };
 
   return (
     <View style={styles.cardContainer}>
-        <ImageBackground source={backgroundImg} resizeMode="cover" style={styles.backgroundImage}>
+      <ImageBackground
+        source={backgroundImg}
+        resizeMode="cover"
+        style={styles.backgroundImage}>
         <View style={styles.imgCardContainer}>
           <View style={styles.textImgCardContainer}>
             <View style={styles.splitContainerFlag}>
-            <Image source={require('../assets/italy.png')}/>
+              <Image source={require("../assets/mexico.png")} />
             </View>
             <View style={styles.splitContainerPrice}>
               <Text style={styles.price}>{props.price}€</Text>
@@ -43,22 +67,21 @@ let backgroundImg = {uri:`${props.image}`}
           <Text>{props.name}</Text>
         </View>
         <View style={styles.buttonProductContainer}>
-          <FontAwesome
-            name="info-circle"
-            size={20}
-            color="#4B7285"
-          />
-          <FontAwesome
-            name="heart-o"
-            size={20}
-            color="#4B7285"
-          />
-          <FontAwesome
-            name="cart-plus"
-            size={20}
-            color="#4B7285"
-          />
+          <TouchableOpacity>
+            <FontAwesome name="info-circle" size={24} color="#4B7285" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleLike()}>
+            {isLike ? (
+              <AntDesign name="heart" size={24} color="#E74C3C" />
+            ) : (
+              <AntDesign name="hearto" size={24} color="#E74C3C" />
+            )}
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <FontAwesome name="cart-plus" size={24} color="#4B7285" />
+          </TouchableOpacity>
         </View>
+
       </View>
     </View>
   );
@@ -68,10 +91,10 @@ export default Card;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 20,
     marginBottom: 20,
-    width: '95%',
+    width: "95%",
     padding: 8,
     borderWidth: 1,
     borderRadius: 7,
@@ -79,7 +102,7 @@ const styles = StyleSheet.create({
 
   imgCardContainer: {
     alignSelf: "center",
-    width: '90%',
+    width: "90%",
     height: 190,
   },
 
@@ -93,7 +116,7 @@ const styles = StyleSheet.create({
     paddingLeft: 105,
     justifyContent: "center",
   },
-  
+
   splitContainerFlag: {
     width: "50%",
     marginTop: 10,
@@ -101,7 +124,7 @@ const styles = StyleSheet.create({
   },
 
   bottomCardContainer: {
-    width: '100%',
+    width: "100%",
     height: 65,
     alignSelf: "center",
     padding: 8,
@@ -117,5 +140,3 @@ const styles = StyleSheet.create({
     height: "50%",
   },
 });
-
-
