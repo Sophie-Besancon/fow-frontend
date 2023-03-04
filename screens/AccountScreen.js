@@ -19,7 +19,7 @@ export default function AccountScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <Header />
-       {/* <UserConnect/> */}
+       { <UserConnect/> }
        {/*  <Dashboard />  */}
       {/*  <Personal_Informations/> */}
 

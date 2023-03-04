@@ -17,9 +17,10 @@ import { canBookMark, addArticle, removeArticle } from '../reducers/users';
 
 const Card = (props) => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users.value);
+  const users = useSelector((state) => state.users.value[0]);
   const [isLike, setIsLike] = useState(false);
   //console.log( props.id)
+  //console.log(users)
 
   let backgroundImg = { uri: `${props.image}` };
   //console.log(props.flag)
@@ -27,23 +28,29 @@ const Card = (props) => {
   // let city = require(`../assets/${props.flag}.png`)
   //console.log(city)
 
-
-  const handleLike = () => {
-    if(users.token){
-      setIsLike(!isLike)
+  useEffect(() => {
+  //  if(users.token){
       fetch("http://192.168.1.14:3000/users/token", {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
       }).then((response) =>
         response.json()).then((data) => {
-          console.log(data.canBookmark)
-          console.log(data.articlesinBasket)
-          dispatch(canBookMark(data.canBookmark))
-          dispatch(addArticle(data.articlesinBasket))
+          dispatch(canBookMark())          
+          console.log('ARTICLES',typeof data.data.articlesinFavorite[0])
+          if (isLike){
+  
+        //    for (let element of data.data.articlesinFavorite){
+          //    console.log("ELEMENT", element._id)
+       //     }
+         // dispatch(addArticle(data.data.articlesinFavorite))
+       //  } else {
+        //  dispatch(removeArticle(data.data.articlesinFavorite[0]))
+          }
         });
-      }
-      };
+  //    }
+  }, [isLike])
+
 
   return (
     <View style={styles.cardContainer}>
@@ -70,7 +77,7 @@ const Card = (props) => {
           <TouchableOpacity>
             <FontAwesome name="info-circle" size={24} color="#4B7285" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleLike()}>
+          <TouchableOpacity onPress={() => setIsLike(!isLike)}>
             {isLike ? (
               <AntDesign name="heart" size={24} color="#E74C3C" />
             ) : (
