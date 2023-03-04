@@ -5,8 +5,8 @@ const initialState = {
     {
         firstname:null,
         token:null,
-        canBookmark:null,
-        articleinFavorite:[null],
+        canBookmark:false,
+        articleinFavorite: [],
     }
   ],
 };
@@ -16,24 +16,24 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     addUser: (state, action) => {
-        console.log('action payload :', action.payload);
       state.value[0].firstname=action.payload.firstname;
       state.value[0].token=action.payload.token;
-
     },
     canBookMark: (state, action) => {
-      if (state.value.token){
+      if (state.value[0].token){
         state.value[0].canBookmark = true
       }
     },
     addArticle: (state, action) => {
-      if (state.value.canBookmark){
-        state.value[0].articleinFavorite[0].push(action.payload)
+      //console.log("addarticle", action.payload)
+      if (state.value[0].canBookmark){
+        state.value[0].articleinFavorite.push(action.payload)
       }
     },
     removeArticle: (state, action) => {
-      state.value[0].articleinFavorite[0] = state.value[0].articleinFavorite[0].filter(article => article !== action.payload)
-    }
+     // console.log("removeArticle", action.payload._id)
+      state.value[0].articleinFavorite = state.value[0].articleinFavorite.filter(article => article._id !== action.payload._id);
+      }
  
   },
 });
