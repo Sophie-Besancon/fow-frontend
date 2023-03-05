@@ -40,7 +40,7 @@ export default function MarketScreen({ route }) {
   //useEffect qui appelle une route pour récuperer les articles en fonction des paramètres continent et catégorie
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
-    fetch("http://192.168.1.14:3000/articles/", {
+    fetch("http://192.168.1.47:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category }),
@@ -50,11 +50,21 @@ export default function MarketScreen({ route }) {
           setArticlesData(data.filteredArticles)
         }
       });
+    
   }, [continent, category]);
 
+
+
+
   const cards = articlesData.map((data, i) => {
-    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} />;
+    // Il faut créer une propriété isLike pour savoir si l'article doit etre liké ou non à l'affichage.
+    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} /* isLike={isLike} */ />;
   });
+
+
+
+
+
 
   return (
 

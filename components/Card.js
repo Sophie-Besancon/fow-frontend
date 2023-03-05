@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
-import { canBookMark, addArticle, removeArticle } from '../reducers/users';
+import { canBookMark, addArticle, removeArticle } from "../reducers/users";
 
 const Card = (props) => {
   const dispatch = useDispatch();
@@ -28,36 +28,60 @@ const Card = (props) => {
   // let city = require(`../assets/${props.flag}.png`)
   //console.log(city)
 
-  useEffect(() => {
+/*      useEffect(() => {
   //  if(users.token){
-      fetch("http://192.168.1.14:3000/users/token", {
+      fetch("http://192.168.1.47:3000/users/updateFavoriteArticle", { //Route TOKEN renommé
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
       }).then((response) =>
         response.json()).then((data) => {
           dispatch(canBookMark())          
-          console.log('ARTICLES',typeof data.data.articlesinFavorite[0])
-          if (isLike){
-  
-        //    for (let element of data.data.articlesinFavorite){
-          //    console.log("ELEMENT", element._id)
-       //     }
-         // dispatch(addArticle(data.data.articlesinFavorite))
-       //  } else {
-        //  dispatch(removeArticle(data.data.articlesinFavorite[0]))
+          console.log('ARTICLES',data.data.articlesinFavorite[0])
+          if (!isLike){
+
+          dispatch(addArticle(data.data.articlesinFavorite))
+         } else {
+          dispatch(removeArticle(data.data.articlesinFavorite))
           }
         });
   //    }
-  }, [isLike])
+  }, [isLike])  */
 
+  const handleLike = () => {
+    const token = "hx_ZgFojJ6CMUlgVGG8bkUw_5ZmyDhAm";
+    fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: token, articleId: props.id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Etat à linterieur : ", isLike);
+        // L'etat isLike ne se comporte pas correctement a l'interieur de la fonction,
+        // il est l'inverse de ce qu'il doit être à chaque fois.
+        // Est-ce dû au fait que la card envoyé par market n'a pas d'etat de like par defaut ??
+
+        // Deuxieme probleme : on demande de dispatcher dans le reducer uniquement ce qu'on recoit
+        // de notre backend. Donc même en likant plusieurs articles, il inscrit plusieurs fois
+        // le même article dans le reducer ?
+
+                 if (!isLike){
+                  console.log('ARTICLE ENVOYE',data.data.articlesinFavorite);
+        dispatch(addArticle(data.data.articlesinFavorite))
+      }else{
+        dispatch(removeArticle(data.data.articlesinFavorite))
+      } 
+      });
+  };
 
   return (
     <View style={styles.cardContainer}>
       <ImageBackground
         source={backgroundImg}
         resizeMode="cover"
-        style={styles.backgroundImage}>
+        style={styles.backgroundImage}
+      >
         <View style={styles.imgCardContainer}>
           <View style={styles.textImgCardContainer}>
             <View style={styles.splitContainerFlag}>
@@ -77,7 +101,12 @@ const Card = (props) => {
           <TouchableOpacity>
             <FontAwesome name="info-circle" size={24} color="#4B7285" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setIsLike(!isLike)}>
+          <TouchableOpacity
+            onPress={() => {
+              handleLike();
+              setIsLike(!isLike);
+            }}
+          >
             {isLike ? (
               <AntDesign name="heart" size={24} color="#E74C3C" />
             ) : (
@@ -88,7 +117,6 @@ const Card = (props) => {
             <FontAwesome name="cart-plus" size={24} color="#4B7285" />
           </TouchableOpacity>
         </View>
-
       </View>
     </View>
   );

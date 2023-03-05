@@ -15,24 +15,32 @@ import { useSelector } from "react-redux";
 import Checkbox from "expo-checkbox";
 
 export default function Personal_Informations() {
+  // Déclaration des états pour 'INFORMATIONS PERSONNELLES' de l'utilisateur
   const [firstname, setFirstname] = useState(""); //evite de renvoyer une erreur en définissant l'état à null
   const [lastname, setLastname] = useState("");
   const [mailAddress, setMailAddress] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [messageUpdate, setMessageUpdate] = useState(null);
+
+  // Etats généraux concernant l'affichage déroulants des menus
+  const [addNewAdressDisplay, setAddNewAdressDisplay] = useState(false);
+  const [myOrdersDisplay, setMyOrdersDisplay] = useState(false);
   const [personalInformationsDisplay, setPersonalInformationsDisplay] =
     useState(false);
-  const [changeAddressDisplay, setChangeAddressDisplay] = useState(false);
-  const [addNewAdressDisplay, setAddNewAdressDisplay] = useState(false);
+  const [ChangeOrDeleteMyAddress, setChangeOrDeleteMyAddress] = useState(false);
+
+  // checkbox pour l'ajout d'une nouvelle adresse
   const [isCheckedDelivery, setCheckedDelivery] = useState(false);
   const [isCheckedBilling, setCheckedBilling] = useState(false);
 
-  // ADRESSE UTILISATEUR
+  // Déclaration des états pour 'AJOUTER UNE NOUVELLE ADRESSE'
   const [newAdress, setNewAddress] = useState("");
   const [newZipCode, setNewZipCode] = useState("");
   const [newCity, setNewCity] = useState("");
   const [newCountry, setNewCountry] = useState("");
+  const [messageAddAdress, setMessageAddAdress] = useState(null);
+  //
 
   const user = useSelector((state) => state.users.value[0]);
 
@@ -50,41 +58,37 @@ export default function Personal_Informations() {
       });
   }, []);
 
+  /* <---> SETTER : Envoi la nouvelle adresse vers la base de données <---> */
 
-    /* <---> SETTER : Envoi la nouvelle adresse vers la base de données <---> */
-
-    const setHandleNewAddress = ()=>{
-        if (
-            newAdress !== "" &&
-            newZipCode !== "" &&
-            newCity !== "" &&
-            newCountry !== ""
-          ) {
-            var data = {
-                street: newAdress,
-                city: newCity,
-                zipCode: newZipCode,
-                country: newCountry,
-                isBillingAddress: isCheckedBilling,
-                isDeliveryAddress: isCheckedDelivery,
-            };
-          }
-      
-          fetch(`http://192.168.1.47:3000/users/update/${user.token}`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              setMessageUpdate(data.message);
-            });
-        
+  const setHandleNewAddress = () => {
+    if (
+      newAdress !== "" &&
+      newZipCode !== "" &&
+      newCity !== "" &&
+      newCountry !== ""
+    ) {
+      var data = {
+        street: newAdress,
+        city: newCity,
+        zipCode: newZipCode,
+        country: newCountry,
+        isBillingAddress: isCheckedBilling,
+        isDeliveryAddress: isCheckedDelivery,
+      };
     }
 
-
+    fetch(`http://192.168.1.47:3000/users/add_address/${user.token}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMessageAddAdress(data.message);
+      });
+  };
 
   /* <-----------------> SETTER : METTRE A JOUR LES INFORMATIONS PERSONNELLES <-----------------> */
   const setHandleUpdateInformations = () => {
@@ -107,13 +111,16 @@ export default function Personal_Informations() {
       };
     }
 
-    fetch(`http://192.168.1.47:3000/users/update/${user.token}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    fetch(
+      `http://192.168.1.47:3000/users/updateUserInformations/${user.token}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         setMessageUpdate(data.message);
@@ -135,6 +142,7 @@ export default function Personal_Informations() {
               style={styles.input}
               onChangeText={(value) => {
                 setFirstname(value);
+                setMessageUpdate(null);
               }}
             />
             <TextInput
@@ -144,6 +152,7 @@ export default function Personal_Informations() {
               style={styles.input}
               onChangeText={(value) => {
                 setLastname(value);
+                setMessageUpdate(null);
               }}
             />
             <TextInput
@@ -153,6 +162,7 @@ export default function Personal_Informations() {
               style={styles.input}
               onChangeText={(value) => {
                 setMailAddress(value);
+                setMessageUpdate(null);
               }}
             />
             <TextInput
@@ -163,6 +173,7 @@ export default function Personal_Informations() {
               secureTextEntry={true}
               onChangeText={(value) => {
                 setNewPassword(value);
+                setMessageUpdate(null);
               }}
             />
             <TextInput
@@ -173,6 +184,7 @@ export default function Personal_Informations() {
               secureTextEntry={true}
               onChangeText={(value) => {
                 setNewPasswordConfirm(value);
+                setMessageUpdate(null);
               }}
             />
           </View>
@@ -206,28 +218,31 @@ export default function Personal_Informations() {
             placeholder="Adresse complète"
             style={styles.input}
             value={newAdress}
-            onChange={(value) => setNewAddress(value)}
+            onChangeText={(value) => {
+              setNewAddress(value);
+              setMessageAddAdress(null);
+            }}
           />
           <TextInput
             autoCorrect="false"
             placeholder="Code postal"
             style={styles.input}
             value={newZipCode}
-            onChange={(value) => setNewZipCode(value)}
+            onChangeText={(value) => setNewZipCode(value)}
           />
           <TextInput
             autoCorrect="false"
             placeholder="Ville"
             style={styles.input}
             value={newCity}
-            onChange={(value) => setNewCity(value)}
+            onChangeText={(value) => setNewCity(value)}
           />
           <TextInput
             autoCorrect="false"
             placeholder="Pays"
             style={styles.input}
             value={newCountry}
-            onChange={(value) => setNewCountry(value)}
+            onChangeText={(value) => setNewCountry(value)}
           />
         </View>
         <View style={styles.checkbox_container}>
@@ -255,12 +270,18 @@ export default function Personal_Informations() {
 
         {/* <------------>  BOUTON MAJ DES INFORMATIONS  <------------> */}
 
-        <View style={styles.valid_button_container}>
+        <TouchableOpacity
+          style={styles.valid_button_container}
+          onPress={() => {
+            setHandleNewAddress();
+            setMessageAddAdress(null);
+          }}
+        >
           <AntDesign name="checkcircle" size={20} color="#4B7285" />
           <Text style={styles.valid_button_Text}>Valider</Text>
-        </View>
+        </TouchableOpacity>
         <Text style={styles.message}>
-          {messageUpdate != null ? messageUpdate : ""}
+          {messageAddAdress != null ? messageAddAdress : ""}
         </Text>
       </>
     );
@@ -269,14 +290,69 @@ export default function Personal_Informations() {
   /* <----------------------> RETURN <----------------------> */
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity style={styles.backToAccountContainer}>
-        <AntDesign name="back" size={26} color="white" />
-        <Text style={styles.backToAccountText}>Retour</Text>
-      </TouchableOpacity>
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        {/* <------>  BOUTON VOS INFORMATIONS PERSONNELLES <------> */}
+        <TouchableOpacity
+          style={
+            personalInformationsDisplay
+              ? styles.PIDisplay_enable
+              : styles.PIDisplay_disable
+          }
+          onPress={() => {
+            setPersonalInformationsDisplay(true);
+            setAddNewAdressDisplay(false);
+            setMyOrdersDisplay(false);
+            setChangeOrDeleteMyAddress(false);
+          }}
+        >
+          <Entypo
+            name="info"
+            size={24}
+            color={personalInformationsDisplay ? "white" : "#FC9F30"}
+          />
+          <Text
+            style={
+              personalInformationsDisplay
+                ? styles.personalInformations_enable
+                : styles.personalInformations_disable
+            }
+          >
+            Vos informations personnelles
+          </Text>
+        </TouchableOpacity>
+        {displayInformations}
+
+        {/* <------>  BOUTON MES COMMANDES <------> */}
+        <TouchableOpacity
+          style={
+            myOrdersDisplay ? styles.myOrders_enable : styles.myOrders_disable
+          }
+          onPress={() => {
+            setPersonalInformationsDisplay(false);
+            setAddNewAdressDisplay(false);
+            setMyOrdersDisplay(true);
+            setChangeOrDeleteMyAddress(false);
+          }}
+        >
+          <Entypo
+            name="list"
+            size={24}
+            color={myOrdersDisplay ? "white" : "#5DADE2"}
+          />
+
+          <Text
+            style={
+              myOrdersDisplay
+                ? styles.myOrdersText_enable
+                : styles.myOrdersText_disable
+            }
+          >
+            Mes commandes
+          </Text>
+        </TouchableOpacity>
         {/* <------>  BOUTON AJOUTER NOUVELLE ADRESSE  <------> */}
 
         <TouchableOpacity
@@ -287,51 +363,69 @@ export default function Personal_Informations() {
           }
           onPress={() => {
             setAddNewAdressDisplay(true);
-            setChangeAddressDisplay(false);
+            setMyOrdersDisplay(false);
             setPersonalInformationsDisplay(false);
+            setChangeOrDeleteMyAddress(false);
           }}
         >
-          <AntDesign name="pluscircle" size={24} color="#A569BD" />
-          <Text style={styles.addAddressText}>
+          <AntDesign
+            name="pluscircle"
+            size={24}
+            color={addNewAdressDisplay ? "white" : "#A569BD"}
+          />
+          <Text
+            style={
+              addNewAdressDisplay
+                ? styles.addAddressText_enable
+                : styles.addAddressText_disable
+            }
+          >
             Ajouter une nouvelle adresse
           </Text>
         </TouchableOpacity>
         {getHandleNewAddress}
 
-        {/* <------>  BOUTON CHANGER ADRESSE PAR DEFAUT  <------> */}
+        {/* <------>  BOUTON METTRE A JOUR MES ADRESSES  <------> */}
 
-        <TouchableOpacity
-          style={styles.UpdateAddressContainer}
-          onPress={() => {
-            setChangeAddressDisplay(true);
-            setAddNewAdressDisplay(false);
-            setPersonalInformationsDisplay(false);
-          }}
-        >
-          <MaterialIcons name="update" size={24} color="#45B39D" />
-          <Text style={styles.updateAddressText}>Adresse par défaut</Text>
-        </TouchableOpacity>
-
-        {/* <----------------------------------------------------> */}
         <TouchableOpacity
           style={
-            personalInformationsDisplay
-              ? styles.PIDisplay_enable
-              : styles.PIDisplay_disable
+            ChangeOrDeleteMyAddress
+              ? styles.updateAddress_enable
+              : styles.updateAddress_disable
           }
           onPress={() => {
-            setPersonalInformationsDisplay(true);
+            setMyOrdersDisplay(false);
             setAddNewAdressDisplay(false);
-            setChangeAddressDisplay(false);
+            setPersonalInformationsDisplay(false);
+            setChangeOrDeleteMyAddress(true);
           }}
         >
-          <Entypo name="info" size={24} color="#FC9F30" />
-          <Text style={styles.personalInformations}>
-            Vos informations personnelles
+          <MaterialIcons
+            name="update"
+            size={24}
+            color={ChangeOrDeleteMyAddress ? "white" : "#45B39D"}
+          />
+          <Text
+            style={
+              ChangeOrDeleteMyAddress
+                ? styles.updateAddressText_enable
+                : styles.updateAddressText_disable
+            }
+          >
+            Mettre à jour mes adresses
           </Text>
         </TouchableOpacity>
-        {displayInformations}
-        {/* <----------------------------------------------------> */}
+
+        {/* <------>  BOUTONS : DECONNEXION ET SUPPRESSION DE COMPTE  <------> */}
+
+        <TouchableOpacity style={styles.disconnectContainer}>
+          <AntDesign name="disconnect" size={24} color="#5D6D7E" />
+          <Text style={styles.textDisconnect}>Me déconnecter</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteContainer}>
+          <AntDesign name="delete" size={24} color="#CD6155" />
+          <Text style={styles.deleteAccountText}>Supprimer mon compte</Text>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     </ScrollView>
   );
@@ -364,7 +458,7 @@ const styles = StyleSheet.create({
   checkboxText: {
     color: "#4B7285",
     fontWeight: "bold",
-    fontSize: "16",
+    fontSize: 16,
   },
   /* <------ STYLE : BOUTON 'VALIDER' ------> */
 
@@ -386,58 +480,72 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
   },
 
-  /* <------ STYLE : ADRESSE PAR DEFAUT ------> */
+  /* <------ STYLE : METTRE A JOUR MES ADRESSES ------> */
 
   SelectAdressContainer: {
     flexDirection: "row",
   },
 
-  UpdateAddressContainer: {
+  updateAddress_enable: {
+    flexDirection: "row",
+    backgroundColor: "#45B39D",
+    padding: 15,
+    borderRadius: 10,
+    width: "100%",
+    alignContent: "center",
+    marginTop: 10,
+    shadowColor: "#45B39D",
+    shadowRadius: 5,
+    shadowOpacity: 0.6,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+  },
+  updateAddress_disable: {
     flexDirection: "row",
     backgroundColor: "#D0ECE7",
     padding: 15,
     borderRadius: 10,
+    width: "100%",
     alignContent: "center",
     marginTop: 10,
   },
-  updateAddressText: {
+  updateAddressText_enable: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 10,
+    textShadowColor: "rgba(0, 0, 0, 0.45)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+  updateAddressText_disable: {
     color: "#45B39D",
     fontSize: 18,
     fontWeight: "bold",
-    paddingLeft: 15,
-  },
-
-  /* <------ STYLE : BOUTON RETOUR ------> */
-
-  backToAccountContainer: {
-    flexDirection: "row",
-    alignContent: "center",
-    alignItems: "center",
-    marginVertical: 25,
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: "#AEB6BF",
-    width: 120,
-  },
-  backToAccountText: {
-    paddingLeft: 15,
-    fontSize: 17,
-    color: "white",
-    fontWeight: "bold",
+    paddingLeft: 10,
   },
 
   /* <------ STYLE : INFORMATIONS PERSONNELLES ------> */
 
   PIDisplay_enable: {
     flexDirection: "row",
-    backgroundColor: "#FAE5D3",
+    backgroundColor: "#EB984E",
     padding: 15,
     borderRadius: 10,
     width: "100%",
     alignContent: "center",
     marginTop: 10,
-    borderWidth: 2,
-    borderColor: "#FC9F30",
+    shadowColor: "#EB984E",
+    shadowRadius: 5,
+    shadowOpacity: 0.6,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
   },
   PIDisplay_disable: {
     flexDirection: "row",
@@ -448,22 +556,37 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginTop: 10,
   },
-  personalInformations: {
+  personalInformations_disable: {
     color: "#FC9F30",
     fontSize: 18,
     fontWeight: "bold",
-    paddingLeft: 15,
+    paddingLeft: 10,
+  },
+  personalInformations_enable: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 10,
+    textShadowColor: "rgba(0, 0, 0, 0.45)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
   },
   /* <------ STYLE : AJOUTER NOUVELLE ADRESSE ------> */
   add_AdressButton_enable: {
     flexDirection: "row",
-    backgroundColor: "#EBDEF0",
+    backgroundColor: "#AF7AC5",
     padding: 15,
     borderRadius: 10,
     alignContent: "center",
     marginTop: 10,
-    borderWidth: 2,
-    borderColor: "#A569BD",
+    shadowColor: "#AF7AC5",
+    shadowRadius: 5,
+    shadowOpacity: 0.6,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
   },
   add_AdressButton_disable: {
     flexDirection: "row",
@@ -473,10 +596,107 @@ const styles = StyleSheet.create({
     alignContent: "center",
     marginTop: 10,
   },
-  addAddressText: {
+  addAddressText_enable: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 10,
+    textShadowColor: "rgba(0, 0, 0, 0.45)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+  addAddressText_disable: {
     color: "#A569BD",
     fontSize: 18,
     fontWeight: "bold",
+    paddingLeft: 10,
+  },
+  /* <------ STYLE : MES COMMANDES------> */
+
+  myOrders_enable: {
+    flexDirection: "row",
+    backgroundColor: "#5DADE2",
+    padding: 15,
+    borderRadius: 10,
+    width: "100%",
+    alignContent: "center",
+    marginTop: 10,
+    shadowColor: "#5DADE2",
+    shadowRadius: 5,
+    shadowOpacity: 0.6,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+  },
+  myOrders_disable: {
+    flexDirection: "row",
+    backgroundColor: "#D6EAF8",
+    padding: 15,
+    borderRadius: 10,
+    width: "100%",
+    alignContent: "center",
+    marginTop: 10,
+  },
+  myOrdersText_enable: {
+    color: "white",
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingLeft: 10,
+    textShadowColor: "rgba(0, 0, 0, 0.45)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 1,
+  },
+  myOrdersText_disable: {
+    color: "#5DADE2",
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingLeft: 10,
+  },
+  /* <------ STYLE : ME DECONNECTER ------> */
+
+  textDisconnect: {
+    fontSize: 18,
+    color: "#5D6D7E",
     paddingLeft: 15,
+    fontWeight:'bold'
+  },
+  disconnectContainer: {
+    flexDirection: "row",
+    marginVertical: 100,
+    justifyContent: "center",
+    alignSelf:'center',
+    backgroundColor: "#F2F3F4",
+    borderRadius: 10,
+    padding: 15,
+    borderWidth:0.4,
+    shadowColor: "#5D6D7E",
+    shadowRadius: 5,
+    shadowOpacity: 0.6,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+
+  },
+  /* <------ STYLE : DELETE ACCOUNT ------> */
+
+  deleteContainer: {
+    flexDirection: "row",
+    padding: 15,
+    marginTop: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FADBD8",
+    borderRadius: 10,
+  },
+  deleteAccountText: { 
+    color: "#CD6155",
+    fontSize: 18,
+    paddingLeft: 10,
+    fontWeight:'bold'
+
   },
 });

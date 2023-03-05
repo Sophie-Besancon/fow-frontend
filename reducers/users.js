@@ -25,15 +25,20 @@ export const usersSlice = createSlice({
       }
     },
     addArticle: (state, action) => {
-      //console.log("addarticle", action.payload)
-      if (state.value[0].canBookmark){
-        state.value[0].articleinFavorite.push(action.payload)
-      }
+     
+     // if (state.value[0].canBookmark){
+        state.value[0].articleinFavorite.push(action.payload[0]._id)
+        console.log('articles reducers :', state.value[0].articleinFavorite);
+     // }
     },
     removeArticle: (state, action) => {
-     // console.log("removeArticle", action.payload._id)
-      state.value[0].articleinFavorite = state.value[0].articleinFavorite.filter(article => article._id !== action.payload._id);
-      }
+      console.log('removeArticle REDUCER :', action.payload);
+     // state.value[0].articleinFavorite = state.value[0].articleinFavorite.filter(article => article._id !== action.payload[0]._id);
+     let index = state.value[0].articleinFavorite.indexOf(action.payload)
+     state.value[0].articleinFavorite = state.value[0].articleinFavorite.splice(index, 1)
+     console.log('ARTICLES APRES REMOVE DANS REDUCER :', state.value[0].articleinFavorite);
+
+    }
  
   },
 });
