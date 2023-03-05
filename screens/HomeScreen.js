@@ -16,28 +16,14 @@ import Carousel from 'react-native-reanimated-carousel'
 export default function HomeScreen({ navigation }) {
 
   const [searchProduct, setSearchProduct] = useState('');
-  const [searchResult, setSearchResult] = useState(null);
-  const [travelMode, setTravelMode] = useState(false);
   
   const handleSearch = () => {
-    fetch(`http://192.168.1.88:3000/articles/${searchProduct}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.result) {
-          setSearchResult(data.articles)
-        }
-        setSearchProduct('');
-      });
+    navigation.navigate('Market', {name: searchProduct})
+    setSearchProduct("")
   }
 
-  // const products = searchResult.map((product, i) => {
-  // return <View><Text>Afficher le produit: {product.name}</Text></View>
-  // })
-
   const handleContinent = () => {
-    setTravelMode(true)
     navigation.navigate('Continent');
-    // navigation.navigate('ContinentScreen');
   }
 
   const handleNavigation = (destination) => {
@@ -57,14 +43,13 @@ export default function HomeScreen({ navigation }) {
       <Header />
       <View style={styles.inputContainer}>
         <TextInput placeholder="Rechercher un produit" onChangeText={(value) => setSearchProduct(value)} value={searchProduct} style={styles.input} />
-        <TouchableOpacity onPress={console.log("coucou")} style={styles.inputButton} activeOpacity={0.8}>
+        <TouchableOpacity onPress={() => handleSearch()} style={styles.inputButton} activeOpacity={0.8}>
           <Text style={styles.textButton}>Rechercher</Text>
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={() => handleContinent()} style={styles.continentButton} activeOpacity={0.8}>
         <Text style={styles.textButton}>Découvrez nos nouveautés 🎉 </Text>
       </TouchableOpacity>
-      {/* {products.length > 0 ? products : (<Text>Aucun produit trouvé</Text>)} */}
       <Carousel
         loop
         width={width}
@@ -73,7 +58,6 @@ export default function HomeScreen({ navigation }) {
         pagingEnabled
         data={images}
         scrollAnimationDuration={2500}
-        // onSnapToItem={(index) => console.log('current index:', index)}
         renderItem={({index}) => images[index]}
       />
     </KeyboardAvoidingView>
