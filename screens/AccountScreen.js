@@ -7,7 +7,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import Dashboard from "../components/Dashboard";
 import UserConnect from "../components/UserConnect";
 import Header from "../components/Header";
 import Personal_Informations from "../components/Personal_Informations";
@@ -19,9 +18,9 @@ export default function AccountScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <Header />
-       {/* <UserConnect/> */}
-       {/*  <Dashboard />  */}
-      {/*  <Personal_Informations/> */}
+       {/* { <UserConnect/> } */}
+  
+       <Personal_Informations/> 
 
     </KeyboardAvoidingView>
   );
