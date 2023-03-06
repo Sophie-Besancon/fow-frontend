@@ -172,7 +172,7 @@ const basketArticles = basketData.map((data, i) => {
           <View style={styles.inputsArea}>
             <TextInput
               placeholder="Prénom"
-              value={firstname}
+             /*  value={firstname} */
               style={styles.input}
               onChangeText={(value) => {
                 setFirstname(value);

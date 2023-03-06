@@ -49,7 +49,7 @@ export default function Product(props) {
 
   const imagesDisplay = images.map((element, i) => {
     return (
-      <>
+      
         <TouchableOpacity onPress={openGallery} key={i}>
           <Image
             source={{
@@ -57,10 +57,10 @@ export default function Product(props) {
             }}
             resizeMode="cover"
             style={styles.imagesDisplay}
-            key={i}
+            
           />
         </TouchableOpacity>
-      </>
+      
     );
   });
 
