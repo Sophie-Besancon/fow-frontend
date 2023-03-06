@@ -7,34 +7,45 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import Header from '../components/Header'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { useSelector } from "react-redux";
 
 export default function BasketScreen() {
 
-  const basketData = [
-    { name: "mikado", quantity: 2, price: 3.99 },
-    { name: "mochi au chocolat", quantity: 3, price: 5.70 },
-  ]
+  const users = useSelector((state) => state.users.value[0]);
+  console.log('users.articlInBasket', users.articleInBasket);
 
-  const numberFormatFunction = new Intl.NumberFormat("fr-FR", {maximumSignificantDigits: 2});
+  const numberFormatFunction = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 
   let deliveryCost = 7.99;
-  let totalOrder= 0;
+  let totalOrder = 0;
 
-  const basketArticles = basketData.map((data, i) => {
-    const totalPerArticle = basketData[i].quantity * basketData[i].price;
-    totalOrder = totalOrder + totalPerArticle 
+  const regroupedArticles = users.articleInBasket.reduce((acc, item) => {
+    const existingItem = acc.find(i => i.name === item.name);
+    if (existingItem) {
+      existingItem.quantity++;
+      existingItem.total += item.price;
+    } else {
+      acc.push({ name: item.name, quantity: 1, total: item.price, price: item.price });
+    }
+    return acc;
+  }, []);
+
+  console.log('regroupedArticles', regroupedArticles)
+
+  const basketArticles = regroupedArticles.map((data, i) => {
     return (<View style={styles.tableContainerRow} key={i}>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.name}</Text></View>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.quantity}</Text></View>
-      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.price.toFixed(2)}</Text></View>
-      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{totalPerArticle}</Text></View>
+      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{numberFormatFunction.format(data.price)}</Text></View>
+      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{numberFormatFunction.format(data.total)}</Text></View>
     </View>)
   })
 
-  
+
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -45,26 +56,31 @@ export default function BasketScreen() {
         <FontAwesome name="money" size={20} color="#4B7285" style={styles.deleteIcon} />
       </View>
       <Text style={styles.textContainer}>Résumé de votre commande</Text>
-      <View style={styles.tableContainer}>
-        <View style={styles.tableContainerRowTitle}>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Produit</Text></View>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Quantité</Text></View>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>PU (€)</Text></View>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Total (€)</Text></View>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.tableContainer}>
+          <View style={styles.tableContainerRowTitle}>
+            <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Produit</Text></View>
+            <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Quantité</Text></View>
+            <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>PU (€)</Text></View>
+            <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Total (€)</Text></View>
+          </View>
+
+          {basketArticles}
+
         </View>
-        {basketArticles}
-      </View>
-      <View style={styles.deliveryCostContainer}>
-        <View style={styles.deliveryCostContainerText}><Text>Frais de port</Text></View>
-        <View style={styles.deliveryCost}><Text style={styles.tableProductText}>{basketData.length > 9 ? {deliveryCost} : 0}€</Text></View>
-      </View>
-      <View style={styles.totalContainer}>
-        <View ><Text style={styles.tableTitleText}>Total de la commande</Text></View>
-        <View ><Text style={styles.tableTitleText}>{totalOrder + deliveryCost}€</Text></View>
-      </View>
-      <TouchableOpacity style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>Étape suivante</Text>
-      </TouchableOpacity>
+        <View style={styles.deliveryCostContainer}>
+          <View style={styles.deliveryCostContainerText}><Text>Frais de port</Text></View>
+          <View style={styles.deliveryCost}><Text style={styles.tableProductText}>{users.articleInBasket.length > 9 ? deliveryCost : 0}€</Text></View>
+        </View>
+        <View style={styles.totalContainer}>
+          <View ><Text style={styles.tableTitleText}>Total de la commande</Text></View>
+          <View ><Text style={styles.tableTitleText}>{totalOrder + deliveryCost}€</Text></View>
+        </View>
+        <TouchableOpacity style={styles.buttonContainer}>
+          <Text style={styles.buttonText}>Étape suivante</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
     </KeyboardAvoidingView>
   )
 }
@@ -139,7 +155,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "#4B7285",
     borderWidth: 1,
-    width: "85%",
+
   },
 
   totalContainer: {
@@ -151,7 +167,7 @@ const styles = StyleSheet.create({
     borderColor: "#4B7285",
     borderWidth: 1,
     backgroundColor: '#4B7285',
-    width: "85%",
+    width: "90%",
   },
 
 
