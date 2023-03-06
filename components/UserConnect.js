@@ -12,7 +12,7 @@ import { addUser } from "../reducers/users";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native";
 
-export default function UserConnect() {
+export default function UserConnect() { //commentaire
   const [mailSignin, setMailSignin] = useState(null);
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
