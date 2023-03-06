@@ -12,6 +12,8 @@ import FavoriteScreen from './screens/FavoriteScreen';
 import MarketScreen from './screens/MarketScreen';
 import ContinentScreen from './screens/ContinentScreen';
 import ArticleScreen from './screens/ArticleScreen';
+import PaymentScreen from './screens/PaymentScreen';
+import ConfirmationScreen from './screens/ConfirmationScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -54,6 +56,60 @@ const store = configureStore({
   );
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const BasketNavigator = () => {
+
+  return (
+    <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName = '';
+        if (route.name === 'Panier') {
+          iconName = 'shopping-basket';
+        } else if (route.name === 'Payment') {
+          iconName = 'money';
+        } else if (route.name === 'Confirmation') {
+          iconName = 'check';
+        }
+
+        return <FontAwesome name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#FC9F30',
+      tabBarInactiveTintColor: '#4B7285',
+      headerShown: false,
+      tabBarStyle: { display: 'flex' },
+    })}>
+      <Tab.Screen name="Panier" component={BasketScreen} />
+      <Tab.Screen name="Payment" component={PaymentScreen} />
+      <Tab.Screen name="Confirmation" component={ConfirmationScreen} />
+      
+    </Tab.Navigator>
+  );
+};
+
 const TabNavigator = () => {
 
   return (
@@ -80,13 +136,12 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name="Accueil" component={HomeNavigator} />
       <Tab.Screen name="Market" component={MarketScreen} />
-      <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: `${basketNumber}`}}/>
+      <Tab.Screen name="Panier" component={BasketNavigator} options={{tabBarBadge: `${basketNumber}`}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
     </Tab.Navigator>
   );
 };
-
 
 
 export default function App() {
