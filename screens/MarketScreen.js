@@ -7,76 +7,113 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  SafeAreaView,
+  Keyboard,
   ScrollView,
   Modal,
   Pressable,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import Header from '../components/Header'
 import Card from '../components/Card'
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AntDesign } from '@expo/vector-icons';
-import SelectDropdown from 'react-native-select-dropdown'
+import SelectDropdown from 'react-native-select-dropdown';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-export default function MarketScreen({ route }) {
+export default function MarketScreen({ route, navigation }) {
   const [articlesData, setArticlesData] = useState([]);
   const [continent, setContinent] = useState(null);
   const [category, setCategory] = useState(null);
+  const [searchName, setSearchName] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [orderPrice, setOrderPrice] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const seeAll = "voir tout";
   const selectContinent = [seeAll, "Afrique", "Amérique", "Asie", "Europe", "Océanie"]
   const selectCategory = [seeAll, "sucré", "salé", "boisson"]
 
-  //useEffet qui détecte un params venu HomeScreen (click sur une image de continent)
-   useEffect(() => {
-    if (route.params?.destination) {
-      setContinent(route.params?.destination)
-    }
-  }, [route.params?.destination])
+  // Se charge d'enlever les valeurs entrées par l'utilisateur lorsque ce dernier sort de l'ecran
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        navigation.setParams({ destination: undefined, name: undefined });
+        setContinent(null);
+        setCategory(null);
+        setSearchName(null);
+      };
+    }, [])
+  );
+
+  //useEffet qui détecte un params venu depuis HomeScreen (click sur une image de continent ou recherche)
+  useEffect(() => {
+    setContinent(route.params?.destination)
+    setSearchName(route.params?.name)
+  }, [route.params?.destination, route.params?.name])
 
   //useEffect qui appelle une route pour récuperer les articles en fonction des paramètres continent et catégorie
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
-    fetch("http://192.168.1.47:3000/articles/", {
+    setIsLoading(true)
+    fetch("http://192.168.1.88:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ continent: continent, category: category }),
+      body: JSON.stringify({ continent: continent, category: category, name: searchName }),
     }).then((response) =>
       response.json()).then((data) => {
         if (data.result) {
           setArticlesData(data.filteredArticles)
+          setIsLoading(false)
         }
       });
-    
-  }, [continent, category]);
-
-
-
+  }, [continent, category, searchName]);
 
   const cards = articlesData.map((data, i) => {
     // Il faut créer une propriété isLike pour savoir si l'article doit etre liké ou non à l'affichage.
     return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} /* isLike={isLike} */ />;
   });
 
-
-
-
+//Permet de trier les articles par prix
+  const sortByPrice = () => {
+    setOrderPrice(!orderPrice);
+    const articlesListCopy = [...articlesData];
+    if (orderPrice === false) {
+      articlesListCopy.sort((a, b) => a.price - b.price);
+    } else {
+      articlesListCopy.sort((a, b) => b.price - a.price);
+    }
+    setArticlesData(articlesListCopy);
+  }
 
 
   return (
 
-<KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <Header />
-      <TouchableOpacity  onPress={() => setModalVisible(!modalVisible)} style={styles.filterButton}  activeOpacity={0.8}  > 
-        <AntDesign name="filter" size={20} color="white" />
-        <Text style={styles.textButton}> filtrer </Text>
-     </TouchableOpacity>  
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} accessible={false}>
+      <View style={styles.inputContainer}>
+        <TextInput placeholder="Rechercher un produit" onChangeText={(value) => setSearchName(value)} value={searchName} style={styles.input} />
+        <TouchableOpacity onPress={() => {Keyboard.dismiss()}} style={styles.inputButton} activeOpacity={0.8}>
+          <Text style={styles.textButton}>Rechercher</Text>
+        </TouchableOpacity>
+      </View>
+      </TouchableWithoutFeedback>
+      <View style={styles.filteredPart}>
+        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.filterButton} activeOpacity={0.8}  >
+          <AntDesign name="filter" size={20} color="white" />
+          <Text style={styles.textButton}> Filtrer </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => sortByPrice()} style={styles.filterButton} activeOpacity={0.8}  >
+        <FontAwesome name={"sort"} size={20} color={"white"}/>
+          <Text style={styles.textButton}> Trier par prix </Text>
+        </TouchableOpacity>
+      </View>
       <ScrollView style={styles.scrollView}>
-        {cards}
-      </ScrollView> 
+        {isLoading ?  <ActivityIndicator size="large" /> : cards.length > 0 ? cards : <Text>Aucun article disponible</Text>} 
+      </ScrollView>
       <View style={styles.centeredView}>
         <Modal
           animationType="fade"
@@ -134,19 +171,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
   },
-  outsideCloseBackground: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'transparent',
+  inputContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '90%',
+    backgroundColor: '#ffffff',
+    paddingLeft: 10,
+    marginTop: 15,
+    borderRadius: 8,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+  },
+  input: {
+    flex: 1,
+  },
+  inputButton: {
+    backgroundColor: '#4B7285',
+    height: 40,
+    margin: 5,
+    padding: 10,
+    borderRadius: 8,
+  },
+  textButton: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    textAlign: 'center',
+  },
+  filteredPart: {
+    flexDirection: "row",
   },
   filterButton: {
     backgroundColor: '#4B7285',
     height: 40,
-    margin: 10,
+    marginTop: 10,
+    marginBottom: 10,
     marginLeft: 20,
+    marginRight: 20,
     padding: 10,
     borderRadius: 8,
     flexDirection: "row",
@@ -155,9 +217,17 @@ const styles = StyleSheet.create({
   textButton: {
     color: '#ffffff',
   },
+  outsideCloseBackground: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
   modalView: {
     margin: 20,
-    marginTop: 170,
+    marginTop: 230,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 25,
