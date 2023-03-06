@@ -48,9 +48,10 @@ const Card = (props) => {
   //    }
   }, [isLike])  */
 
-  const handleLike = () => {
+  const handleLike = async () => {
     const token = "hx_ZgFojJ6CMUlgVGG8bkUw_5ZmyDhAm";
-    fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
+    
+   await fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: token, articleId: props.id }),
@@ -103,8 +104,9 @@ const Card = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              handleLike();
               setIsLike(!isLike);
+              handleLike();
+              
             }}
           >
             {isLike ? (

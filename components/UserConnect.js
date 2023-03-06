@@ -10,6 +10,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { addUser } from "../reducers/users";
 import { useSelector } from "react-redux";
+import { ScrollView } from "react-native";
 
 export default function UserConnect() {
   const [mailSignin, setMailSignin] = useState(null);
@@ -164,6 +165,11 @@ export default function UserConnect() {
         </TouchableOpacity></>
 
   return (
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior={Platform.OS === "ios" ? "padding" : "height"}
+  >
+    <ScrollView>
     <View style={styles.mainContainer}>
     
       {/* ****************************** SIGN IN ****************************** */}
@@ -196,13 +202,17 @@ export default function UserConnect() {
       </View>
       <Text>{user ? messageSignUp : messageErrorSignUp}</Text>
     </View>
+    </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
+    flex:1,
     alignItems: "center",
     justifyContent: "center",
+    width:'100%'
   },
   signinContent: {
     paddingBottom: 30,
@@ -212,12 +222,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   input: {
-    height: 40,
+    height: 50,
     margin: 5,
     borderWidth: 0.2,
     padding: 10,
     borderRadius: 8,
-    width: 280,
+    width: 300,
     borderColor: "gray",
   },
   signupContent: {
@@ -225,7 +235,7 @@ const styles = StyleSheet.create({
   },
   titleConnect: {
     alignSelf: "center",
-    fontSize: 25,
+    fontSize: 28,
     fontWeight: "bold",
   },
   button: {

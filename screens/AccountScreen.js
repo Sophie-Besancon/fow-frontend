@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import UserConnect from "../components/UserConnect";
 import Header from "../components/Header";
-import Personal_Informations from "../components/Personal_Informations";
+import Personal_Informations from "../components/Dashboard";
 
 export default function AccountScreen() {
   return (
@@ -18,9 +18,9 @@ export default function AccountScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <Header />
-       {/* { <UserConnect/> } */}
+       {/* <UserConnect/>  */}
   
-       <Personal_Informations/> 
+       <Personal_Informations/>
 
     </KeyboardAvoidingView>
   );

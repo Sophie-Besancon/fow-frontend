@@ -38,10 +38,15 @@ export const usersSlice = createSlice({
      state.value[0].articleinFavorite = state.value[0].articleinFavorite.splice(index, 1)
      console.log('ARTICLES APRES REMOVE DANS REDUCER :', state.value[0].articleinFavorite);
 
+    },
+    disconnectUser:(state,action)=>{
+        state.value[0].token = null;
+        state.value[0].firstname = null;
+        state.value[0].canBookmark = false;
     }
  
   },
 });
 
-export const { addUser, canBookMark, addArticle, removeArticle } = usersSlice.actions;
+export const { addUser, canBookMark, addArticle, removeArticle, disconnectUser } = usersSlice.actions;
 export default usersSlice.reducer;

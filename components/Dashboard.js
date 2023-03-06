@@ -13,8 +13,11 @@ import { AntDesign } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import Checkbox from "expo-checkbox";
+import { disconnectUser } from "../reducers/users";
+import { useDispatch } from "react-redux";
 
-export default function Personal_Informations() {
+
+export default function Dashboard() {
   // Déclaration des états pour 'INFORMATIONS PERSONNELLES' de l'utilisateur
   const [firstname, setFirstname] = useState(""); //evite de renvoyer une erreur en définissant l'état à null
   const [lastname, setLastname] = useState("");
@@ -40,9 +43,33 @@ export default function Personal_Informations() {
   const [newCity, setNewCity] = useState("");
   const [newCountry, setNewCountry] = useState("");
   const [messageAddAdress, setMessageAddAdress] = useState(null);
-  //
+  
+  const dispatch = useDispatch()
 
   const user = useSelector((state) => state.users.value[0]);
+
+/* <------ INFORMATIONS CONCERNANT LES COMMANDES UTILISATEURS ------> */
+const basketData = [
+  { name: "mikado", quantity: 2, price: 3.99 },
+  { name: "mochi au chocolat", quantity: 3, price: 5.70 },
+]
+
+const numberFormatFunction = new Intl.NumberFormat("fr-FR", {maximumSignificantDigits: 2});
+
+let deliveryCost = 7.99;
+let totalOrder= 0;
+
+const basketArticles = basketData.map((data, i) => {
+  const totalPerArticle = basketData[i].quantity * basketData[i].price;
+  totalOrder = totalOrder + totalPerArticle 
+  return (<View style={styles.tableContainerRow} key={i}>
+    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.name}</Text></View>
+    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.quantity}</Text></View>
+    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.price.toFixed(2)}</Text></View>
+    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{totalPerArticle}</Text></View>
+  </View>)
+})
+
 
   /* <---> GETTER : Récupération de toutes les informations utilisateur provenant de la base de données <---> */
 
@@ -90,7 +117,7 @@ export default function Personal_Informations() {
       });
   };
 
-  /* <-----------------> SETTER : METTRE A JOUR LES INFORMATIONS PERSONNELLES <-----------------> */
+  /* <----------> SETTER : METTRE A JOUR LES INFORMATIONS PERSONNELLES <---------> */
   const setHandleUpdateInformations = () => {
     if (
       newPassword !== "" &&
@@ -136,7 +163,6 @@ export default function Personal_Informations() {
         <View>
           <View style={styles.inputsArea}>
             <TextInput
-              autoCorrect="false"
               placeholder="Prénom"
               value={firstname}
               style={styles.input}
@@ -146,7 +172,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Nom"
               value={lastname}
               style={styles.input}
@@ -156,7 +181,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Adresse e-mail"
               value={mailAddress}
               style={styles.input}
@@ -166,7 +190,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Nouveau mot de passe"
               style={styles.input}
               value={newPassword}
@@ -177,7 +200,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Répétez votre mot de passe"
               style={styles.input}
               value={newPasswordConfirm}
@@ -208,13 +230,41 @@ export default function Personal_Informations() {
 
   /* <------------> AFFICHAGE CONDITIONNEL: CHANGEMENT ADRESSE PAR DEFAUT <------------> */
 
+
+    /* <------------> AFFICHAGE CONDITIONNEL: MES COMMANDES <------------> */
+  if (myOrdersDisplay){
+   var getMyOrders = (
+   <>
+    <Text style={styles.myOrdersText}>Mes Commandes :</Text>
+    <View style={styles.myOrderContainer}>
+      <Text>Date de la commande :</Text>
+      <Text>N° de la commande :</Text>
+      <View>
+        <View style={styles.tableContainerRowTitle}>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Produit</Text></View>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Quantité</Text></View>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>PU (€)</Text></View>
+          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Total (€)</Text></View>
+        </View>
+        {basketArticles}
+      </View>
+      <View style={styles.deliveryCostContainer}>
+        <View style={styles.deliveryCostContainerText}><Text>Frais de port</Text></View>
+        <View style={styles.deliveryCost}><Text style={styles.tableProductText}>{basketData.length > 9 ? {deliveryCost} : 0}€</Text></View>
+      </View>
+
+    </View>
+    </>
+   )
+  }
+
+
   /* <------------> AFFICHAGE CONDITIONNEL: AJOUT NOUVELLE ADRESSE <------------> */
   if (addNewAdressDisplay) {
     var getHandleNewAddress = (
       <>
         <View style={styles.inputsArea}>
           <TextInput
-            autoCorrect="false"
             placeholder="Adresse complète"
             style={styles.input}
             value={newAdress}
@@ -224,21 +274,18 @@ export default function Personal_Informations() {
             }}
           />
           <TextInput
-            autoCorrect="false"
             placeholder="Code postal"
             style={styles.input}
             value={newZipCode}
             onChangeText={(value) => setNewZipCode(value)}
           />
           <TextInput
-            autoCorrect="false"
             placeholder="Ville"
             style={styles.input}
             value={newCity}
             onChangeText={(value) => setNewCity(value)}
           />
           <TextInput
-            autoCorrect="false"
             placeholder="Pays"
             style={styles.input}
             value={newCountry}
@@ -353,6 +400,7 @@ export default function Personal_Informations() {
             Mes commandes
           </Text>
         </TouchableOpacity>
+        {getMyOrders}
         {/* <------>  BOUTON AJOUTER NOUVELLE ADRESSE  <------> */}
 
         <TouchableOpacity
@@ -418,7 +466,7 @@ export default function Personal_Informations() {
 
         {/* <------>  BOUTONS : DECONNEXION ET SUPPRESSION DE COMPTE  <------> */}
 
-        <TouchableOpacity style={styles.disconnectContainer}>
+        <TouchableOpacity style={styles.disconnectContainer} onPress={()=>dispatch(disconnectUser())}>
           <AntDesign name="disconnect" size={24} color="#5D6D7E" />
           <Text style={styles.textDisconnect}>Me déconnecter</Text>
         </TouchableOpacity>
@@ -653,6 +701,73 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     paddingLeft: 10,
+  },
+  /* <- tableau de mes commandes -> */
+  myOrdersText:{
+      fontSize:24,
+      fontWeight:'500',
+      marginVertical:15
+
+  },
+  tableContainerRowTitle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 15,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    backgroundColor: '#4B7285',
+  },
+  tableContainerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    alignItems: "center",
+  },
+  tableTitleTextContainer: {
+    flex: 1,
+  },
+  tableTitleText: {
+    fontWeight: "800",
+    fontSize: 14,
+    color: "white",
+    textAlign: 'center',
+
+  },
+  tableProductTextContainer: {
+    flex: 1,
+  },
+  tableProductText: {
+    textAlign: 'center',
+  },
+  deliveryCostContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 15,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    width: "85%",
+  },
+
+  totalContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 10,
+    marginRight: 10,
+    padding: 10,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    backgroundColor: '#4B7285',
+    width: "85%",
   },
   /* <------ STYLE : ME DECONNECTER ------> */
 

@@ -6,12 +6,10 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Button,
 } from "react-native";
 import Header from "./Header";
 import { AntDesign } from "@expo/vector-icons";
 import { ImageGallery } from "@georstat/react-native-image-gallery";
-import { MaterialIcons } from "@expo/vector-icons";
 
 const images = [
   {
@@ -28,7 +26,7 @@ const images = [
   },
 ];
 
-export default function Product() {
+export default function Product(props) {
   const [isLike, setIsLike] = useState(true);
   const [count, setCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
