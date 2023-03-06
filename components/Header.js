@@ -6,8 +6,6 @@ import {
   StyleSheet,
   Image,
   Modal,
-  Pressable,
-  TextInput,
   TouchableOpacity,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -51,11 +49,10 @@ const Header = (props) => {
         </View>
         <View style={styles.userIconContainer}>
           <FontAwesome
-            name="user-o"
-            size={20}
-            color={user ? "#175732" : "gray"}
+            name="user"
+            size={24}
+            color={user ? "#16A085" : "#5D6D7E"}
           />
-
           <Text style={styles.userIconText}>
             {user ? `Bonjour ${user}` : "Déconnecté"}
           </Text>
@@ -160,5 +157,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     fontSize: 12,
     color: "gray",
+    
   },
 });

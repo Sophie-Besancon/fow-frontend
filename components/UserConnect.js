@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
@@ -12,7 +13,7 @@ import { addUser } from "../reducers/users";
 import { useSelector } from "react-redux";
 import { ScrollView } from "react-native";
 
-export default function UserConnect() { //commentaire
+export default function UserConnect() {
   const [mailSignin, setMailSignin] = useState(null);
   const [firstname, setFirstname] = useState(null);
   const [lastname, setLastname] = useState(null);
@@ -33,7 +34,7 @@ export default function UserConnect() { //commentaire
 
   //envoi d'un fetch (asynchrone) lors de la validation de l'inscription
   const handleSignUp = async () => {
-    await fetch("http://192.168.1.14:3000/users/signup", {
+    await fetch("http://192.168.1.47:3000/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +68,7 @@ export default function UserConnect() { //commentaire
 
   //envoi d'un fetch (asynchrone) lors de la connexion de l'utilisateur
   const handleSignIn = async () => {
-    await fetch("http://192.168.1.14:3000/users/signin", {
+    await fetch("http://192.168.1.47:3000/users/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
