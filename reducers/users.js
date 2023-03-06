@@ -7,6 +7,7 @@ const initialState = {
         token:null,
         articleInfo: [],
         articleInBasket: [],
+        articleInFavorite: [],
     }
   ],
 };
@@ -29,15 +30,29 @@ export const usersSlice = createSlice({
     },
     addArticleInBasket: (state, action) => {
       state.value[0].articleInBasket.push(action.payload)
-      console.log('PAYLOAD',state.value[0].articleInBasket )
-    },
-    
+    },    
     clearArticleInfo: (state, action) => {
       state.value[0].articleInfo = []
-      console.log('CLEAR', state.value[0].articleInfo)
+    },
+    manageArticleInFavorite: (state, action) => {
+      state.value[0].articleInFavorite = action.payload
+      console.log("RECU", state.value[0].articleInFavorite)
+
+
+    /*   //console.log('PAYLOAD', action.payload)
+      if (state.value[0].articleInFavorite.includes(action.payload)){
+        state.value[0].articleInFavorite.filter(
+          (article) => article !== action.payload
+        )
+      } else {
+        state.value[0].articleInFavorite.push(action.payload)
+        if (state.value[0].articleInFavorite.length === 0) {
+          state.value[0].articleInFavorite === []
+        }
+      } //console.log("TABLEAU", state.value[0].articleInFavorite)  */
     },
   },
 });
 
-export const { addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket } = usersSlice.actions;
+export const { addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket, manageArticleInFavorite } = usersSlice.actions;
 export default usersSlice.reducer;

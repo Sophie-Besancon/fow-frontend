@@ -5,11 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-<<<<<<< HEAD
   KeyboardAvoidingView
-=======
-  KeyboardAvoidingView,
->>>>>>> Sophie
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
@@ -38,7 +34,7 @@ export default function UserConnect() {
 
   //envoi d'un fetch (asynchrone) lors de la validation de l'inscription
   const handleSignUp = async () => {
-    await fetch("http://192.168.1.47:3000/users/signup", {
+    await fetch("http://192.168.1.14:3000/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -72,7 +68,7 @@ export default function UserConnect() {
 
   //envoi d'un fetch (asynchrone) lors de la connexion de l'utilisateur
   const handleSignIn = async () => {
-    await fetch("http://192.168.1.47:3000/users/signin", {
+    await fetch("http://192.168.1.14:3000/users/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
