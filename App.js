@@ -136,7 +136,7 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name="Accueil" component={HomeNavigator} />
       <Tab.Screen name="Market" component={MarketNavigator} />
-      <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: users.articleInBasket.length}}/>
+      <Tab.Screen name="Panier" component={BasketNavigator} options={{tabBarBadge: users.articleInBasket.length}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
     </Tab.Navigator>

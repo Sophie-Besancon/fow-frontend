@@ -13,7 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import {useState} from "react";
 
-export default function PaymentScreen() {
+export default function PaymentScreen({ navigation }) {
 
 const [nameCard, setNameCard] = useState(null);
 const [numberCard, setNumberCard] = useState(null);
@@ -22,6 +22,16 @@ const [securityNumber, setSecurityNumber] = useState(null);
 
     const handleConfirmation = () => {
         navigation.navigate('Confirmation');
+    }
+
+    const numberInput = () => {
+        const pattern = /^[0-9]{0,9}$/;
+        return pattern.test(nameCard)
+    }
+
+    const securityInput = () => {
+        const pattern = /^[0-9]{0,9}$/;
+        return pattern.test(nameCard)
     }
 
     return (
@@ -34,10 +44,10 @@ const [securityNumber, setSecurityNumber] = useState(null);
             </View>
             <Text style={styles.textContainer}>Paiement</Text>
             <View style={styles.inputContainer}>
-                <TextInput placeholder="Nom de la carte" onChangeText={console.log('test')} value={nameCard} style={styles.input} />
-                <TextInput placeholder="Numéro de carte" onChangeText={console.log('test')} value={numberCard} style={styles.input} />
+                <TextInput inputMode="text" placeholder="Nom de la carte" onChangeText={console.log('test')} value={nameCard} style={styles.input} />
+                <TextInput maxLength={16} inputMode="numeric" placeholder="Numéro de carte" onChangeText={console.log('test')} value={numberCard} style={styles.input} />
                 <TextInput placeholder="Date d'expiration" onChangeText={console.log('test')} value={expirationDate} style={styles.input} />
-                <TextInput placeholder="Cryptogramme de sécurité" onChangeText={console.log('test')} value={securityNumber} style={styles.input} />
+                <TextInput maxLength={3} inputMode="numeric" placeholder="Cryptogramme de sécurité" onChangeText={console.log('test')} value={securityNumber} style={styles.input} />
                 <TouchableOpacity onPress={() => handleConfirmation()} style={styles.inputButton} activeOpacity={0.8}>
                     <Text style={styles.textButton}>Valider ma commande</Text>
                 </TouchableOpacity>
@@ -68,11 +78,14 @@ const styles = StyleSheet.create({
     textButton: {
         color: '#ffffff',
     },
+    inputContainer: {
+        width: "80%",
+    },
+
     input : {
-        flexDirection: 'row',
+        flex: 1, 
         justifyContent: 'space-between',
         alignItems: 'center',
-        width: '90%',
         backgroundColor: '#ffffff',
         padding: 10,
         marginTop: 20,

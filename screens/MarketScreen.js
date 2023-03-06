@@ -58,7 +58,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true)
-    fetch("http://192.168.1.47:3000/articles/", {
+    fetch("http://192.168.1.88:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category, name: searchName }),
@@ -110,7 +110,7 @@ export default function MarketScreen({ route, navigation }) {
           <Text style={styles.textButton}> Trier par prix </Text>
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView>
         {isLoading ?  <ActivityIndicator size="large" /> : cards.length > 0 ? cards : <Text>Aucun article disponible</Text>} 
       </ScrollView>
       <View style={styles.centeredView}>
