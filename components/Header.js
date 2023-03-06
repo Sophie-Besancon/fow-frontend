@@ -92,6 +92,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   headerContainer: {
+    backgroundColor:'#fff',
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",

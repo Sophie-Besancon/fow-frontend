@@ -19,7 +19,7 @@ import { useDispatch } from "react-redux";
 
 export default function Dashboard() {
   // Déclaration des états pour 'INFORMATIONS PERSONNELLES' de l'utilisateur
-  const [firstname, setFirstname] = useState(""); //evite de renvoyer une erreur en définissant l'état à null
+  const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [mailAddress, setMailAddress] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -74,7 +74,7 @@ const basketArticles = basketData.map((data, i) => {
   /* <---> GETTER : Récupération de toutes les informations utilisateur provenant de la base de données <---> */
 
   useEffect(() => {
-    fetch(`http://192.168.1.14:3000/users/infos/${user.token}`)
+    fetch(`http://192.168.1.47:3000/users/infos/${user.token}`)
       .then((response) => response.json())
       .then((data) => {
         if (data) {
@@ -172,7 +172,7 @@ const basketArticles = basketData.map((data, i) => {
           <View style={styles.inputsArea}>
             <TextInput
               placeholder="Prénom"
-             /*  value={firstname} */
+               value={firstname} 
               style={styles.input}
               onChangeText={(value) => {
                 setFirstname(value);
@@ -588,13 +588,13 @@ const styles = StyleSheet.create({
 
   PIDisplay_enable: {
     flexDirection: "row",
-    backgroundColor: "#EB984E",
+    backgroundColor: "#F5B041",
     padding: 15,
     borderRadius: 10,
     width: "100%",
     alignContent: "center",
     marginTop: 10,
-    shadowColor: "#EB984E",
+    shadowColor: "#F5B041",
     shadowRadius: 5,
     shadowOpacity: 0.6,
     elevation: 8,

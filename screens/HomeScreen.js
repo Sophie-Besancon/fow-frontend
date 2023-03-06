@@ -92,23 +92,26 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: '#ffffff',
-
     fontSize:16
   },
   continentButton: {
     backgroundColor: '#FC9F30',
     justifyContent:'center',
+    borderLeftWidth:3,
+    borderRightWidth:1.5,
+    borderTopWidth:1.5,
+    borderBottomWidth:3,
+    borderColor:'white',
     height: 60,
     margin: 25,
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 10,
     shadowColor: "#FC9F30",
-    shadowRadius: 5,
-    shadowOpacity: 0.3,
-    elevation: 8,
+    shadowRadius: 3,
+    shadowOpacity: 0.4,
     shadowOffset: {
-      width: 0,
-      height: 0,
+      width: -7,
+      height: 7,
     },
     
   },
