@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 import {
   View,
@@ -14,10 +14,12 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
+import { addArticleInfo } from "../reducers/users";
 
 
 
 const Card = (props) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const users = useSelector((state) => state.users.value[0]);
   const [isLike, setIsLike] = useState(false);
@@ -46,7 +48,9 @@ const Card = (props) => {
 
   const handleInfo = () => {
     console.log("INFO")
-    navigation.navigate('ArticleScreen')
+    navigation.navigate('Article')
+    console.log('PROPS', [{price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}])
+    dispatch(addArticleInfo({price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}))
   };
 
   return (
@@ -80,7 +84,6 @@ const Card = (props) => {
           <TouchableOpacity
             onPress={() => {
               handleLike();
-              setIsLike(!isLike);
             }}
           >
             {isLike ? (

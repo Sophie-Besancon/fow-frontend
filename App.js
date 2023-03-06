@@ -54,6 +54,31 @@ const store = configureStore({
   );
 };
 
+ const MarketNavigator = () => {
+  return (
+    <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName = '';
+        if (route.name === 'Market') {
+          iconName = 'shopping-cart';
+        } else if (route.name === 'Article') {
+          iconName = '';
+        }
+
+        return <FontAwesome name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#FC9F30',
+      tabBarInactiveTintColor: '#4B7285',
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+    })}>
+      <Tab.Screen name="Market" component={MarketScreen} />
+      <Tab.Screen name="Article" component={ArticleScreen} />
+    </Tab.Navigator>
+  );
+};
+ 
+
 const TabNavigator = () => {
 
   return (
@@ -79,7 +104,7 @@ const TabNavigator = () => {
       headerShown: false,
     })}>
       <Tab.Screen name="Accueil" component={HomeNavigator} />
-      <Tab.Screen name="Market" component={MarketScreen} />
+      <Tab.Screen name="Market" component={MarketNavigator} />
       <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: `${basketNumber}`}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
@@ -94,13 +119,7 @@ export default function App() {
     <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-    {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
-      <Stack.Screen
-    name="ArticleScreen"
-    component={ArticleScreen}
-    options={{ tabBarStyle: { display: 'none' } }}
-  />
     </Stack.Navigator>
   </NavigationContainer>
   </Provider>

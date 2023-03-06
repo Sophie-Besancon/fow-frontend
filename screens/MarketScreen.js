@@ -58,7 +58,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true)
-    fetch("http://192.168.1.88:3000/articles/", {
+    fetch("http://192.168.1.14:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category, name: searchName }),
@@ -72,8 +72,7 @@ export default function MarketScreen({ route, navigation }) {
   }, [continent, category, searchName]);
 
   const cards = articlesData.map((data, i) => {
-    // Il faut créer une propriété isLike pour savoir si l'article doit etre liké ou non à l'affichage.
-    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} /* isLike={isLike} */ />;
+    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry}/>;
   });
 
 //Permet de trier les articles par prix
