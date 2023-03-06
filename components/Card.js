@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
-import { addArticleInfo, addArticleInBasket } from "../reducers/users";
+import { addArticleInfo, addArticleInBasket, manageArticleInFavorite} from "../reducers/users";
 
 
 
@@ -30,6 +30,12 @@ const Card = (props) => {
   // let city = require(`../assets/${props.flag}.png`)
   //console.log(city)
 
+  useEffect(() => {
+      if (props.isLikeinFavorite){
+        setIsLike(true)
+      }
+  }, [])
+
 
   const handleLike = () => {
     if (users.token){
@@ -38,12 +44,17 @@ const Card = (props) => {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: users.token, articleId: props.id }),
-    })
+    }).then((response) =>
+    response.json()).then((data) => {
+      console.log("BACKEND",data.data.articlesinFavorite)
+      dispatch(manageArticleInFavorite(data.data.articlesinFavorite))
+      //console.log("ENVOI", ...data.data.articlesinFavorite)
+    });
+    
     }
   };
 
   const handleCart = () => {
-    console.log("CART")
     dispatch(addArticleInBasket({price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}))
   };
 

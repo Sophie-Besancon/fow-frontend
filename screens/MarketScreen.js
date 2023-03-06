@@ -17,13 +17,15 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import Header from '../components/Header'
 import Card from '../components/Card'
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback} from "react";
+import { useSelector } from "react-redux";
 import { AntDesign } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 export default function MarketScreen({ route, navigation }) {
+  const users = useSelector((state) => state.users.value[0]);
   const [articlesData, setArticlesData] = useState([]);
   const [continent, setContinent] = useState(null);
   const [category, setCategory] = useState(null);
@@ -58,7 +60,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true)
-    fetch("http://192.168.1.88:3000/articles/", {
+    fetch("http://192.168.1.14:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category, name: searchName }),
@@ -72,7 +74,8 @@ export default function MarketScreen({ route, navigation }) {
   }, [continent, category, searchName]);
 
   const cards = articlesData.map((data, i) => {
-    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry}/>;
+    const isLikeinFavorite = users.articleInFavorite.some(article => article._id === data._id);
+    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry}  isLikeinFavorite={isLikeinFavorite}/>;
   });
 
 //Permet de trier les articles par prix
