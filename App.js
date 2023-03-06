@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import { useSelector} from "react-redux";
 import HomeScreen from './screens/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
 import BasketScreen from './screens/BasketScreen';
@@ -12,6 +12,8 @@ import FavoriteScreen from './screens/FavoriteScreen';
 import MarketScreen from './screens/MarketScreen';
 import ContinentScreen from './screens/ContinentScreen';
 import ArticleScreen from './screens/ArticleScreen';
+import PaymentScreen from './screens/PaymentScreen';
+import ConfirmationScreen from './screens/ConfirmationScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -21,7 +23,7 @@ import users from './reducers/users';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-let basketNumber= 0;
+
 const store = configureStore({
   reducer: { articles, users },
  });
@@ -55,6 +57,7 @@ const store = configureStore({
 };
 
  const MarketNavigator = () => {
+
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
@@ -64,7 +67,6 @@ const store = configureStore({
         } else if (route.name === 'Article') {
           iconName = '';
         }
-
         return <FontAwesome name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: '#FC9F30',
@@ -75,13 +77,42 @@ const store = configureStore({
       <Tab.Screen name="Store" component={MarketScreen} />
       <Tab.Screen name="Article" component={ArticleScreen} />
     </Tab.Navigator>
-  );
+ );
 };
  
 
-const TabNavigator = () => {
+const BasketNavigator = () => {
 
   return (
+    <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName = '';
+        if (route.name === 'Panier') {
+          iconName = 'shopping-basket';
+        } else if (route.name === 'Payment') {
+          iconName = 'money';
+        } else if (route.name === 'Confirmation') {
+          iconName = 'check';
+        }
+
+        return <FontAwesome name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#FC9F30',
+      tabBarInactiveTintColor: '#4B7285',
+      headerShown: false,
+      tabBarStyle: { display: 'flex' },
+    })}>
+      <Tab.Screen name="Panier" component={BasketScreen} />
+      <Tab.Screen name="Payment" component={PaymentScreen} />
+      <Tab.Screen name="Confirmation" component={ConfirmationScreen} />
+    </Tab.Navigator>
+  );
+};
+
+const TabNavigator = () => {
+  const users = useSelector((state) => state.users.value[0]);
+  return (
+    
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
         let iconName = '';
@@ -105,13 +136,12 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name="Accueil" component={HomeNavigator} />
       <Tab.Screen name="Market" component={MarketNavigator} />
-      <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: `${basketNumber}`}}/>
+      <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: users.articleInBasket.length}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
     </Tab.Navigator>
   );
 };
-
 
 
 export default function App() {
