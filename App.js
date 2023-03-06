@@ -72,7 +72,7 @@ const store = configureStore({
       headerShown: false,
       tabBarStyle: { display: 'none' },
     })}>
-      <Tab.Screen name="Market" component={MarketScreen} />
+      <Tab.Screen name="Store" component={MarketScreen} />
       <Tab.Screen name="Article" component={ArticleScreen} />
     </Tab.Navigator>
   );

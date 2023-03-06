@@ -12,8 +12,8 @@ const ArticleScreen = ({ navigation }) => {
 
   const handleBack = () => {
     console.log("RETOUR")
-    navigation.navigate('Market')
-    dispatch(clearArticleInfo([]))
+    navigation.navigate('Store')
+    dispatch(clearArticleInfo())
   };
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
