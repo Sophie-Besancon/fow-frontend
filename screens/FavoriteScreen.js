@@ -13,10 +13,9 @@ import Product from '../components/Product';
   export default function FavoriteScreen() {
   
     return (
-      <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <Product/>
-
-      </KeyboardAvoidingView>
+      <>
+      
+      </>
     )
   }
   

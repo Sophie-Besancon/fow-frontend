@@ -5,11 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-<<<<<<< HEAD
-  KeyboardAvoidingView
-=======
   KeyboardAvoidingView,
->>>>>>> Sophie
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
@@ -29,7 +25,7 @@ export default function UserConnect() {
   const [messageSignUp, setMessageSignUp] = useState(null);
   const [messageErrorSignIn, setMessageErrorSignIn] = useState(null);
   const [messageErrorSignUp, setMessageErrorSignUp] = useState(null);
-  const [choiceSignIn, setChoiceSignIn] = useState(false);
+  const [choiceSignIn, setChoiceSignIn] = useState(true);
   const [choiceSignUp, setChoiceSignUp] = useState(false);
 
   const dispatch = useDispatch();
@@ -63,7 +59,7 @@ export default function UserConnect() {
           setMessageSignUp("✅ Félicitations ! Votre compte a été créé !");
         } else {
           setMessageErrorSignUp(`❌ ${data.error}`);
-          setMessageErrorSignIn(null)
+          setMessageErrorSignIn(null);
         }
       });
   };
@@ -92,7 +88,7 @@ export default function UserConnect() {
           setMessageSignIn("✅ Vous vous êtes connecté avec succès");
         } else {
           setMessageErrorSignIn(`❌ ${data.error}`);
-          setMessageErrorSignUp(null)
+          setMessageErrorSignUp(null);
         }
       });
   };
@@ -125,104 +121,125 @@ export default function UserConnect() {
     </>
   );
   // variabilisation des champs de l'inscription pour optimiser la navigation
-    const signUp = <>
-    <TextInput
-          placeholder="Prénom"
-          style={styles.input}
-          onChangeText={(value) => setFirstname(value)}
-          autoCorrect={false}
-          value={firstname}
-          selectTextOnFocus={true}
-        />
-        <TextInput
-          placeholder="Nom"
-          style={styles.input}
-          onChangeText={(value) => setLastname(value)}
-          autoCorrect={false}
-          value={lastname}
-        />
-        <TextInput
-          placeholder="Adresse mail"
-          style={styles.input}
-          keyboardType="email-address"
-          onChangeText={(value) => setMailSignup(value)}
-          autoCorrect={false}
-          value={mailSignup}
-        />
-        <TextInput
-          placeholder="Mot de passe"
-          style={styles.input}
-          secureTextEntry={true}
-          onChangeText={(value) => setPasswordSignUp(value)}
-          autoCorrect={false}
-          value={passwordSignUp}
-        />
-        <TextInput
-          placeholder="Répétez votre mot de passe"
-          style={styles.input}
-          secureTextEntry={true}
-          onChangeText={(value) => setPasswordConfirm(value)}
-          autoCorrect={false}
-          value={passwordConfirm}
-        />
-        <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
-          <Text style={styles.text}>M'inscrire</Text>
-        </TouchableOpacity></>
+  const signUp = (
+    <>
+      <TextInput
+        placeholder="Prénom"
+        style={styles.input}
+        onChangeText={(value) => setFirstname(value)}
+        autoCorrect={false}
+        value={firstname}
+        selectTextOnFocus={true}
+      />
+      <TextInput
+        placeholder="Nom"
+        style={styles.input}
+        onChangeText={(value) => setLastname(value)}
+        autoCorrect={false}
+        value={lastname}
+      />
+      <TextInput
+        placeholder="Adresse mail"
+        style={styles.input}
+        keyboardType="email-address"
+        onChangeText={(value) => setMailSignup(value)}
+        autoCorrect={false}
+        value={mailSignup}
+      />
+      <TextInput
+        placeholder="Mot de passe"
+        style={styles.input}
+        secureTextEntry={true}
+        onChangeText={(value) => setPasswordSignUp(value)}
+        autoCorrect={false}
+        value={passwordSignUp}
+      />
+      <TextInput
+        placeholder="Répétez votre mot de passe"
+        style={styles.input}
+        secureTextEntry={true}
+        onChangeText={(value) => setPasswordConfirm(value)}
+        autoCorrect={false}
+        value={passwordConfirm}
+      />
+      <TouchableOpacity style={styles.button} onPress={() => handleSignUp()}>
+        <Text style={styles.text}>M'inscrire</Text>
+      </TouchableOpacity>
+    </>
+  );
 
   return (
     <KeyboardAvoidingView
-    style={styles.container}
-    behavior={Platform.OS === "ios" ? "padding" : "height"}
-  >
-    <ScrollView>
-    <View style={styles.mainContainer}>
-    
-      {/* ****************************** SIGN IN ****************************** */}
-      <View style={styles.signinContent}>
-        <View style={styles.title_signin}>
-          <AntDesign name="user" size={30} color="black" style={styles.icon} />
-          <TouchableOpacity onPress={() => {setChoiceSignIn(!choiceSignIn); setChoiceSignUp(false)}}>
-            <Text style={styles.titleConnect}>Connectez-vous</Text>
-          </TouchableOpacity>
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView>
+        <View style={styles.mainContainer}>
+          {/* ****************************** SIGN IN ****************************** */}
+          <View style={styles.signinContent}>
+            <View style={styles.title_signin}>
+              <AntDesign
+                name="user"
+                size={30}
+                color="black"
+                style={styles.icon}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setChoiceSignIn(!choiceSignIn);
+                  setChoiceSignUp(false);
+                }}
+              >
+                <Text style={styles.titleConnect}>Connectez-vous</Text>
+              </TouchableOpacity>
+            </View>
+
+            {choiceSignIn ? signIn : ""}
+          </View>
+          {/* ****************************** SIGN UP ****************************** */}
+
+          <View style={styles.signupContent}>
+            <View style={styles.title_signup}>
+              <AntDesign
+                name="adduser"
+                size={30}
+                color="black"
+                style={styles.icon}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setChoiceSignUp(!choiceSignUp);
+                  setChoiceSignIn(false);
+                }}
+              >
+                <Text style={styles.titleConnect}>Inscrivez-vous !</Text>
+              </TouchableOpacity>
+            </View>
+            {choiceSignUp ? signUp : ""}
+          </View>
+          <Text>{user ? messageSignUp : messageErrorSignUp}</Text>
         </View>
-
-        {choiceSignIn ? signIn : ''}
-      </View>
-      {/* ****************************** SIGN UP ****************************** */}
-
-      <View style={styles.signupContent}>
-        <View style={styles.title_signup}>
-          <AntDesign
-            name="adduser"
-            size={30}
-            color="black"
-            style={styles.icon}
-          />
-          <TouchableOpacity onPress={()=>{setChoiceSignUp(!choiceSignUp); setChoiceSignIn(false)}}>
-          <Text style={styles.titleConnect}>Inscrivez-vous !</Text>
-          </TouchableOpacity>
-        </View>
-        {choiceSignUp ? signUp : ''}
-
-      </View>
-      <Text>{user ? messageSignUp : messageErrorSignUp}</Text>
-    </View>
-    </ScrollView>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
+
   mainContainer: {
-    flex:1,
-    alignItems: "center",
-    justifyContent: "center",
-    width:'100%'
+    alignContent:'center',
+    alignSelf:'center',
   },
   signinContent: {
-    paddingBottom: 30,
+    paddingVertical: 30,
     borderBottomColor: "#bebebe",
     borderBottomWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  signupContent: {
+    paddingVertical: 30,
+    borderBottomColor: "#bebebe",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -235,9 +252,7 @@ const styles = StyleSheet.create({
     width: 300,
     borderColor: "gray",
   },
-  signupContent: {
-    paddingTop: 30,
-  },
+
   titleConnect: {
     alignSelf: "center",
     fontSize: 28,
@@ -271,7 +286,6 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "row",
     paddingBottom: 25,
-
   },
   icon: {
     paddingRight: 10,

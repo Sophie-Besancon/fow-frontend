@@ -4,33 +4,39 @@ import Header from '../components/Header'
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from "react-redux";
 import { clearArticleInfo } from "../reducers/users";
+import Product from '../components/Product';
 
 
 const ArticleScreen = ({ navigation }) => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users.value[0]);
-
+  
+  const informations = useSelector(
+    (state) => state.users.value[0].articleInfo[0]
+  );
   const handleBack = () => {
     console.log("RETOUR")
     navigation.navigate('Store')
     dispatch(clearArticleInfo())
   };
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+    <View style={styles.container}>
     <Header />
     <TouchableOpacity onPress={() => handleBack()} style={styles.backButton} activeOpacity={0.8}>
         <Ionicons name="md-arrow-back-circle-outline" size={20} color="white" /><Text style={styles.textButton}> Retour </Text>
     </TouchableOpacity>
-</KeyboardAvoidingView>
+    <Product/>
+
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex:1,
     backgroundColor: '#ffffff',
     alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    
   },
   textButton: {
     color: '#ffffff',

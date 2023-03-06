@@ -1,28 +1,29 @@
 import {
-  Image,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
 } from "react-native";
 import UserConnect from "../components/UserConnect";
 import Header from "../components/Header";
-import Personal_Informations from "../components/Dashboard";
+import Dashboard from "../components/Dashboard";
+import { useSelector } from "react-redux";
 
 export default function AccountScreen() {
+  
+  const user = useSelector((state) => state.users.value[0]);
+
+
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <Header />
-       {/* <UserConnect/>  */}
-       { <UserConnect/> }
-  
-       <Personal_Informations/>
-       {/* <Personal_Informations/>  */}
+      
+       {user.token?<Dashboard/>:<UserConnect/>}
+       
+      
 
     </KeyboardAvoidingView>
   );

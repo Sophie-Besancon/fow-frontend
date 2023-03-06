@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import Header from "./Header";
 import { AntDesign } from "@expo/vector-icons";
 import { ImageGallery } from "@georstat/react-native-image-gallery";
+import { useSelector } from "react-redux";
+import Popover from "react-native-popover-view";
 
-const images = [
+/* const images = [
   {
     id: 1,
     url: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
@@ -24,17 +25,42 @@ const images = [
     id: 3,
     url: "https://www.tokyo-smart.com/4864-large_default/kit-kat-fraise-amao.jpg",
   },
-];
+]; */
 
-export default function Product(props) {
-  const [isLike, setIsLike] = useState(true);
+export default function Product() {
+  const [isLike, setIsLike] = useState(false);
+  /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
   const [count, setCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
 
+  // Galerie images
   const openGallery = () => setIsOpen(true);
   const closeGallery = () => setIsOpen(false);
-  /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
 
+  const informations = useSelector(
+    (state) => state.users.value[0].articleInfo[0]
+  );
+  const userToken = useSelector((state) => state.users.value[0].token);
+
+  let handleLike = () => {
+    <Popover
+      from={
+        <TouchableOpacity>
+          <AntDesign name="hearto" size={24} color="#E74C3C" />
+        </TouchableOpacity>
+      }
+    >
+      <Text style={styles.textPopover}>
+        Connectez-vous pour ajouter aux favoris 😊
+      </Text>
+    </Popover>
+  };
+
+  const images = [
+    {
+      url: informations.image,
+    },
+  ];
   const handleCountLess = () => {
     if (count > 0) {
       setCount(count - 1);
@@ -49,39 +75,35 @@ export default function Product(props) {
 
   const imagesDisplay = images.map((element, i) => {
     return (
-      
-        <TouchableOpacity onPress={openGallery} key={i}>
-          <Image
-            source={{
-              uri: element.url,
-            }}
-            resizeMode="cover"
-            style={styles.imagesDisplay}
-            
-          />
-        </TouchableOpacity>
-      
+      <TouchableOpacity onPress={openGallery} key={i}>
+        <Image
+          source={{
+            uri: element.url,
+          }}
+          resizeMode="cover"
+          style={styles.imagesDisplay}
+        />
+      </TouchableOpacity>
     );
   });
+
+  let notation = [];
+  while (notation.length != informations.note) {
+    notation.push(<AntDesign name="star" size={14} color="orange" />);
+  }
 
   /* *********************** FIN INCREM / DECREM ******************************** */
 
   return (
     <View style={styles.container}>
-      <Header />
       <ScrollView>
         <View style={styles.productContainer}>
-          {/*           <TouchableOpacity>
-          <MaterialIcons name="keyboard-backspace" size={32} color="black" />
-          <Text>Retour</Text>
-          </TouchableOpacity> */}
           <TouchableOpacity onPress={openGallery}>
             <Image
               source={{
-                uri: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
+                uri: informations.image,
               }}
-              style={{ width: 300, height: 300 }}
-              resizeMode="cover"
+              style={styles.cover}
               alignSelf="center"
             />
           </TouchableOpacity>
@@ -95,39 +117,62 @@ export default function Product(props) {
             thumbColor="#F39C12"
           />
           <View style={styles.isLikeContent}>
-            <Text style={styles.category}>Catégorie : Sucré</Text>
-            <TouchableOpacity onPress={() => setIsLike(!isLike)}>
+            <Text style={styles.title}>
+              Catégorie :{" "}
+              <Text style={styles.informations}>
+                {" "}
+                {informations.categoryName}
+              </Text>
+            </Text>
+            <Text style={styles.title}>
+              Origine :
+              <Text style={styles.informations}>
+                {" "}
+                {informations.continentOfCountry}
+              </Text>
+            </Text>
+            <Text style={styles.title}>
+              Pays :
+              <Text style={styles.informations}>
+                {" "}
+                {informations.countryName}
+              </Text>
+            </Text>
+
+            <TouchableOpacity
+              onPress={() => {
+                userToken ? setIsLike(!isLike):'';
+              }}
+            >
               {isLike ? (
                 <AntDesign name="heart" size={24} color="#E74C3C" />
               ) : (
-                <AntDesign name="hearto" size={24} color="#E74C3C" />
+                <Popover
+                from={
+                  <TouchableOpacity>
+                    <AntDesign name="hearto" size={24} color="#E74C3C" />
+                  </TouchableOpacity>
+                }
+              >
+                <Text style={styles.textPopover}>
+                  Connectez-vous pour ajouter aux favoris 🖕
+                </Text>
+              </Popover>
               )}
             </TouchableOpacity>
           </View>
           <View style={styles.priceContainer}>
             <View>
-              <Text style={styles.titleArticle}>Kit Kat fraise</Text>
+              <Text style={styles.titleArticle}>{informations.name}</Text>
               <Text style={styles.notation}>
-                Note du produit :
-                <AntDesign name="star" size={14} color="orange" />
-                <AntDesign name="star" size={14} color="orange" />
-                <AntDesign name="star" size={14} color="orange" />
-                <AntDesign name="star" size={14} color="orange" />
-                <AntDesign name="star" size={14} color="orange" />
+                Note du produit :{/* {notation} */}
               </Text>
             </View>
-            <Text style={styles.price}>7,90€</Text>
+
+            <Text style={styles.price}>{informations.price}€</Text>
           </View>
           <Text style={styles.descriptionTitle}>Description du produit</Text>
-          <Text style={styles.description}>
-            Savourez l'expérience unique des KitKats japonais au goût frais et
-            sucré de la fraise avec ce paquet de friandises irrésistibles.
-            Fabriqués avec des ingrédients de première qualité, ces KitKats sont
-            l'ultime fusion entre une gaufrette croquante et du chocolat
-            onctueux, mélangé avec une touche fruitée de fraises fraîches.
-            Chaque bouchée vous transporte dans une explosion de saveurs et de
-            textures qui éveillera vos papilles gustatives.
-          </Text>
+          <Text style={styles.description}>{informations.description}</Text>
           <View style={styles.addBasketContainer}>
             <View style={styles.countContainer}>
               <TouchableOpacity onPress={() => handleCountLess()}>
@@ -142,6 +187,7 @@ export default function Product(props) {
               <TouchableOpacity style={styles.addToBasket}>
                 <Text style={styles.addToBasketText}>Ajouter au panier</Text>
               </TouchableOpacity>
+              <Text style={styles.stock}>STOCK : {informations.stock}</Text>
             </View>
           </View>
         </View>
@@ -157,7 +203,7 @@ const styles = StyleSheet.create({
   },
   titleArticle: {
     alignSelf: "flex-start",
-    fontSize: 35,
+    fontSize: 30,
     fontFamily: "Arial",
     fontWeight: "bold",
     paddingTop: 15,
@@ -229,7 +275,26 @@ const styles = StyleSheet.create({
   },
   imagesContainer: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
     alignContent: "center",
+  },
+  title: {
+    fontWeight: "700",
+    color: "#34495E",
+  },
+  informations: {
+    fontWeight: "normal",
+    color: "black",
+  },
+  cover: {
+    height: 250,
+    minWidth: 500,
+  },
+  stock: {
+    marginVertical: 10,
+    alignSelf: "center",
+  },
+  textPopover: {
+    padding: 10,
   },
 });
