@@ -6,6 +6,7 @@ const initialState = {
         firstname:null,
         token:null,
         articleInfo: [],
+        articleInBasket: [],
     }
   ],
 };
@@ -26,6 +27,10 @@ export const usersSlice = createSlice({
     addArticleInfo: (state, action) => {
       state.value[0].articleInfo.push(action.payload)
     },
+    addArticleInBasket: (state, action) => {
+      state.value[0].articleInBasket.push(action.payload)
+      console.log('PAYLOAD',state.value[0].articleInBasket )
+    },
     clearArticleInfo: (state, action) => {
       state.value[0].articleInfo = []
       console.log('CLEAR', state.value[0].articleInfo)
@@ -33,5 +38,5 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { addUser, disconnectUser, addArticleInfo, clearArticleInfo } = usersSlice.actions;
+export const { addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket } = usersSlice.actions;
 export default usersSlice.reducer;

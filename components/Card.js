@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
-import { addArticleInfo } from "../reducers/users";
+import { addArticleInfo, addArticleInBasket } from "../reducers/users";
 
 
 
@@ -44,12 +44,11 @@ const Card = (props) => {
 
   const handleCart = () => {
     console.log("CART")
+    dispatch(addArticleInBasket({price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}))
   };
 
   const handleInfo = () => {
-    console.log("INFO")
     navigation.navigate('Article')
-    console.log('PROPS', [{price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}])
     dispatch(addArticleInfo({price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}))
   };
 
