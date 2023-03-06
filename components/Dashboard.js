@@ -114,6 +114,14 @@ const basketArticles = basketData.map((data, i) => {
       .then((response) => response.json())
       .then((data) => {
         setMessageAddAdress(data.message);
+        setNewAddress('');
+        setNewZipCode('');
+        setNewCity('');
+        setNewCountry('');
+        setCheckedDelivery(false);
+        setCheckedBilling(false);
+        setMessageUpdate('')
+        
       });
   };
 
@@ -349,7 +357,7 @@ const basketArticles = basketData.map((data, i) => {
               : styles.PIDisplay_disable
           }
           onPress={() => {
-            setPersonalInformationsDisplay(true);
+            setPersonalInformationsDisplay(!personalInformationsDisplay);
             setAddNewAdressDisplay(false);
             setMyOrdersDisplay(false);
             setChangeOrDeleteMyAddress(false);
@@ -380,7 +388,7 @@ const basketArticles = basketData.map((data, i) => {
           onPress={() => {
             setPersonalInformationsDisplay(false);
             setAddNewAdressDisplay(false);
-            setMyOrdersDisplay(true);
+            setMyOrdersDisplay(!myOrdersDisplay);
             setChangeOrDeleteMyAddress(false);
           }}
         >
@@ -410,7 +418,7 @@ const basketArticles = basketData.map((data, i) => {
               : styles.add_AdressButton_disable
           }
           onPress={() => {
-            setAddNewAdressDisplay(true);
+            setAddNewAdressDisplay(!addNewAdressDisplay);
             setMyOrdersDisplay(false);
             setPersonalInformationsDisplay(false);
             setChangeOrDeleteMyAddress(false);
@@ -445,7 +453,7 @@ const basketArticles = basketData.map((data, i) => {
             setMyOrdersDisplay(false);
             setAddNewAdressDisplay(false);
             setPersonalInformationsDisplay(false);
-            setChangeOrDeleteMyAddress(true);
+            setChangeOrDeleteMyAddress(!ChangeOrDeleteMyAddress);
           }}
         >
           <MaterialIcons

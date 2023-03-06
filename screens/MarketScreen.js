@@ -58,7 +58,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true)
-    fetch("http://192.168.1.14:3000/articles/", {
+    fetch("http://192.168.1.47:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category, name: searchName }),
@@ -194,9 +194,10 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: '#ffffff',
-    fontWeight: 'bold',
     alignSelf: 'center',
     textAlign: 'center',
+    fontSize:16
+
   },
   filteredPart: {
     flexDirection: "row",
@@ -213,9 +214,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "flex-start",
   },
-  textButton: {
-    color: '#ffffff',
-  },
+
   outsideCloseBackground: {
     position: 'absolute',
     top: 0,
@@ -283,12 +282,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 40,
   }
-  // searchPlaceHolderColor: {
-  //   borderRadius: 8,
-  //   borderColor: "red",
-  //   borderWidth: 2,
-  //   backgroundColor: 'red',
-  // }
+
 })
 
 

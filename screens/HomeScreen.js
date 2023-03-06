@@ -59,7 +59,7 @@ export default function HomeScreen({ navigation }) {
         data={images}
         scrollAnimationDuration={2500}
         renderItem={({index}) => images[index]}
-      />
+      style={styles.carousel}/>
     </KeyboardAvoidingView>
   )
 }
@@ -92,14 +92,24 @@ const styles = StyleSheet.create({
   },
   textButton: {
     color: '#ffffff',
-    fontWeight: 'bold',
+
+    fontSize:16
   },
   continentButton: {
     backgroundColor: '#FC9F30',
-    height: 40,
+    justifyContent:'center',
+    height: 60,
     margin: 25,
     padding: 10,
     borderRadius: 8,
+    shadowColor: "#FC9F30",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
     
   },
   image: {
@@ -107,7 +117,16 @@ const styles = StyleSheet.create({
     width: "90%",
     borderRadius: 40,
     margin: 20,
-    borderWidth: 2,
-    borderColor: "#4B7285",
+    
+  },
+  carousel:{
+    shadowColor: "grey",
+    shadowRadius: 5,
+    shadowOpacity: 0.9,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
   }
 })
