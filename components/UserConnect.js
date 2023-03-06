@@ -5,7 +5,11 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+<<<<<<< HEAD
   KeyboardAvoidingView
+=======
+  KeyboardAvoidingView,
+>>>>>>> Sophie
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
