@@ -136,7 +136,6 @@ export default function Personal_Informations() {
         <View>
           <View style={styles.inputsArea}>
             <TextInput
-              autoCorrect="false"
               placeholder="Prénom"
               value={firstname}
               style={styles.input}
@@ -146,7 +145,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Nom"
               value={lastname}
               style={styles.input}
@@ -156,7 +154,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Adresse e-mail"
               value={mailAddress}
               style={styles.input}
@@ -166,7 +163,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Nouveau mot de passe"
               style={styles.input}
               value={newPassword}
@@ -177,7 +173,6 @@ export default function Personal_Informations() {
               }}
             />
             <TextInput
-              autoCorrect="false"
               placeholder="Répétez votre mot de passe"
               style={styles.input}
               value={newPasswordConfirm}
@@ -214,7 +209,6 @@ export default function Personal_Informations() {
       <>
         <View style={styles.inputsArea}>
           <TextInput
-            autoCorrect="false"
             placeholder="Adresse complète"
             style={styles.input}
             value={newAdress}
@@ -224,21 +218,18 @@ export default function Personal_Informations() {
             }}
           />
           <TextInput
-            autoCorrect="false"
             placeholder="Code postal"
             style={styles.input}
             value={newZipCode}
             onChangeText={(value) => setNewZipCode(value)}
           />
           <TextInput
-            autoCorrect="false"
             placeholder="Ville"
             style={styles.input}
             value={newCity}
             onChangeText={(value) => setNewCity(value)}
           />
           <TextInput
-            autoCorrect="false"
             placeholder="Pays"
             style={styles.input}
             value={newCountry}

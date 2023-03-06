@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -13,14 +14,13 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
-import { canBookMark, addArticle, removeArticle } from "../reducers/users";
+
+
 
 const Card = (props) => {
-  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const users = useSelector((state) => state.users.value[0]);
   const [isLike, setIsLike] = useState(false);
-  //console.log( props.id)
-  //console.log(users)
 
   let backgroundImg = { uri: `${props.image}` };
   //console.log(props.flag)
@@ -28,51 +28,25 @@ const Card = (props) => {
   // let city = require(`../assets/${props.flag}.png`)
   //console.log(city)
 
-/*      useEffect(() => {
-  //  if(users.token){
-      fetch("http://192.168.1.47:3000/users/updateFavoriteArticle", { //Route TOKEN renommé
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: users.token, articleId: props.id }),
-      }).then((response) =>
-        response.json()).then((data) => {
-          dispatch(canBookMark())          
-          console.log('ARTICLES',data.data.articlesinFavorite[0])
-          if (!isLike){
-
-          dispatch(addArticle(data.data.articlesinFavorite))
-         } else {
-          dispatch(removeArticle(data.data.articlesinFavorite))
-          }
-        });
-  //    }
-  }, [isLike])  */
 
   const handleLike = () => {
-    const token = "hx_ZgFojJ6CMUlgVGG8bkUw_5ZmyDhAm";
-    fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
+    if (users.token){
+    setIsLike(!isLike);
+    fetch(`http://192.168.1.14:3000/users/updateFavoriteArticle`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: token, articleId: props.id }),
+      body: JSON.stringify({ token: users.token, articleId: props.id }),
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Etat à linterieur : ", isLike);
-        // L'etat isLike ne se comporte pas correctement a l'interieur de la fonction,
-        // il est l'inverse de ce qu'il doit être à chaque fois.
-        // Est-ce dû au fait que la card envoyé par market n'a pas d'etat de like par defaut ??
+    }
+  };
 
-        // Deuxieme probleme : on demande de dispatcher dans le reducer uniquement ce qu'on recoit
-        // de notre backend. Donc même en likant plusieurs articles, il inscrit plusieurs fois
-        // le même article dans le reducer ?
+  const handleCart = () => {
+    console.log("CART")
+  };
 
-                 if (!isLike){
-                  console.log('ARTICLE ENVOYE',data.data.articlesinFavorite);
-        dispatch(addArticle(data.data.articlesinFavorite))
-      }else{
-        dispatch(removeArticle(data.data.articlesinFavorite))
-      } 
-      });
+  const handleInfo = () => {
+    console.log("INFO")
+    navigation.navigate('ArticleScreen')
   };
 
   return (
@@ -98,13 +72,14 @@ const Card = (props) => {
           <Text>{props.name}</Text>
         </View>
         <View style={styles.buttonProductContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+              handleInfo();
+            }}>
             <FontAwesome name="info-circle" size={24} color="#4B7285" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               handleLike();
-              setIsLike(!isLike);
             }}
           >
             {isLike ? (
@@ -113,7 +88,9 @@ const Card = (props) => {
               <AntDesign name="hearto" size={24} color="#E74C3C" />
             )}
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => {
+              handleCart();
+            }}>
             <FontAwesome name="cart-plus" size={24} color="#4B7285" />
           </TouchableOpacity>
         </View>
