@@ -31,6 +31,7 @@ export const usersSlice = createSlice({
       state.value[0].articleInBasket.push(action.payload)
       console.log('PAYLOAD',state.value[0].articleInBasket )
     },
+    
     clearArticleInfo: (state, action) => {
       state.value[0].articleInfo = []
       console.log('CLEAR', state.value[0].articleInfo)

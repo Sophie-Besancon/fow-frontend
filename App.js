@@ -4,9 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import React, { useState } from "react";
-
+import { useSelector} from "react-redux";
 import HomeScreen from './screens/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
 import BasketScreen from './screens/BasketScreen';
@@ -23,7 +21,7 @@ import users from './reducers/users';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-let basketNumber= 0;
+
 const store = configureStore({
   reducer: { articles, users },
  });
@@ -107,16 +105,10 @@ const store = configureStore({
 
 
 
-
-
-
-
-
-
-
 const TabNavigator = () => {
-
+  const users = useSelector((state) => state.users.value[0]);
   return (
+    
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
         let iconName = '';
@@ -140,7 +132,7 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name="Accueil" component={HomeNavigator} />
       <Tab.Screen name="Market" component={MarketNavigator} />
-      <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: `${basketNumber}`}}/>
+      <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: users.articleInBasket.length}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
     </Tab.Navigator>
