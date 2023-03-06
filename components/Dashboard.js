@@ -74,7 +74,7 @@ const basketArticles = basketData.map((data, i) => {
   /* <---> GETTER : Récupération de toutes les informations utilisateur provenant de la base de données <---> */
 
   useEffect(() => {
-    fetch(`http://192.168.1.47:3000/users/infos/${user.token}`)
+    fetch(`http://192.168.1.14:3000/users/infos/${user.token}`)
       .then((response) => response.json())
       .then((data) => {
         if (data) {

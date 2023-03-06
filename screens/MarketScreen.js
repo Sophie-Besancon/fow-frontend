@@ -72,8 +72,7 @@ export default function MarketScreen({ route, navigation }) {
   }, [continent, category, searchName]);
 
   const cards = articlesData.map((data, i) => {
-    // Il faut créer une propriété isLike pour savoir si l'article doit etre liké ou non à l'affichage.
-    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} /* isLike={isLike} */ />;
+    return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry}/>;
   });
 
 //Permet de trier les articles par prix

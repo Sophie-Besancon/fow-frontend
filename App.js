@@ -11,6 +11,7 @@ import BasketScreen from './screens/BasketScreen';
 import FavoriteScreen from './screens/FavoriteScreen';
 import MarketScreen from './screens/MarketScreen';
 import ContinentScreen from './screens/ContinentScreen';
+import ArticleScreen from './screens/ArticleScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -53,6 +54,31 @@ const store = configureStore({
   );
 };
 
+ const MarketNavigator = () => {
+  return (
+    <Tab.Navigator screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName = '';
+        if (route.name === 'Market') {
+          iconName = 'shopping-cart';
+        } else if (route.name === 'Article') {
+          iconName = '';
+        }
+
+        return <FontAwesome name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#FC9F30',
+      tabBarInactiveTintColor: '#4B7285',
+      headerShown: false,
+      tabBarStyle: { display: 'none' },
+    })}>
+      <Tab.Screen name="Store" component={MarketScreen} />
+      <Tab.Screen name="Article" component={ArticleScreen} />
+    </Tab.Navigator>
+  );
+};
+ 
+
 const TabNavigator = () => {
 
   return (
@@ -78,7 +104,7 @@ const TabNavigator = () => {
       headerShown: false,
     })}>
       <Tab.Screen name="Accueil" component={HomeNavigator} />
-      <Tab.Screen name="Market" component={MarketScreen} />
+      <Tab.Screen name="Market" component={MarketNavigator} />
       <Tab.Screen name="Panier" component={BasketScreen} options={{tabBarBadge: `${basketNumber}`}}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
@@ -86,12 +112,13 @@ const TabNavigator = () => {
   );
 };
 
+
+
 export default function App() {
   return (
     <Provider store={store}>
     <NavigationContainer>
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-    {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
       <Stack.Screen name="TabNavigator" component={TabNavigator} />
     </Stack.Navigator>
   </NavigationContainer>
