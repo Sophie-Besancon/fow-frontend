@@ -5,8 +5,6 @@ const initialState = {
     {
         firstname:null,
         token:null,
-        canBookmark:false,
-        articleinFavorite: [],
     }
   ],
 };

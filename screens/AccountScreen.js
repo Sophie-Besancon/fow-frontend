@@ -19,8 +19,10 @@ export default function AccountScreen() {
     >
       <Header />
        {/* <UserConnect/>  */}
+       { <UserConnect/> }
   
        <Personal_Informations/>
+       {/* <Personal_Informations/>  */}
 
     </KeyboardAvoidingView>
   );
