@@ -169,7 +169,7 @@ export default function MarketScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFB853',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',
