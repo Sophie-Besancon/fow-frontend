@@ -8,18 +8,20 @@ import {
   TouchableOpacity,
   View,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Header from '../components/Header'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { EvilIcons } from '@expo/vector-icons';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from 'react';
+import { removeArticleInBasket, addArticleInBasket } from "../reducers/users";
+
 
 export default function BasketScreen({ navigation }) {
 
   const users = useSelector((state) => state.users.value[0]);
-  const [isAddress, setIsAddress] = useState(false);
-  console.log(users)
+  const dispatch = useDispatch();
   const numberFormatFunction = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 
   let deliveryCost = (users.articleInBasket.length === 0 || users.articleInBasket.length > 9) ? 0 : 7.99;
@@ -40,28 +42,28 @@ export default function BasketScreen({ navigation }) {
     totalOrder = totalOrder + data.total;
     return (<View style={styles.tableContainerRow} key={i}>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.name}</Text></View>
+      <TouchableOpacity onPress={()=>dispatch(removeArticleInBasket(data.name))}><Text>-</Text></TouchableOpacity>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.quantity}</Text></View>
+      <TouchableOpacity onPress={()=>dispatch(addArticleInBasket({price: data.price, name:data.name, image:data.image, id:data.id, note:data.note, description:data.description, stock:data.stock, categoryName:data.categoryName, countryName:data.countryName, continentOfCountry:data.continentOfCountry}))}><Text>+</Text></TouchableOpacity>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{numberFormatFunction.format(data.price)}</Text></View>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{numberFormatFunction.format(data.total)}</Text></View>
     </View>)
   })
 
-  useEffect(() => {
-    if (users.token) {
-      fetch(`http://192.168.1.88:3000/users/verifyAddress/${users.token}`)
-      .then(response => response.json())
-      .then(data => {
-        if (users.token && data.result) {
-          setIsAddress(true)
-        }
-      })
-    }
-  }, [users]);
-
   const handleNextStep = () => {
-    if (users.token && isAddress) {
+    if (users.articleInBasket.length < 1) {
+      Alert.alert('Panier vide', "Veuillez d'abord rajouter des éléments au panier", [
+        {
+          text: 'Retour',
+          style: 'cancel',
+        },
+        {text: 'Ok'},
+      ]);
+      return;
+    }
+    if (users.token && users.address.length > 0) {
       navigation.navigate("Payment")
-    } else if (users.token && !isAddress) {
+    } else if (users.token && users.address.length <= 0) {
       navigation.navigate("Connexion")
     } else if (!users.token) {
       navigation.navigate("Connexion")

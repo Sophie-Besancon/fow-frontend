@@ -14,7 +14,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused  } from '@react-navigation/native';
 import Header from '../components/Header'
 import Card from '../components/Card'
 import { useEffect, useState, useCallback} from "react";
@@ -40,16 +40,31 @@ export default function MarketScreen({ route, navigation }) {
   const selectCategory = [seeAll, "sucré", "salé", "boisson"]
 
   // Se charge d'enlever les valeurs entrées par l'utilisateur lorsque ce dernier sort de l'ecran
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        navigation.setParams({ destination: undefined, name: undefined });
-        setContinent(null);
-        setCategory(null);
-        setSearchName(null);
-      };
-    }, [])
-  );
+  // https://reactnavigation.org/docs/use-focus-effect/
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     console.log('focus')
+  //     return () => {
+  //       console.log('unfocus')
+  //       navigation.setParams({ destination: undefined, name: undefined });
+  //       setContinent(null);
+  //       setCategory(null);
+  //       setSearchName(null);
+  //     };
+  //   }, [])
+  // );
+
+  // Se charge d'enlever les valeurs entrées par l'utilisateur lorsque ce dernier sort de l'ecran
+  const isFocused = useIsFocused();
+  useEffect(()=> {
+    if (!isFocused) {
+      console.log('unfocus')
+      navigation.setParams({ destination: undefined, name: undefined });
+      setContinent(null);
+      setCategory(null);
+      setSearchName(null);
+    }
+  }, [isFocused])
 
   //useEffet qui détecte un params venu depuis HomeScreen (click sur une image de continent ou recherche)
   useEffect(() => {
@@ -61,7 +76,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true)
-    fetch("http://192.168.1.47:3000/articles/", {
+    fetch("http://192.168.1.88:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category, name: searchName }),
@@ -169,7 +184,7 @@ export default function MarketScreen({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFB853',
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column',

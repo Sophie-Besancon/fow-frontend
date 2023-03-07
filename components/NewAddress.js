@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { addAddress } from "../reducers/users";
 
 
 export default function NewAddress(){
@@ -25,6 +26,7 @@ export default function NewAddress(){
   const [isCheckedBilling, setCheckedBilling] = useState(true);
 
   const user = useSelector((state) => state.users.value[0]);
+  const dispatch = useDispatch()
 
   /* <---> SETTER : Envoi la nouvelle adresse vers la base de données <---> */
 
@@ -55,14 +57,16 @@ export default function NewAddress(){
       .then((response) => response.json())
       .then((data) => {
         setMessageAddAdress(data.message);
+        dispatch(addAddress(data.data))
         setNewAddress('');
         setNewZipCode('');
         setNewCity('');
         setNewCountry('');
         setCheckedDelivery(false);
         setCheckedBilling(false);
-        setMessageUpdate('')
-        
+        // setMessageUpdate n'est pas défini dans NewAddress donc ca provoque un message warning
+        // Notamment lorsqu'on utilise NewAddress dans OrderConnectionScreen
+        // setMessageUpdate('')
       });
   };
 

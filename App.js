@@ -139,7 +139,16 @@ const TabNavigator = () => {
     })}>
       <Tab.Screen name="Accueil" component={HomeNavigator} />
       <Tab.Screen name="Market" component={MarketNavigator} />
-      <Tab.Screen name="Panier" component={BasketNavigator} options={{tabBarBadge: users.articleInBasket.length}}/>
+      <Tab.Screen 
+        name="Panier" 
+        component={BasketNavigator} 
+        options={{
+          tabBarBadge: users.articleInBasket.length,
+          // Lorsque l'utilisateur revient sur son panier ça reinitialise toujours à la première page du panier
+          // Pour ne pas le laisser bloqué a l"ecran connection ou paiement
+          // https://stackoverflow.com/questions/61488426/how-to-set-always-first-screen-of-stack-navigator-inside-tab-navigator-react-nav
+          unmountOnBlur: true,
+          }}/>
       <Tab.Screen name="Favoris" component={FavoriteScreen} />
       <Tab.Screen name="Compte" component={AccountScreen} />
     </Tab.Navigator>

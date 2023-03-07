@@ -39,7 +39,7 @@ const Card = (props) => {
   const handleLike = () => {
     if (users.token) {
       setIsLike(!isLike);
-      fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
+      fetch(`http://192.168.1.88:3000/users/updateFavoriteArticle`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),

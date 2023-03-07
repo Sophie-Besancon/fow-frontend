@@ -15,14 +15,17 @@ import NewAddress from '../components/NewAddress';
 import { useSelector } from "react-redux";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { EvilIcons } from '@expo/vector-icons';
+import { useEffect } from 'react';
 
 export default function OrderConnectionScreen({ navigation }) {
 
-const user = useSelector((state) => state.users.value[0]);
-console.log('user', user)
+    const user = useSelector((state) => state.users.value[0]);
 
-// const directionPage = 
-// && user.address.length > 0
+    useEffect(() => {
+        if (user.token && user.address.length > 0) {
+            navigation.navigate('Payment')
+        }
+    }, [user.token, user.address])
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -33,12 +36,8 @@ console.log('user', user)
                 <FontAwesome name="money" size={20} color="#4B7285" style={styles.deleteIcon} />
             </View>
             <ScrollView>
-            {user.token ? (user.address.length > 0 ? navigation.navigate('Payment') : <NewAddress/>) : <UserConnect/>}
+                {user.token ? (user.address.length <= 0 ? <NewAddress /> : null) : <UserConnect />}
             </ScrollView>
-            <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("Payment")}>
-          <Text style={styles.buttonText}>Étape suivante</Text>
-          <EvilIcons name="arrow-right" size={24} color="white" />
-        </TouchableOpacity>
         </KeyboardAvoidingView>
     )
 }
@@ -56,7 +55,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'space-between',
         marginTop: 30,
-      },
+    },
     textButton: {
         color: '#ffffff',
     },
@@ -81,9 +80,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         backgroundColor: "#4B7285",
         width: 130,
-      },
-      buttonText: {
+    },
+    buttonText: {
         alignSelf: "center",
         color: "white",
-      },
+    },
 })
