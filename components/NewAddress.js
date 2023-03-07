@@ -42,7 +42,7 @@ export default function NewAddress(){
       };
     }
 
-    fetch(`http://192.168.1.47:3000/users/add_address/${user.token}`, {
+    fetch(`http://192.168.1.88:3000/users/add_address/${user.token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export default function NewAddress(){
                 color={isCheckedDelivery ? "#4B7285" : undefined}
               />
               <Text style={styles.checkboxText}>
-                Adresse par defaut pour la livraison
+                Adresse par défaut pour la livraison
               </Text>
             </View>
             <View style={styles.checkbox_container}>
@@ -115,7 +115,7 @@ export default function NewAddress(){
                 color={isCheckedBilling ? "#4B7285" : undefined}
               />
               <Text style={styles.checkboxText}>
-                Adresse par defaut pour la facturation
+                Adresse par défaut pour la facturation
               </Text>
             </View>
     

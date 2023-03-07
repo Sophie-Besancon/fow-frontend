@@ -92,7 +92,7 @@ const basketArticles = basketData.map((data, i) => {
       };
     }
 
-    fetch(`http://192.168.1.47:3000/users/add_address/${user.token}`, {
+    fetch(`http://192.168.1.88:3000/users/add_address/${user.token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

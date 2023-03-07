@@ -9,7 +9,7 @@ import {
     View,
 } from 'react-native';
 import Header from '../components/Header';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState } from "react";
 
@@ -43,6 +43,7 @@ export default function PaymentScreen({ navigation }) {
                 <Text style={styles.inputLabel}>Cryptogramme de sécurité</Text>
                 <TextInput maxLength={3} inputMode="numeric" placeholder="Cryptogramme de sécurité" onChangeText={(value) => { setSecurityNumber(value) }} value={securityNumber} style={styles.input} />
                 <TouchableOpacity onPress={() => handleConfirmation()} style={styles.inputButton} activeOpacity={0.8}>
+                    <AntDesign name="checkcircle" size={18} color="white" />
                     <Text style={styles.textButton}>Valider ma commande</Text>
                 </TouchableOpacity>
 
