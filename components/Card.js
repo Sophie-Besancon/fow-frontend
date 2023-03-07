@@ -11,10 +11,13 @@ import {
   TextInput,
   TouchableOpacity,
   ImageBackground,
+  Platform,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
 import { addArticleInfo, addArticleInBasket, manageArticleInFavorite} from "../reducers/users";
+import CountryFlag from "react-native-country-flag";
+
 
 
 
@@ -24,33 +27,36 @@ const Card = (props) => {
   const users = useSelector((state) => state.users.value[0]);
   const [isLike, setIsLike] = useState(false);
 
-  let backgroundImg = { uri: `${props.image}` };
-  //console.log(props.flag)
-  //console.log(`../assets/${props.flag}.png`)
-  // let city = require(`../assets/${props.flag}.png`)
-  //console.log(city)
+  let backgroundImg = { uri: `${props.image[0]}` };
+  let flagImg= props.flagOfCountry
+
 
   useEffect(() => {
-      if (props.isLikeinFavorite){
-        setIsLike(true)
-      }
-  }, [])
-
+    setIsLike(props.isLikeinFavorite);
+  }, [props.isLikeinFavorite]);
 
   const handleLike = () => {
-    if (users.token){
-    setIsLike(!isLike);
-    fetch(`http://192.168.1.14:3000/users/updateFavoriteArticle`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token: users.token, articleId: props.id }),
-    }).then((response) =>
-    response.json()).then((data) => {
-      console.log("BACKEND",data.data.articlesinFavorite)
-      dispatch(manageArticleInFavorite(data.data.articlesinFavorite))
-      //console.log("ENVOI", ...data.data.articlesinFavorite)
-    });
-    
+    if (users.token) {
+      setIsLike(!isLike);
+      fetch(`http://192.168.1.14:3000/users/updateFavoriteArticle`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: users.token, articleId: props.id }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          dispatch(
+            manageArticleInFavorite(
+              data.data.articlesinFavorite.map((article) => ({
+                ...article,
+                isLikeinFavorite: article._id === props.id ? !isLike : article.isLikeinFavorite
+              }))
+            )
+          );
+          if (props.onLikeChange) {
+            props.onLikeChange(props.id, !isLike);
+          }
+        });
     }
   };
 
@@ -73,8 +79,8 @@ const Card = (props) => {
         <View style={styles.imgCardContainer}>
           <View style={styles.textImgCardContainer}>
             <View style={styles.splitContainerFlag}>
-              <Image source={require("../assets/mexico.png")} />
-            </View>
+            <CountryFlag isoCode={flagImg} size={20} style={styles.countryFlag} />           
+             </View>
             <View style={styles.splitContainerPrice}>
               <Text style={styles.price}>{props.price}€</Text>
             </View>
