@@ -33,7 +33,7 @@ export default function Product() {
 
 
   const images = informations.image.map((element, i) => {
-    console.log('element : ',element);
+   // console.log('element : ',element);
     return
     ({
       id: i,
@@ -83,6 +83,7 @@ export default function Product() {
             uri:"https://res.cloudinary.com/dd0bjihul/image/upload/v1677755748/mochi_atyudk.jpg",
           }}
           resizeMode="cover"
+          
           style={styles.imagesDisplay}
         />
       </TouchableOpacity>
@@ -116,6 +117,7 @@ export default function Product() {
           </TouchableOpacity>
 
           <View style={styles.imagesContainer}>{imagesDisplay}</View>
+{/* ImageGallery sert à la definition des différentes propriétés pour le bon fonctionnement de la galerie  */}
           <ImageGallery
             close={closeGallery}
             isOpen={isOpen}
