@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Header from '../components/Header'
 import { Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from "react-redux";

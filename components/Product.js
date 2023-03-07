@@ -10,9 +10,9 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { ImageGallery } from "@georstat/react-native-image-gallery";
 import { useSelector } from "react-redux";
-import Popover from "react-native-popover-view";
+import Popover, { PopoverPlacement } from "react-native-popover-view";
 
-/* const images = [
+ const images = [
   {
     id: 1,
     url: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
@@ -25,9 +25,10 @@ import Popover from "react-native-popover-view";
     id: 3,
     url: "https://www.tokyo-smart.com/4864-large_default/kit-kat-fraise-amao.jpg",
   },
-]; */
+]; 
 
 export default function Product() {
+
   const [isLike, setIsLike] = useState(false);
   /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
   const [count, setCount] = useState(0);
@@ -42,25 +43,24 @@ export default function Product() {
   );
   const userToken = useSelector((state) => state.users.value[0].token);
 
+  // Fonction HANDLELIKE qui permet d'afficher le coeur vide ou plein selon le like.
+  // l'utilisateur DOIT être connecté
   let handleLike = () => {
-    <Popover
-      from={
-        <TouchableOpacity>
-          <AntDesign name="hearto" size={24} color="#E74C3C" />
-        </TouchableOpacity>
-      }
-    >
-      <Text style={styles.textPopover}>
-        Connectez-vous pour ajouter aux favoris 😊
-      </Text>
-    </Popover>
+    if (isLike) {
+      return <AntDesign name="heart" size={24} color="#E74C3C" />;
+    } else {
+      return <AntDesign name="hearto" size={24} color="#E74C3C" />;
+    }
   };
 
-  const images = [
+/*    const images = [
     {
       url: informations.image,
     },
-  ];
+  ]; */
+
+
+
   const handleCountLess = () => {
     if (count > 0) {
       setCount(count - 1);
@@ -87,10 +87,9 @@ export default function Product() {
     );
   });
 
-  let notation = [];
-  while (notation.length != informations.note) {
-    notation.push(<AntDesign name="star" size={14} color="orange" />);
-  }
+  let notation = '';
+/* for (let i=0; i<) */
+
 
   /* *********************** FIN INCREM / DECREM ******************************** */
 
@@ -138,28 +137,30 @@ export default function Product() {
                 {informations.countryName}
               </Text>
             </Text>
-
+           
             <TouchableOpacity
               onPress={() => {
-                userToken ? setIsLike(!isLike):'';
+                setIsLike(!isLike);
               }}
             >
-              {isLike ? (
-                <AntDesign name="heart" size={24} color="#E74C3C" />
-              ) : (
+              {!userToken ? (
                 <Popover
-                from={
-                  <TouchableOpacity>
-                    <AntDesign name="hearto" size={24} color="#E74C3C" />
-                  </TouchableOpacity>
-                }
-              >
-                <Text style={styles.textPopover}>
-                  Connectez-vous pour ajouter aux favoris 🖕
-                </Text>
-              </Popover>
+                  placement={PopoverPlacement.LEFT}
+                  from={
+                    <TouchableOpacity>
+                      <AntDesign name="hearto" size={24} color="#E74C3C" />
+                    </TouchableOpacity>
+                  }
+                >
+                  <Text style={styles.textPopover}>
+                    Connectez-vous pour ajouter aux favoris 😉
+                  </Text>
+                </Popover>
+              ) : (
+                handleLike()
               )}
             </TouchableOpacity>
+           
           </View>
           <View style={styles.priceContainer}>
             <View>
