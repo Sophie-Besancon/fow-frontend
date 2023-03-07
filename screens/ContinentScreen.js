@@ -9,9 +9,16 @@ import {
     View,
 } from 'react-native';
 import Header from '../components/Header';
+import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
 
+
 export default function ContinentScreen({ navigation }) {
+
+// const cards = articlesData.map((data, i) => {
+//     const isLikeinFavorite = users.articleInFavorite.some(article => article._id === data._id);
+//     return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} isLikeinFavorite={isLikeinFavorite} />;
+// });
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>

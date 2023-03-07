@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
+import { useSelector } from "react-redux";
 
 
 export default function NewAddress(){
@@ -22,6 +23,8 @@ export default function NewAddress(){
   // checkbox pour l'ajout d'une nouvelle adresse
   const [isCheckedDelivery, setCheckedDelivery] = useState(true);
   const [isCheckedBilling, setCheckedBilling] = useState(true);
+
+  const user = useSelector((state) => state.users.value[0]);
 
   /* <---> SETTER : Envoi la nouvelle adresse vers la base de données <---> */
 

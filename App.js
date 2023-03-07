@@ -88,11 +88,11 @@ const BasketNavigator = () => {
     <Tab.Navigator screenOptions={({ route }) => ({
       tabBarIcon: ({ color, size }) => {
         let iconName = '';
-        if (route.name === 'Panier') {
+        if (route.name === 'Panier2') {
           iconName = 'shopping-basket';
         } else if (route.name === 'Connexion') {
           iconName = 'user';
-        }else if (route.name === 'Payment') {
+        } else if (route.name === 'Payment') {
           iconName = 'money';
         } else if (route.name === 'Confirmation') {
           iconName = 'check';
@@ -103,9 +103,9 @@ const BasketNavigator = () => {
       tabBarActiveTintColor: '#FC9F30',
       tabBarInactiveTintColor: '#4B7285',
       headerShown: false,
-      tabBarStyle: { display: 'flex' },
+      tabBarStyle: { display: 'none' },
     })}>
-      <Tab.Screen name="Panier" component={BasketScreen} />
+      <Tab.Screen name="Panier2" component={BasketScreen} />
       <Tab.Screen name="Connexion" component={OrderConnectionScreen} />
       <Tab.Screen name="Payment" component={PaymentScreen} />
       <Tab.Screen name="Confirmation" component={ConfirmationScreen} />

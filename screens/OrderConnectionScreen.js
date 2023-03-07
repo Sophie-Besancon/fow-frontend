@@ -12,7 +12,6 @@ import {
 import Header from '../components/Header';
 import UserConnect from "../components/UserConnect";
 import NewAddress from '../components/NewAddress';
-import Dashboard from "../components/Dashboard";
 import { useSelector } from "react-redux";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { EvilIcons } from '@expo/vector-icons';
@@ -20,6 +19,7 @@ import { EvilIcons } from '@expo/vector-icons';
 export default function OrderConnectionScreen({ navigation }) {
 
 const user = useSelector((state) => state.users.value[0]);
+console.log('user', user)
 
 // const directionPage = 
 // && user.address.length > 0
@@ -33,7 +33,7 @@ const user = useSelector((state) => state.users.value[0]);
                 <FontAwesome name="money" size={20} color="#4B7285" style={styles.deleteIcon} />
             </View>
             <ScrollView>
-            {user.token ?<NewAddress/>:<UserConnect/>}
+            {user.token ? (user.address.length > 0 ? navigation.navigate('Payment') : <NewAddress/>) : <UserConnect/>}
             </ScrollView>
             <TouchableOpacity style={styles.buttonContainer} onPress={() => navigation.navigate("Payment")}>
           <Text style={styles.buttonText}>Étape suivante</Text>
