@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }) {
   const [searchProduct, setSearchProduct] = useState('');
   
   const handleSearch = () => {
-    navigation.navigate('Market', {name: searchProduct})
+    navigation.navigate('Market', {screen: 'Store', params: {name: searchProduct}})
     setSearchProduct("")
   }
 
@@ -27,7 +27,7 @@ export default function HomeScreen({ navigation }) {
   }
 
   const handleNavigation = (destination) => {
-    navigation.navigate('Market', {destination: destination})
+    navigation.navigate('Market', {screen: 'Store', params: {destination: destination}})
   }
   const width = Dimensions.get('window').width;
   const images = [

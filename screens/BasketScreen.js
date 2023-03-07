@@ -47,30 +47,16 @@ export default function BasketScreen({ navigation }) {
   })
 
   useEffect(() => {
-    fetch("http://192.168.1.88:3000/users/verifyAddress/:token")
+    if (users.token) {
+      fetch(`http://192.168.1.88:3000/users/verifyAddress/${users.token}`)
       .then(response => response.json())
       .then(data => {
         if (users.token && data.result) {
           setIsAddress(true)
         }
       })
+    }
   }, [users]);
-
-
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   fetch("http://192.168.1.88:3000/articles/", {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ continent: continent, category: category, name: searchName }),
-  //   }).then((response) =>
-  //     response.json()).then((data) => {
-  //       if (data.result) {
-  //         setArticlesData(data.filteredArticles)
-  //         setIsLoading(false)
-  //       }
-  //     });
-  // }, [continent, category, searchName]);
 
   const handleNextStep = () => {
     if (users.token && isAddress) {

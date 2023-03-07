@@ -8,6 +8,7 @@ const initialState = {
         articleInfo: [],
         articleInBasket: [],
         articleInFavorite: [],
+        address: [],
     }
   ],
 };
@@ -19,11 +20,13 @@ export const usersSlice = createSlice({
     addUser: (state, action) => {
       state.value[0].firstname=action.payload.firstname;
       state.value[0].token=action.payload.token;
+      state.value[0].address=action.payload.address;
     },
     disconnectUser:(state,action)=>{
         state.value[0].token = null;
         state.value[0].firstname = null;
         state.value[0].canBookmark = false;
+        state.value[0].address= [];
     }, 
     addArticleInfo: (state, action) => {
       console.log(('add article :' , action.payload));

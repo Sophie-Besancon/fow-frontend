@@ -47,11 +47,18 @@ const styles = StyleSheet.create({
         borderColor: "#4B7285",
         padding: 15,
         margin: 15,
-        borderWidth: 1,
         backgroundColor: '#DCF0F9',
         alignItems: 'center',
         borderRadius: 60,
         justifyContent: 'center',
+        shadowColor: "grey",
+        shadowRadius: 5,
+        shadowOpacity: 0.9,
+        elevation: 8,
+        shadowOffset: {
+          width: 0,
+          height: 0,
+        },
         
     },
     thanksText: {
