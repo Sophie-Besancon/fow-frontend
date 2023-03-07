@@ -38,7 +38,6 @@ export const usersSlice = createSlice({
     },
     manageArticleInFavorite: (state, action) => {
       state.value[0].articleInFavorite = action.payload
-      console.log("RECU", state.value[0].articleInFavorite)
     },
   },
 });

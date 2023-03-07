@@ -17,25 +17,11 @@ import Card from '../components/Card'
   
 
   
-  export default function FavoriteScreen() {
-    const users = useSelector((state) => state.users.value[0]);
-    const [articlesData, setArticlesData] = useState([]);
-  //console.log(articlesData)
-  //console.log(users.isLike)
+export default function FavoriteScreen() {
+  const users = useSelector((state) => state.users.value[0]);
 
-    useEffect(() => {
-      fetch("http://192.168.1.14:3000/users/favoriteArticle", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token: users.token }),
-      }).then((response) =>
-        response.json()).then((data) => {
-          setArticlesData(data.articlesinFavorite)
-        });
-    }, []);
-
-    const cards = articlesData.map((data, i) => {
-      return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} isLikeinFavorite/>;
+    const cards = users.articleInFavorite.map((data, i) => {
+      return <Card key={i} price={data.price} name={data.name} image={data.image} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} flagOfCountry={data.flagOfCountry} isLikeinFavorite={data.isLikeinFavorite}/>;
     });
 
     return (
