@@ -13,20 +13,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Popover, { PopoverPlacement } from "react-native-popover-view";
 import { addArticleInBasket } from "../reducers/users";
 
-const images = [
-  {
-    id: 1,
-    url: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
-  },
-  {
-    id: 2,
-    url: "https://www.uswayoflife.fr/3170-large_default/kit-kat-strawberry.jpg",
-  },
-  {
-    id: 3,
-    url: "https://www.tokyo-smart.com/4864-large_default/kit-kat-fraise-amao.jpg",
-  },
-];
+
 
 export default function Product() {
   const [isLike, setIsLike] = useState(false);
@@ -42,6 +29,26 @@ export default function Product() {
     (state) => state.users.value[0].articleInfo[0]
   );
   const userToken = useSelector((state) => state.users.value[0].token);
+
+
+  const images = [
+    {
+      id: 1,
+      url: informations.image,
+    },
+    {
+      id: 2,
+      url: "https://www.uswayoflife.fr/3170-large_default/kit-kat-strawberry.jpg",
+    },
+    {
+      id: 3,
+      url: "https://www.tokyo-smart.com/4864-large_default/kit-kat-fraise-amao.jpg",
+    },
+  ];
+
+
+
+
 
   // Fonction HANDLELIKE qui permet d'afficher le coeur vide ou plein selon le like.
   // l'utilisateur DOIT être connecté
@@ -93,11 +100,17 @@ export default function Product() {
     );
   });
 
-
+   console.log('information note : ', informations.note);
+  var notation= [];
    for (let i=0; i<informations.note;i++){
-     var notation = <FontAwesome name="star" size={20} color="orange" />
+   if (informations.note){
+     notation.push(<FontAwesome name="star" size={18} color="orange" key={i} />)
+   }
+   else{
+    return
+   }
    }  
-
+ 
   /* *********************** FIN INCREM / DECREM ******************************** */
 
   return (
@@ -172,7 +185,7 @@ export default function Product() {
             <View>
               <Text style={styles.titleArticle}>{informations.name}</Text>
               <Text style={styles.notation}>
-                Note du produit : {notation}
+                Note du produit :  {notation}
               </Text>
             </View>
 

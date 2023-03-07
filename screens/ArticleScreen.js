@@ -10,11 +10,13 @@ import Product from '../components/Product';
 const ArticleScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   
+const articleInfos = useSelector((state)=>state.users.value[0].articleInfo)
+
+
   const informations = useSelector(
     (state) => state.users.value[0].articleInfo[0]
   );
   const handleBack = () => {
-    console.log("RETOUR")
     navigation.navigate('Store')
     dispatch(clearArticleInfo())
   };
@@ -24,7 +26,7 @@ const ArticleScreen = ({ navigation }) => {
     <TouchableOpacity onPress={() => handleBack()} style={styles.backButton} activeOpacity={0.8}>
         <Ionicons name="md-arrow-back-circle-outline" size={20} color="white" /><Text style={styles.textButton}> Retour </Text>
     </TouchableOpacity>
-    <Product/>
+    {articleInfos.length>0 && <Product/>}
 
     </View>
   );

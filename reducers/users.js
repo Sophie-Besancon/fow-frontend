@@ -26,13 +26,15 @@ export const usersSlice = createSlice({
         state.value[0].canBookmark = false;
     }, 
     addArticleInfo: (state, action) => {
-      state.value[0].articleInfo.push(action.payload)
+      console.log(('add article :' , action.payload));
+      state.value[0].articleInfo=[action.payload]
     },
     addArticleInBasket: (state, action) => {
       state.value[0].articleInBasket.push(action.payload)
     },    
     clearArticleInfo: (state, action) => {
       state.value[0].articleInfo = []
+      console.log('article info :',state.value[0].articleInfo);
     },
     manageArticleInFavorite: (state, action) => {
       state.value[0].articleInFavorite = action.payload
