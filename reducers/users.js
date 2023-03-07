@@ -26,7 +26,6 @@ export const usersSlice = createSlice({
         state.value[0].canBookmark = false;
     }, 
     addArticleInfo: (state, action) => {
-      console.log('action payload :',action.payload);
       state.value[0].articleInfo.push(action.payload)
     },
     addArticleInBasket: (state, action) => {

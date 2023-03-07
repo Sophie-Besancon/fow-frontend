@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign,FontAwesome } from "@expo/vector-icons";
 import { ImageGallery } from "@georstat/react-native-image-gallery";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Popover, { PopoverPlacement } from "react-native-popover-view";
+import { addArticleInBasket } from "../reducers/users";
 
- const images = [
+const images = [
   {
     id: 1,
     url: "https://cdn.shopify.com/s/files/1/0481/0457/1045/products/KitKat_Japan_Strawberry_800x.jpg",
@@ -25,10 +26,9 @@ import Popover, { PopoverPlacement } from "react-native-popover-view";
     id: 3,
     url: "https://www.tokyo-smart.com/4864-large_default/kit-kat-fraise-amao.jpg",
   },
-]; 
+];
 
 export default function Product() {
-
   const [isLike, setIsLike] = useState(false);
   /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
   const [count, setCount] = useState(0);
@@ -53,13 +53,19 @@ export default function Product() {
     }
   };
 
-/*    const images = [
+  const dispatch = useDispatch();
+  /*    const images = [
     {
       url: informations.image,
     },
   ]; */
 
-
+  const handleAddBasket = () => {
+    for (let i = 0; i < count; i++) {
+      dispatch(addArticleInBasket(informations));
+    }
+    setCount(0);
+  };
 
   const handleCountLess = () => {
     if (count > 0) {
@@ -68,7 +74,7 @@ export default function Product() {
   };
 
   const handleCountMore = () => {
-    if (count < 99) {
+    if (count < informations.stock) {
       setCount(count + 1);
     }
   };
@@ -87,9 +93,10 @@ export default function Product() {
     );
   });
 
-  let notation = '';
-/* for (let i=0; i<) */
 
+   for (let i=0; i<informations.note;i++){
+     var notation = <FontAwesome name="star" size={20} color="orange" />
+   }  
 
   /* *********************** FIN INCREM / DECREM ******************************** */
 
@@ -137,7 +144,7 @@ export default function Product() {
                 {informations.countryName}
               </Text>
             </Text>
-           
+
             <TouchableOpacity
               onPress={() => {
                 setIsLike(!isLike);
@@ -160,13 +167,12 @@ export default function Product() {
                 handleLike()
               )}
             </TouchableOpacity>
-           
           </View>
           <View style={styles.priceContainer}>
             <View>
               <Text style={styles.titleArticle}>{informations.name}</Text>
               <Text style={styles.notation}>
-                Note du produit :{/* {notation} */}
+                Note du produit : {notation}
               </Text>
             </View>
 
@@ -185,7 +191,12 @@ export default function Product() {
               </TouchableOpacity>
             </View>
             <View style={styles.addToBasketContent}>
-              <TouchableOpacity style={styles.addToBasket}>
+              <TouchableOpacity
+                style={styles.addToBasket}
+                onPress={() => {
+                  handleAddBasket();
+                }}
+              >
                 <Text style={styles.addToBasketText}>Ajouter au panier</Text>
               </TouchableOpacity>
               <Text style={styles.stock}>STOCK : {informations.stock}</Text>
