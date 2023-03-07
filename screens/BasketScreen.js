@@ -13,14 +13,13 @@ import Header from '../components/Header'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector } from "react-redux";
 
-export default function BasketScreen() {
+export default function BasketScreen({navigation}) {
 
   const users = useSelector((state) => state.users.value[0]);
-  console.log('users.articlInBasket', users.articleInBasket);
-
+console.log(users)
   const numberFormatFunction = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 
-  let deliveryCost = 7.99;
+  let deliveryCost = (users.articleInBasket.length === 0 || users.articleInBasket.length > 9) ? 0 : 7.99;
   let totalOrder = 0;
 
   const regroupedArticles = users.articleInBasket.reduce((acc, item) => {
@@ -34,9 +33,8 @@ export default function BasketScreen() {
     return acc;
   }, []);
 
-  console.log('regroupedArticles', regroupedArticles)
-
   const basketArticles = regroupedArticles.map((data, i) => {
+    totalOrder = totalOrder + data.total;
     return (<View style={styles.tableContainerRow} key={i}>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.name}</Text></View>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.quantity}</Text></View>
@@ -45,7 +43,13 @@ export default function BasketScreen() {
     </View>)
   })
 
-
+const handleNextStep = () => {
+  if (users.token) {
+    navigation.navigate("Payment")
+  } else {
+    navigation.navigate("Compte")
+  }
+}
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -70,13 +74,13 @@ export default function BasketScreen() {
         </View>
         <View style={styles.deliveryCostContainer}>
           <View style={styles.deliveryCostContainerText}><Text>Frais de port</Text></View>
-          <View style={styles.deliveryCost}><Text style={styles.tableProductText}>{users.articleInBasket.length > 9 ? deliveryCost : 0}€</Text></View>
+          <View style={styles.deliveryCost}><Text style={styles.tableProductText}>{numberFormatFunction.format(deliveryCost)}</Text></View>
         </View>
         <View style={styles.totalContainer}>
           <View ><Text style={styles.tableTitleText}>Total de la commande</Text></View>
-          <View ><Text style={styles.tableTitleText}>{totalOrder + deliveryCost}€</Text></View>
+          <View ><Text style={styles.tableTitleText}>{numberFormatFunction.format(totalOrder + deliveryCost)}</Text></View>
         </View>
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleNextStep()}>
           <Text style={styles.buttonText}>Étape suivante</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -103,10 +107,11 @@ const styles = StyleSheet.create({
     marginTop: 30,
     fontSize: 16,
   },
+  scrollView: {
+    width: '90%',
+  },
   tableContainer: {
     marginTop: 10,
-    width: "90%",
-
     flexDirection: 'column',
   },
   tableContainerRowTitle: {
@@ -167,7 +172,6 @@ const styles = StyleSheet.create({
     borderColor: "#4B7285",
     borderWidth: 1,
     backgroundColor: '#4B7285',
-    width: "90%",
   },
 
 

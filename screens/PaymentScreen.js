@@ -11,27 +11,17 @@ import {
 import Header from '../components/Header';
 import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import {useState} from "react";
+import { useState } from "react";
 
 export default function PaymentScreen({ navigation }) {
 
-const [nameCard, setNameCard] = useState(null);
-const [numberCard, setNumberCard] = useState(null);
-const [expirationDate, setExpirationDate] = useState(null);
-const [securityNumber, setSecurityNumber] = useState(null);
+    const [nameCard, setNameCard] = useState('');
+    const [numberCard, setNumberCard] = useState('');
+    const [expirationDate, setExpirationDate] = useState('');
+    const [securityNumber, setSecurityNumber] = useState('');
 
     const handleConfirmation = () => {
         navigation.navigate('Confirmation');
-    }
-
-    const numberInput = () => {
-        const pattern = /^[0-9]{0,9}$/;
-        return pattern.test(nameCard)
-    }
-
-    const securityInput = () => {
-        const pattern = /^[0-9]{0,9}$/;
-        return pattern.test(nameCard)
     }
 
     return (
@@ -44,10 +34,14 @@ const [securityNumber, setSecurityNumber] = useState(null);
             </View>
             <Text style={styles.textContainer}>Paiement</Text>
             <View style={styles.inputContainer}>
-                <TextInput inputMode="text" placeholder="Nom de la carte" onChangeText={console.log('test')} value={nameCard} style={styles.input} />
-                <TextInput maxLength={16} inputMode="numeric" placeholder="Numéro de carte" onChangeText={console.log('test')} value={numberCard} style={styles.input} />
-                <TextInput placeholder="Date d'expiration" onChangeText={console.log('test')} value={expirationDate} style={styles.input} />
-                <TextInput maxLength={3} inputMode="numeric" placeholder="Cryptogramme de sécurité" onChangeText={console.log('test')} value={securityNumber} style={styles.input} />
+                <Text style={styles.inputLabel}>Nom de la carte</Text>
+                <TextInput inputMode="text" placeholder="Nom de la carte" onChangeText={(value) => { setNameCard(value) }} value={nameCard} style={styles.input} />
+                <Text style={styles.inputLabel}>Numéro de carte</Text>
+                <TextInput maxLength={16} inputMode="numeric" placeholder="Numéro de carte" onChangeText={(e) => { setNumberCard(e) }} value={numberCard} style={styles.input} />
+                <Text style={styles.inputLabel}>Date d'expiration</Text>
+                <TextInput placeholder="Date d'expiration" onChangeText={(value) => { setExpirationDate(value) }} value={expirationDate} style={styles.input} />
+                <Text style={styles.inputLabel}>Cryptogramme de sécurité</Text>
+                <TextInput maxLength={3} inputMode="numeric" placeholder="Cryptogramme de sécurité" onChangeText={(value) => { setSecurityNumber(value) }} value={securityNumber} style={styles.input} />
                 <TouchableOpacity onPress={() => handleConfirmation()} style={styles.inputButton} activeOpacity={0.8}>
                     <Text style={styles.textButton}>Valider ma commande</Text>
                 </TouchableOpacity>
@@ -70,29 +64,32 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'space-between',
         marginTop: 30,
-      },
-      textContainer: {
+    },
+    textContainer: {
         marginTop: 30,
         fontSize: 16,
-      },
+    },
     textButton: {
         color: '#ffffff',
     },
     inputContainer: {
         width: "80%",
     },
-
-    input : {
-        flex: 1, 
+    inputLabel: {
+        marginTop: 10,
+    },
+    input: {
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
+        height: 40,
         padding: 10,
-        marginTop: 20,
         borderRadius: 8,
         borderColor: "#4B7285",
         borderWidth: 1,
-      },
+        marginTop: 5,
+        color: 'black',
+    },
     inputButton: {
         backgroundColor: '#4B7285',
         height: 40,
