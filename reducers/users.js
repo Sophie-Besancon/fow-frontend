@@ -38,19 +38,6 @@ export const usersSlice = createSlice({
     manageArticleInFavorite: (state, action) => {
       state.value[0].articleInFavorite = action.payload
       console.log("RECU", state.value[0].articleInFavorite)
-
-
-    /*   //console.log('PAYLOAD', action.payload)
-      if (state.value[0].articleInFavorite.includes(action.payload)){
-        state.value[0].articleInFavorite.filter(
-          (article) => article !== action.payload
-        )
-      } else {
-        state.value[0].articleInFavorite.push(action.payload)
-        if (state.value[0].articleInFavorite.length === 0) {
-          state.value[0].articleInFavorite === []
-        }
-      } //console.log("TABLEAU", state.value[0].articleInFavorite)  */
     },
   },
 });
