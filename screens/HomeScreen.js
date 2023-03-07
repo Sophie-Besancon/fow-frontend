@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.4,
     shadowOffset: {
-      width: -7,
-      height: 7,
+      width: 7,
+      height:-7,
     },
     
   },
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     height: "62%",
     width: "90%",
     borderRadius: 40,
-    margin: 20,
+    margin: 15,
     
   },
   carousel:{

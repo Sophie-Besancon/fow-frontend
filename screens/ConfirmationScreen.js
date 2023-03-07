@@ -9,7 +9,7 @@ import {
     View,
 } from 'react-native';
 import Header from '../components/Header';
-import { AntDesign } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 
 export default function ConfirmationtScreen({ navigation }) {
 
@@ -24,10 +24,11 @@ export default function ConfirmationtScreen({ navigation }) {
             {/* <Image source={require('../assets/giframen.gif')} style={{width: 100, height: 100 }} /> */}
             </View>
             <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton} activeOpacity={0.8}>
+            <Ionicons name="md-arrow-back-circle-outline" size={20} color="white" />
                 <Text style={styles.textButton}> Retour à la page d'accueil </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={console.log("voir la commande")} style={styles.backButton} activeOpacity={0.8}>
-            {/* <AntDesign name="BarcodeOutlined" size={20} color="white" /> */}
+            <Entypo name="list" size={20} color="white" />
                 <Text style={styles.textButton}> Voir mes commandes </Text>
             </TouchableOpacity>
         </KeyboardAvoidingView>

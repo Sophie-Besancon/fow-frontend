@@ -11,12 +11,15 @@ import {
 } from 'react-native';
 import Header from '../components/Header'
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { EvilIcons } from '@expo/vector-icons';
 import { useSelector } from "react-redux";
+import { useState, useEffect } from 'react';
 
-export default function BasketScreen({navigation}) {
+export default function BasketScreen({ navigation }) {
 
   const users = useSelector((state) => state.users.value[0]);
-console.log(users)
+  const [isAddress, setIsAddress] = useState(false);
+  console.log(users)
   const numberFormatFunction = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 
   let deliveryCost = (users.articleInBasket.length === 0 || users.articleInBasket.length > 9) ? 0 : 7.99;
@@ -43,13 +46,41 @@ console.log(users)
     </View>)
   })
 
-const handleNextStep = () => {
-  if (users.token) {
-    navigation.navigate("Payment")
-  } else {
-    navigation.navigate("Compte")
+  useEffect(() => {
+    fetch("http://192.168.1.88:3000/users/verifyAddress/:token")
+      .then(response => response.json())
+      .then(data => {
+        if (users.token && data.result) {
+          setIsAddress(true)
+        }
+      })
+  }, [users]);
+
+
+  // useEffect(() => {
+  //   setIsLoading(true)
+  //   fetch("http://192.168.1.88:3000/articles/", {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ continent: continent, category: category, name: searchName }),
+  //   }).then((response) =>
+  //     response.json()).then((data) => {
+  //       if (data.result) {
+  //         setArticlesData(data.filteredArticles)
+  //         setIsLoading(false)
+  //       }
+  //     });
+  // }, [continent, category, searchName]);
+
+  const handleNextStep = () => {
+    if (users.token && isAddress) {
+      navigation.navigate("Payment")
+    } else if (users.token && !isAddress) {
+      navigation.navigate("Connexion")
+    } else if (!users.token) {
+      navigation.navigate("Connexion")
+    }
   }
-}
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -82,6 +113,7 @@ const handleNextStep = () => {
         </View>
         <TouchableOpacity style={styles.buttonContainer} onPress={() => handleNextStep()}>
           <Text style={styles.buttonText}>Étape suivante</Text>
+          <EvilIcons name="arrow-right" size={24} color="white" />
         </TouchableOpacity>
       </ScrollView>
 
@@ -177,13 +209,14 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     marginTop: 30,
+    flexDirection: 'row',
     alignSelf: "flex-end",
     height: 40,
     margin: 10,
     padding: 10,
     borderRadius: 8,
     backgroundColor: "#4B7285",
-    width: 120,
+    width: 130,
   },
   buttonText: {
     alignSelf: "center",

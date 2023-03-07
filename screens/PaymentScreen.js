@@ -77,6 +77,9 @@ const styles = StyleSheet.create({
     },
     inputLabel: {
         marginTop: 10,
+        color: '#4B7285',
+        fontWeight: 600,
+        fontSize: 15,
     },
     input: {
         justifyContent: 'space-between',
@@ -93,8 +96,7 @@ const styles = StyleSheet.create({
     inputButton: {
         backgroundColor: '#4B7285',
         height: 40,
-        margin: 20,
-        marginLeft: 20,
+        marginTop: 20,
         padding: 10,
         borderRadius: 8,
         flexDirection: "row",

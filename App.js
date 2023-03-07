@@ -14,6 +14,7 @@ import ContinentScreen from './screens/ContinentScreen';
 import ArticleScreen from './screens/ArticleScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import ConfirmationScreen from './screens/ConfirmationScreen';
+import OrderConnectionScreen from './screens/OrderConnectionScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
@@ -89,7 +90,9 @@ const BasketNavigator = () => {
         let iconName = '';
         if (route.name === 'Panier') {
           iconName = 'shopping-basket';
-        } else if (route.name === 'Payment') {
+        } else if (route.name === 'Connexion') {
+          iconName = 'user';
+        }else if (route.name === 'Payment') {
           iconName = 'money';
         } else if (route.name === 'Confirmation') {
           iconName = 'check';
@@ -103,6 +106,7 @@ const BasketNavigator = () => {
       tabBarStyle: { display: 'flex' },
     })}>
       <Tab.Screen name="Panier" component={BasketScreen} />
+      <Tab.Screen name="Connexion" component={OrderConnectionScreen} />
       <Tab.Screen name="Payment" component={PaymentScreen} />
       <Tab.Screen name="Confirmation" component={ConfirmationScreen} />
     </Tab.Navigator>

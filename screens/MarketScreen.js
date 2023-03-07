@@ -60,7 +60,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true)
-    fetch("http://192.168.1.47:3000/articles/", {
+    fetch("http://192.168.1.88:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category, name: searchName }),
