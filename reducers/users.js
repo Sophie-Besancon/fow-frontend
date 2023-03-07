@@ -34,7 +34,6 @@ export const usersSlice = createSlice({
     },    
     clearArticleInfo: (state, action) => {
       state.value[0].articleInfo = []
-      console.log('article info :',state.value[0].articleInfo);
     },
     manageArticleInFavorite: (state, action) => {
       state.value[0].articleInFavorite = action.payload

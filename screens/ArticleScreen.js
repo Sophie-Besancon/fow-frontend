@@ -13,9 +13,6 @@ const ArticleScreen = ({ navigation }) => {
 const articleInfos = useSelector((state)=>state.users.value[0].articleInfo)
 
 
-  const informations = useSelector(
-    (state) => state.users.value[0].articleInfo[0]
-  );
   const handleBack = () => {
     navigation.navigate('Store')
     dispatch(clearArticleInfo())
@@ -38,7 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    
   },
   textButton: {
     color: '#ffffff',

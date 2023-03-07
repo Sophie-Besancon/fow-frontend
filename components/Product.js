@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import {
   View,
   Text,
@@ -31,21 +31,15 @@ export default function Product() {
   const userToken = useSelector((state) => state.users.value[0].token);
 
 
-  const images = [
-    {
-      id: 1,
-      url: informations.image,
-    },
-    {
-      id: 2,
-      url: "https://www.uswayoflife.fr/3170-large_default/kit-kat-strawberry.jpg",
-    },
-    {
-      id: 3,
-      url: "https://www.tokyo-smart.com/4864-large_default/kit-kat-fraise-amao.jpg",
-    },
-  ];
 
+  const images = informations.image.map((element, i) => {
+    console.log('element : ',element);
+    return
+    ({
+      id: i,
+      url: element
+    })
+  })
 
 
 
@@ -61,11 +55,6 @@ export default function Product() {
   };
 
   const dispatch = useDispatch();
-  /*    const images = [
-    {
-      url: informations.image,
-    },
-  ]; */
 
   const handleAddBasket = () => {
     for (let i = 0; i < count; i++) {
@@ -86,12 +75,12 @@ export default function Product() {
     }
   };
 
-  const imagesDisplay = images.map((element, i) => {
+  const imagesDisplay = informations.image.map((element, i) => {
     return (
       <TouchableOpacity onPress={openGallery} key={i}>
         <Image
           source={{
-            uri: element.url,
+            uri:"https://res.cloudinary.com/dd0bjihul/image/upload/v1677755748/mochi_atyudk.jpg",
           }}
           resizeMode="cover"
           style={styles.imagesDisplay}
@@ -100,7 +89,6 @@ export default function Product() {
     );
   });
 
-   console.log('information note : ', informations.note);
   var notation= [];
    for (let i=0; i<informations.note;i++){
    if (informations.note){
@@ -131,7 +119,7 @@ export default function Product() {
           <ImageGallery
             close={closeGallery}
             isOpen={isOpen}
-            images={images}
+             images={images}
             thumbSize={80}
             thumbColor="#F39C12"
           />
@@ -173,7 +161,7 @@ export default function Product() {
                   }
                 >
                   <Text style={styles.textPopover}>
-                    Connectez-vous pour ajouter aux favoris 😉
+                    Connectez-vous pour ajouter aux favoris 😜
                   </Text>
                 </Popover>
               ) : (
@@ -323,3 +311,4 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+ 

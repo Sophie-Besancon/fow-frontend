@@ -18,7 +18,6 @@ import OrderConnectionScreen from './screens/OrderConnectionScreen';
 
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
-import articles from './reducers/articles';
 import users from './reducers/users';
 
 const Stack = createNativeStackNavigator();
@@ -26,7 +25,7 @@ const Tab = createBottomTabNavigator();
 
 
 const store = configureStore({
-  reducer: { articles, users },
+  reducer: { users },
  });
 
 
