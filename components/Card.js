@@ -17,8 +17,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
 import { addArticleInfo, addArticleInBasket, manageArticleInFavorite} from "../reducers/users";
 import CountryFlag from "react-native-country-flag";
-
-
+import Popover, { PopoverPlacement } from "react-native-popover-view";
 
 
 const Card = (props) => {
@@ -26,6 +25,8 @@ const Card = (props) => {
   const navigation = useNavigation();
   const users = useSelector((state) => state.users.value[0]);
   const [isLike, setIsLike] = useState(false);
+
+  const userToken = useSelector((state) => state.users.value[0].token);
 
   let backgroundImg = { uri: `${props.image[0]}` };
   let flagImg= props.flagOfCountry
@@ -53,9 +54,9 @@ const Card = (props) => {
               }))
             )
           );
-          if (props.onLikeChange) {
+         if (props.onLikeChange) {
             props.onLikeChange(props.id, !isLike);
-          }
+          } 
         });
     }
   };
@@ -102,11 +103,22 @@ const Card = (props) => {
               handleLike();
             }}
           >
-            {isLike ? (
-              <AntDesign name="heart" size={24} color="#E74C3C" />
-            ) : (
-              <AntDesign name="hearto" size={24} color="#E74C3C" />
-            )}
+{/*             {!userToken ? (
+                <Popover
+                  placement={PopoverPlacement.BOTTOM}
+                  from={
+                    <TouchableOpacity>
+                      <AntDesign name="hearto" size={24} color="#E74C3C" />
+                    </TouchableOpacity>
+                  }
+                >
+                  <Text style={styles.textPopover}>
+                    Connectez-vous pour ajouter aux favoris 😉
+                  </Text>
+                </Popover>
+              ) : (
+                handleLike()
+              )} */}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
               handleCart();
@@ -123,6 +135,7 @@ export default Card;
 
 const styles = StyleSheet.create({
   cardContainer: {
+    backgroundColor: 'white',
     alignSelf: "center",
     marginTop: 20,
     marginBottom: 20,

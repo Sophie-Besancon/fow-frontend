@@ -9,11 +9,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Entypo } from "@expo/vector-icons";
+import {disconnectUser} from "../reducers/users";
 
 const Header = (props) => {
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+  const user = useSelector((state) => state.users.value[0].firstname);
+
 
   const handleNewPlace = () => {
     setModalVisible(false);
@@ -23,7 +27,12 @@ const Header = (props) => {
     setModalVisible(false);
   };
 
-  const user = useSelector((state) => state.users.value[0].firstname);
+  const handledisconnexion= () => {
+    dispatch(disconnectUser())
+  }
+
+
+
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -76,9 +85,9 @@ const Header = (props) => {
                 <View style={styles.modalMenu}>
                   <Text>Menu</Text>
                 </View>
-                <View style={styles.disconnectedButton}>
-                  <FontAwesome name="power-off" size={50} color="#000000" />
-                </View>
+                <TouchableOpacity style={styles.disconnectedButton} onPress={() => handledisconnexion()}>
+                  <FontAwesome name="power-off" size={35} color="#000000"/>
+                </TouchableOpacity>
               </TouchableOpacity>
             </View>
           </View>
@@ -139,6 +148,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: "50%",
+    height: 653,
   },
   closeButton: {
     flexDirection: "row-reverse",
