@@ -31,15 +31,15 @@ const Card = (props) => {
   let backgroundImg = { uri: `${props.image[0]}` };
   let flagImg= props.flagOfCountry
 
-
-  useEffect(() => {
+   useEffect(() => {
     setIsLike(props.isLikeinFavorite);
-  }, [props.isLikeinFavorite]);
+   // console.log(props.isLikeinFavorite);
+  }, [props.isLikeinFavorite]); 
 
   const handleLike = () => {
     if (users.token) {
-      setIsLike(!isLike);
-      fetch(`http://192.168.1.88:3000/users/updateFavoriteArticle`, {
+      //setIsLike(!isLike);
+      fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
@@ -98,11 +98,14 @@ const Card = (props) => {
             }}>
             <FontAwesome name="info-circle" size={24} color="#4B7285" />
           </TouchableOpacity>
+
           <TouchableOpacity
             onPress={() => {
               handleLike();
             }}
           >
+            <AntDesign name="hearto" size={24} color="#E74C3C" />
+
 {/*             {!userToken ? (
                 <Popover
                   placement={PopoverPlacement.BOTTOM}

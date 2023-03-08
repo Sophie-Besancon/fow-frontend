@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addAddress } from "../reducers/users";
 
 
-export default function NewAddress(){
+export default function NewAddress(props){
 
       // Déclaration des états pour 'AJOUTER UNE NOUVELLE ADRESSE'
   const [newAdress, setNewAddress] = useState("");

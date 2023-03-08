@@ -1,4 +1,4 @@
- import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,42 +7,33 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { AntDesign,FontAwesome } from "@expo/vector-icons";
-import { ImageGallery } from "@georstat/react-native-image-gallery";
+import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import Popover, { PopoverPlacement } from "react-native-popover-view";
 import { addArticleInBasket } from "../reducers/users";
-
-
+import Gallery from "react-native-image-gallery";
 
 export default function Product() {
   const [isLike, setIsLike] = useState(false);
   /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
   const [count, setCount] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Galerie images
-  const openGallery = () => setIsOpen(true);
-  const closeGallery = () => setIsOpen(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const informations = useSelector(
     (state) => state.users.value[0].articleInfo[0]
   );
   const userToken = useSelector((state) => state.users.value[0].token);
 
+  // useEffect qui permet de passer la valeur de isLoaded à true 500 ms apres le chargement de la page
+  // parce que les images se chargent trop vite sinon
+  useEffect(() => {
+    const interval = setInterval(setIsLoaded(true), 500);
+    clearInterval(interval);
+  }, []);
 
-
-  const images = informations.image.map((element, i) => {
-   // console.log('element : ',element);
-    return
-    ({
-      id: i,
-      url: element
-    })
-  })
-
-
-
+  const images = informations.image.map((element) => {
+    return { source: { uri: element } };
+  });
 
   // Fonction HANDLELIKE qui permet d'afficher le coeur vide ou plein selon le like.
   // l'utilisateur DOIT être connecté
@@ -55,7 +46,6 @@ export default function Product() {
   };
 
   const dispatch = useDispatch();
-
   const handleAddBasket = () => {
     for (let i = 0; i < count; i++) {
       dispatch(addArticleInBasket(informations));
@@ -75,56 +65,30 @@ export default function Product() {
     }
   };
 
-  const imagesDisplay = informations.image.map((element, i) => {
-    return (
-      <TouchableOpacity onPress={openGallery} key={i}>
-        <Image
-          source={{
-            uri:"https://res.cloudinary.com/dd0bjihul/image/upload/v1677755748/mochi_atyudk.jpg",
-          }}
-          resizeMode="cover"
-          
-          style={styles.imagesDisplay}
-        />
-      </TouchableOpacity>
-    );
-  });
+  var notation = [];
+  for (let i = 0; i < informations.note; i++) {
+    if (informations.note) {
+      notation.push(
+        <FontAwesome name="star" size={18} color="orange" key={i} />
+      );
+    } else {
+      return;
+    }
+  }
 
-  var notation= [];
-   for (let i=0; i<informations.note;i++){
-   if (informations.note){
-     notation.push(<FontAwesome name="star" size={18} color="orange" key={i} />)
-   }
-   else{
-    return
-   }
-   }  
- 
   /* *********************** FIN INCREM / DECREM ******************************** */
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <View style={styles.productContainer}>
-          <TouchableOpacity onPress={openGallery}>
-            <Image
-              source={{
-                uri: informations.image,
-              }}
-              style={styles.cover}
-              alignSelf="center"
+        <View>
+          {isLoaded && (
+            <Gallery
+              style={{ flex: 1, backgroundColor: "white", height: 300 }}
+              images={images}
             />
-          </TouchableOpacity>
+          )}
 
-          <View style={styles.imagesContainer}>{imagesDisplay}</View>
-{/* ImageGallery sert à la definition des différentes propriétés pour le bon fonctionnement de la galerie  */}
-          <ImageGallery
-            close={closeGallery}
-            isOpen={isOpen}
-             images={images}
-            thumbSize={80}
-            thumbColor="#F39C12"
-          />
           <View style={styles.isLikeContent}>
             <Text style={styles.title}>
               Catégorie :{" "}
@@ -170,13 +134,14 @@ export default function Product() {
                 handleLike()
               )}
             </TouchableOpacity>
+
+
+            
           </View>
           <View style={styles.priceContainer}>
             <View>
               <Text style={styles.titleArticle}>{informations.name}</Text>
-              <Text style={styles.notation}>
-                Note du produit :  {notation}
-              </Text>
+              <Text style={styles.notation}>Note du produit : {notation}</Text>
             </View>
 
             <Text style={styles.price}>{informations.price}€</Text>
@@ -301,10 +266,7 @@ const styles = StyleSheet.create({
     fontWeight: "normal",
     color: "black",
   },
-  cover: {
-    height: 250,
-    minWidth: 500,
-  },
+
   stock: {
     marginVertical: 10,
     alignSelf: "center",
@@ -313,4 +275,3 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
- 
