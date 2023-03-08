@@ -65,7 +65,7 @@ export default function MarketScreen({ route, navigation }) {
       setSearchName(null);
     }
   }, [isFocused])
-
+// cyril
   //useEffet qui détecte un params venu depuis HomeScreen (click sur une image de continent ou recherche)
   useEffect(() => {
     setContinent(route.params?.destination)

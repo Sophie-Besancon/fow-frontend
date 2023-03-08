@@ -19,6 +19,8 @@ import CountryFlag from "react-native-country-flag";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
 
+
+
 const Card = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -26,8 +28,7 @@ const Card = (props) => {
  
   let isLike = props.isLikeinFavorite;
   
-  /* articlesInFavorite.some(
-    (article) => article.name === informations.name) */
+  console.log(isLike);
    
  
   let backgroundImg = { uri: `${props.image[0]}` };
