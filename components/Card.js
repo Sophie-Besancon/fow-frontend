@@ -19,6 +19,8 @@ import CountryFlag from "react-native-country-flag";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
 
+
+
 const Card = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -26,28 +28,23 @@ const Card = (props) => {
  
   let isLike = props.isLikeinFavorite;
   
-  /* articlesInFavorite.some(
-    (article) => article.name === informations.name) */
+  console.log(isLike);
    
  
   let backgroundImg = { uri: `${props.image[0]}` };
-  let flagImg = props.flagOfCountry;
+  let flagImg= props.flagOfCountry
 
    
 
   const handleLike = () => {
     if (!users.token) {
-      Alert.alert(
-        "Non connecté",
-        "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.",
-        [
-          {
-            text: "Retour",
-            style: "cancel",
-          },
-          { text: "Ok" },
-        ]
-      );
+      Alert.alert('Non connecté', "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.", [
+        {
+          text: 'Retour',
+          style: 'cancel',
+        },
+        {text: 'Ok'},
+      ]);
       return;
     } else {
       fetch("http://192.168.1.14:3000/users/updateFavoriteArticle", {
