@@ -76,7 +76,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true)
-    fetch("http://192.168.1.14:3000/articles/", {
+    fetch("http://192.168.1.47:3000/articles/", {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ continent: continent, category: category, name: searchName }),
@@ -90,7 +90,8 @@ export default function MarketScreen({ route, navigation }) {
   }, [continent, category, searchName]);
 
   const cards = articlesData.map((data, i) => {
-    const isLikeinFavorite = users.articleInFavorite.some(article => article._id === data._id);
+ 
+    const isLikeinFavorite = users.articleInFavorite.some(article => article.name === data.name);
     return <Card key={i} price={data.price} name={data.name} image={data.image} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} flagOfCountry={data.flagOfCountry}  isLikeinFavorite={isLikeinFavorite}/>;
   });
 

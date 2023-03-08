@@ -6,16 +6,15 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import Popover, { PopoverPlacement } from "react-native-popover-view";
-import { addArticleInBasket } from "../reducers/users";
+import { addArticleInBasket, manageArticleInFavorite } from "../reducers/users";
 import Gallery from "react-native-image-gallery";
 
 export default function Product() {
-  const [isLike, setIsLike] = useState(false);
-  /*****  INCREMENTATION ET DECREMENTATION DE COUNT POUR L'AJOUT AU PANIER *****/
   const [count, setCount] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -23,6 +22,18 @@ export default function Product() {
     (state) => state.users.value[0].articleInfo[0]
   );
   const userToken = useSelector((state) => state.users.value[0].token);
+  
+  const articlesInFavorite = useSelector(
+    (state) => state.users.value[0].articleInFavorite)
+  
+console.log('ART : ',articlesInFavorite);
+
+  const dispatch = useDispatch();
+
+let isLike = articlesInFavorite.some(
+  (article) => article.name === informations.name
+ 
+)
 
   // useEffect qui permet de passer la valeur de isLoaded à true 500 ms apres le chargement de la page
   // parce que les images se chargent trop vite sinon
@@ -31,21 +42,50 @@ export default function Product() {
     clearInterval(interval);
   }, []);
 
+  // map qui permet de lire toutes les images du tableau d'image de l'article
   const images = informations.image.map((element) => {
     return { source: { uri: element } };
   });
-
-  // Fonction HANDLELIKE qui permet d'afficher le coeur vide ou plein selon le like.
+  // Fonction qui permet d'afficher le coeur vide ou plein selon le like.
   // l'utilisateur DOIT être connecté
+
   let handleLike = () => {
-    if (isLike) {
-      return <AntDesign name="heart" size={24} color="#E74C3C" />;
-    } else {
-      return <AntDesign name="hearto" size={24} color="#E74C3C" />;
-    }
+
+    
+    
+      fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token: userToken, articleId: informations.id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+            console.log('informations :', informations);
+            dispatch(manageArticleInFavorite(informations))
+          
+        
+      });  
+    
+
   };
 
-  const dispatch = useDispatch();
+
+
+  // fonction qui permet d'afficher un message d'alerte en cas de like sur un article mais utilisateur non connecté
+  let isDisconnected = () => {
+    Alert.alert(
+      "Impossible d'ajouter aux favoris",
+      "Veuillez d'abord vous connectez !",
+      [
+        {
+          text: "💫 Retour",
+          style: "cancel",
+        },
+        { text: "✅ Ok" },
+      ]
+    );
+  };
+  // permet d'ajouter au panier le nombre d'article demandé - un par un
   const handleAddBasket = () => {
     for (let i = 0; i < count; i++) {
       dispatch(addArticleInBasket(informations));
@@ -53,6 +93,7 @@ export default function Product() {
     setCount(0);
   };
 
+  /* <---- INCREMENTATION / DECREMENTATION ---> */
   const handleCountLess = () => {
     if (count > 0) {
       setCount(count - 1);
@@ -65,6 +106,7 @@ export default function Product() {
     }
   };
 
+  /* <-- Permet d'afficher X étoiles pour le produit selon la note de l'article --> */
   var notation = [];
   for (let i = 0; i < informations.note; i++) {
     if (informations.note) {
@@ -76,8 +118,7 @@ export default function Product() {
     }
   }
 
-  /* *********************** FIN INCREM / DECREM ******************************** */
-
+  /* <------------- RETURN -------------> */
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -114,29 +155,15 @@ export default function Product() {
 
             <TouchableOpacity
               onPress={() => {
-                setIsLike(!isLike);
+                !userToken ? isDisconnected() : handleLike();
               }}
             >
-              {!userToken ? (
-                <Popover
-                  placement={PopoverPlacement.LEFT}
-                  from={
-                    <TouchableOpacity>
-                      <AntDesign name="hearto" size={24} color="#E74C3C" />
-                    </TouchableOpacity>
-                  }
-                >
-                  <Text style={styles.textPopover}>
-                    Connectez-vous pour ajouter aux favoris 😜
-                  </Text>
-                </Popover>
+              {isLike ? (
+                <AntDesign name="heart" size={24} color="#E74C3C" />
               ) : (
-                handleLike()
+                <AntDesign name="hearto" size={24} color="#E74C3C" />
               )}
             </TouchableOpacity>
-
-
-            
           </View>
           <View style={styles.priceContainer}>
             <View>

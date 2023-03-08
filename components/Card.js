@@ -23,15 +23,17 @@ const Card = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const users = useSelector((state) => state.users.value[0]);
-  const [isLike, setIsLike] = useState(false);
-
+ 
+  let isLike = props.isLikeinFavorite;
+  
+  /* articlesInFavorite.some(
+    (article) => article.name === informations.name) */
+   
+ 
   let backgroundImg = { uri: `${props.image[0]}` };
   let flagImg= props.flagOfCountry
 
-   useEffect(() => {
-    setIsLike(props.isLikeinFavorite);
-   // console.log(props.isLikeinFavorite);
-  }, [props.isLikeinFavorite]); 
+   
 
   const handleLike = () => {
     if (!users.token) {
@@ -44,33 +46,26 @@ const Card = (props) => {
       ]);
       return;
     } else {
-      setIsLike(!isLike);
-      fetch(`http://192.168.1.14:3000/users/updateFavoriteArticle`, {
+      
+      fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
       })
         .then((response) => response.json())
         .then((data) => {
-          dispatch(
-            manageArticleInFavorite(
-              data.data.articlesinFavorite.map((article) => ({
-                ...article,
-                isLikeinFavorite: article._id === props.id ? !isLike : article.isLikeinFavorite
-              }))
-            )
-          );
+          dispatch(manageArticleInFavorite(props));
         });
     }
   };
 
   const handleCart = () => {
-    dispatch(addArticleInBasket({price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}))
+    dispatch(addArticleInBasket(props))
   };
 
   const handleInfo = () => {
     navigation.navigate('Article')
-    dispatch(addArticleInfo({price: props.price, name:props.name, image:props.image, id:props.id, note:props.note, description:props.description, stock:props.stock, categoryName:props.categoryName, countryName:props.countryName, continentOfCountry:props.continentOfCountry}))
+    dispatch(addArticleInfo(props))
   };
 
   return (
