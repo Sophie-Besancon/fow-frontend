@@ -67,45 +67,55 @@ const Header = (props) => {
           </Text>
         </View>
         <Modal visible={modalVisible} animationType="none" transparent>
-          <View style={styles.centeredView}>
+            <View style={styles.centeredView}> 
             <View style={styles.modalView}>
               <TouchableOpacity
                 onPress={() => handleOpen()}
                 style={styles.button}
                 activeOpacity={0.8}
               ></TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => handleClose()}
-                style={styles.button}
-                activeOpacity={0.8}
-              >
+              
+              <Image source={require("../assets/logo-fow.png")} style={styles.modalLogo}/>
 
                   <View style={styles.modalMenu}>
-                    <View style={styles.modalIconContainer}>
-                    <Ionicons name="reload" size={24} color="black" />
-                    <AntDesign name="inbox" size={24} color="black" />
-                    <Feather name="mail" size={24} color="black" />
-                    <AntDesign name="disconnect" style={styles.disconnectedIcon} size={28} color="black" />
-                    </View>
-                    <View styles={styles.modaltextContainer}>
-                  <TouchableOpacity>
+                  
+
+                <TouchableOpacity onPress={() => handleClose()} style={styles.fieldContainer} activeOpacity={0.8}>
+                  <Ionicons name="reload"  size={24} color="#FC9F30" />
                   <Text style={styles.modalText}>Reprendre la recherche</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity>
+      
+
+                  
+                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8}>
+                  <AntDesign name="inbox"  size={24} color="#FC9F30" />
                   <Text style={styles.modalText}>Mes commandes</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity>
-                  <Text style={styles.modalText}>Contactez Nous</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.disconnectedButton} onPress={() => handleDisconnexion()}>
-                <Text style={styles.modalText}>Se déconnecter</Text>
+               
 
-                </TouchableOpacity>
-                </View>
-                </View>
-                </TouchableOpacity>
+                  
+                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8}>
+                  <Feather name="mail"  size={24} color="#FC9F30" />
+                  <Text style={styles.modalText}>Contactez Nous</Text>
+                  </TouchableOpacity >
+            
+
+                 
+                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8} onPress={() => handleDisconnexion()}>
+                  <AntDesign name="disconnect"  size={28} color="#FC9F30" />
+                  <Text style={styles.modalText}>Se déconnecter</Text>
+                  </TouchableOpacity> 
+              
+
+{/*                   <TouchableOpacity  style={styles.fieldContainer} activeOpacity={0.8}>
+                  <Entypo name="log-out" size={24} color="black" />
+                  <Text style={styles.modalText}>Fermer</Text>
+                  </TouchableOpacity> */}
+
+                  </View>
+
             </View>
-          </View>
+           </View>
         </Modal>
       </View>
     </SafeAreaView>
@@ -135,6 +145,11 @@ const styles = StyleSheet.create({
     height: 85,
     width: 85,
   },
+  modalLogo: {
+    height: 200,
+    width: 200,
+    alignSelf:'center',
+  },
   title: {
     justifyContent: "center",
     width: "40%",
@@ -152,28 +167,25 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: "white",
-    height: "100%",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
     width: "70%",
-    height: 653,
+    height: "96.5%",
+    justifyContent:'center',
+    borderWidth: 1,
   },
   modalMenu: {
-    height: "90%",
-    marginTop: 15,
-    backgroundColor: 'red',
-    flexDirection: 'row',
+    height: "50%",
+    margin:20,
     justifyContent: 'space-around',
-    alignItems: 'center',
   },
   modalText:{
-    fontSize: 18,
+    fontSize: 17,
+    marginLeft: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FC9F30',
+    color:'#4B7285',
+  },
+  fieldContainer:{
+    flexDirection: 'row',
   },
   userIconContainer: {
     flexDirection: "column",

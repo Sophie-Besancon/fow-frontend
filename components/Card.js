@@ -23,42 +23,39 @@ const Card = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const users = useSelector((state) => state.users.value[0]);
-  const [isLike, setIsLike] = useState(false);
+  const [isLike, setIsLike] = useState(false); 
 
   let backgroundImg = { uri: `${props.image[0]}` };
-  let flagImg= props.flagOfCountry
+  let flagImg = props.flagOfCountry;
 
-   useEffect(() => {
+  useEffect(() => {
     setIsLike(props.isLikeinFavorite);
-   // console.log(props.isLikeinFavorite);
-  }, [props.isLikeinFavorite]); 
+  }, [props.isLikeinFavorite]);
 
   const handleLike = () => {
     if (!users.token) {
-      Alert.alert('Non connecté', "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.", [
-        {
-          text: 'Retour',
-          style: 'cancel',
-        },
-        {text: 'Ok'},
-      ]);
+      Alert.alert(
+        "Non connecté",
+        "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.",
+        [
+          {
+            text: "Retour",
+            style: "cancel",
+          },
+          { text: "Ok" },
+        ]
+      );
       return;
     } else {
       setIsLike(!isLike);
-      fetch(`http://192.168.1.14:3000/users/updateFavoriteArticle`, {
+      fetch("http://192.168.1.14:3000/users/updateFavoriteArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
       })
         .then((response) => response.json())
         .then((data) => {
-          dispatch(
-            manageArticleInFavorite(
-              data.data.articlesinFavorite.map((article) => ({
-                ...article,
-                isLikeinFavorite: article._id === props.id ? !isLike : article.isLikeinFavorite
-              }))
-            )
+          dispatch(manageArticleInFavorite(data.articlesInFavorite)
           );
         });
     }

@@ -21,6 +21,7 @@ export const usersSlice = createSlice({
       state.value[0].firstname=action.payload.firstname;
       state.value[0].token=action.payload.token;
       state.value[0].address=action.payload.address;
+      state.value[0].address=action.payload.articlesinFavorite;
     },
     disconnectUser:(state,action)=>{
         state.value[0].token = null;
