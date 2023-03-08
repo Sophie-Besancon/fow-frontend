@@ -31,23 +31,27 @@ const Card = (props) => {
    
  
   let backgroundImg = { uri: `${props.image[0]}` };
-  let flagImg= props.flagOfCountry
+  let flagImg = props.flagOfCountry;
 
    
 
   const handleLike = () => {
     if (!users.token) {
-      Alert.alert('Non connecté', "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.", [
-        {
-          text: 'Retour',
-          style: 'cancel',
-        },
-        {text: 'Ok'},
-      ]);
+      Alert.alert(
+        "Non connecté",
+        "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.",
+        [
+          {
+            text: "Retour",
+            style: "cancel",
+          },
+          { text: "Ok" },
+        ]
+      );
       return;
     } else {
-      
-      fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
+      setIsLike(!isLike);
+      fetch("http://192.168.1.14:3000/users/updateFavoriteArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
