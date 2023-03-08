@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector, useDispatch } from "react-redux";
-import { Entypo } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons, Entypo } from '@expo/vector-icons';
 import {disconnectUser} from "../reducers/users";
 
 const Header = (props) => {
@@ -19,7 +19,7 @@ const Header = (props) => {
   const user = useSelector((state) => state.users.value[0].firstname);
 
 
-  const handleNewPlace = () => {
+  const handleOpen = () => {
     setModalVisible(false);
   };
 
@@ -27,7 +27,7 @@ const Header = (props) => {
     setModalVisible(false);
   };
 
-  const handledisconnexion= () => {
+  const handleDisconnexion= () => {
     dispatch(disconnectUser())
   }
 
@@ -70,7 +70,7 @@ const Header = (props) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <TouchableOpacity
-                onPress={() => handleNewPlace()}
+                onPress={() => handleOpen()}
                 style={styles.button}
                 activeOpacity={0.8}
               ></TouchableOpacity>
@@ -79,16 +79,31 @@ const Header = (props) => {
                 style={styles.button}
                 activeOpacity={0.8}
               >
-                <View style={styles.closeButton}>
-                  <FontAwesome name="times" size={20} color="#000000" />
-                </View>
-                <View style={styles.modalMenu}>
-                  <Text>Menu</Text>
-                </View>
-                <TouchableOpacity style={styles.disconnectedButton} onPress={() => handledisconnexion()}>
-                  <FontAwesome name="power-off" size={35} color="#000000"/>
+
+                  <View style={styles.modalMenu}>
+                    <View style={styles.modalIconContainer}>
+                    <Ionicons name="reload" size={24} color="black" />
+                    <AntDesign name="inbox" size={24} color="black" />
+                    <Feather name="mail" size={24} color="black" />
+                    <AntDesign name="disconnect" style={styles.disconnectedIcon} size={28} color="black" />
+                    </View>
+                    <View styles={styles.modaltextContainer}>
+                  <TouchableOpacity>
+                  <Text style={styles.modalText}>Reprendre la recherche</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                  <Text style={styles.modalText}>Mes commandes</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity>
+                  <Text style={styles.modalText}>Contactez Nous</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.disconnectedButton} onPress={() => handleDisconnexion()}>
+                <Text style={styles.modalText}>Se déconnecter</Text>
+
                 </TouchableOpacity>
-              </TouchableOpacity>
+                </View>
+                </View>
+                </TouchableOpacity>
             </View>
           </View>
         </Modal>
@@ -137,7 +152,6 @@ const styles = StyleSheet.create({
   },
   modalView: {
     backgroundColor: "white",
-    padding: 30,
     height: "100%",
     shadowColor: "#000",
     shadowOffset: {
@@ -147,18 +161,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: "50%",
+    width: "70%",
     height: 653,
   },
-  closeButton: {
-    flexDirection: "row-reverse",
-  },
   modalMenu: {
-    height: "85%",
+    height: "90%",
     marginTop: 15,
+    backgroundColor: 'red',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
-  disconnectedButton: {
-    alignItems: "center",
+  modalText:{
+    fontSize: 18,
   },
   userIconContainer: {
     flexDirection: "column",

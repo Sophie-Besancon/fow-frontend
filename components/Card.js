@@ -12,21 +12,18 @@ import {
   TouchableOpacity,
   ImageBackground,
   Platform,
+  Alert,
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { AntDesign } from "@expo/vector-icons";
 import { addArticleInfo, addArticleInBasket, manageArticleInFavorite} from "../reducers/users";
 import CountryFlag from "react-native-country-flag";
-import Popover, { PopoverPlacement } from "react-native-popover-view";
-
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { AntDesign } from "@expo/vector-icons";
 
 const Card = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const users = useSelector((state) => state.users.value[0]);
   const [isLike, setIsLike] = useState(false);
-
-  const userToken = useSelector((state) => state.users.value[0].token);
 
   let backgroundImg = { uri: `${props.image[0]}` };
   let flagImg= props.flagOfCountry
@@ -37,9 +34,18 @@ const Card = (props) => {
   }, [props.isLikeinFavorite]);
 
   const handleLike = () => {
-    if (users.token) {
+    if (!users.token) {
+      Alert.alert('Non connecté', "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.", [
+        {
+          text: 'Retour',
+          style: 'cancel',
+        },
+        {text: 'Ok'},
+      ]);
+      return;
+    } else {
       setIsLike(!isLike);
-      fetch(`http://192.168.1.88:3000/users/updateFavoriteArticle`, {
+      fetch(`http://192.168.1.14:3000/users/updateFavoriteArticle`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
@@ -54,9 +60,6 @@ const Card = (props) => {
               }))
             )
           );
-         if (props.onLikeChange) {
-            props.onLikeChange(props.id, !isLike);
-          } 
         });
     }
   };
@@ -103,22 +106,11 @@ const Card = (props) => {
               handleLike();
             }}
           >
-{/*             {!userToken ? (
-                <Popover
-                  placement={PopoverPlacement.BOTTOM}
-                  from={
-                    <TouchableOpacity>
-                      <AntDesign name="hearto" size={24} color="#E74C3C" />
-                    </TouchableOpacity>
-                  }
-                >
-                  <Text style={styles.textPopover}>
-                    Connectez-vous pour ajouter aux favoris 😉
-                  </Text>
-                </Popover>
-              ) : (
-                handleLike()
-              )} */}
+            {isLike ? (
+              <AntDesign name="heart" size={24} color="#E74C3C" />
+            ) : (
+              <AntDesign name="hearto" size={24} color="#E74C3C" />
+            )}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
               handleCart();

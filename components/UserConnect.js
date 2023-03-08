@@ -34,7 +34,7 @@ export default function UserConnect() {
 
   //envoi d'un fetch (asynchrone) lors de la validation de l'inscription
   const handleSignUp = async () => {
-    await fetch("http://192.168.1.88:3000/users/signup", {
+    await fetch("http://192.168.1.14:3000/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +68,7 @@ export default function UserConnect() {
 
   //envoi d'un fetch (asynchrone) lors de la connexion de l'utilisateur
   const handleSignIn = async () => {
-    await fetch("http://192.168.1.88:3000/users/signin", {
+    await fetch("http://192.168.1.14:3000/users/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
