@@ -50,7 +50,6 @@ const Card = (props) => {
       );
       return;
     } else {
-      setIsLike(!isLike);
       fetch("http://192.168.1.14:3000/users/updateFavoriteArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
