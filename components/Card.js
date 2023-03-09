@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 
   splitContainerPrice: {
     width: "50%",
-    paddingLeft: 125,
+    paddingLeft: 115,
     marginTop: 10,
     justifyContent: "center",
   },
