@@ -23,7 +23,7 @@ export default function ContinentScreen({ navigation }) {
     const users = useSelector((state) => state.users.value[0]);
 
     useEffect(() => {
-        fetch("http://192.168.1.88:3000/articles/")
+        fetch("https://fow-backend.vercel.app/articles/")
             .then((response) => response.json())
             .then((data) => {
                 if (data.result) {

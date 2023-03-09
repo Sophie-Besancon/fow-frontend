@@ -47,7 +47,7 @@ export default function NewAddress(props){
       };
     }
 
-    fetch(`http://192.168.1.88:3000/users/add_address/${user.token}`, {
+    fetch(`https://fow-backend.vercel.app/users/add_address/${user.token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

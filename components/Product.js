@@ -52,7 +52,7 @@ let isLike = articlesInFavorite.some(
 
     
     
-      fetch(`http://192.168.1.47:3000/users/updateFavoriteArticle`, {
+      fetch(`https://fow-backend.vercel.app/users/updateFavoriteArticle`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: userToken, articleId: informations.id }),

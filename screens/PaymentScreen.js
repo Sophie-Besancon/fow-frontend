@@ -27,7 +27,7 @@ export default function PaymentScreen({ navigation }) {
 
     const handleConfirmation = () => {
         const articlesIds = users.articleInBasket.map(data => data.id)
-        fetch("http://192.168.1.88:3000/orders/", {
+        fetch("https://fow-backend.vercel.app/orders/", {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 

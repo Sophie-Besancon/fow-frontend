@@ -48,7 +48,7 @@ const Card = (props) => {
     } else
      {
       console.log('props.id',props._id);
-      fetch("http://192.168.1.47:3000/users/updateFavoriteArticle", {
+      fetch("https://fow-backend.vercel.app/users/updateFavoriteArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
