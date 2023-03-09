@@ -15,7 +15,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { EvilIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from 'react';
-import { removeArticleInBasket, addArticleInBasket } from "../reducers/users";
+import { removeArticleInBasket, addArticleInBasket, addTotalInBasket } from "../reducers/users";
+import { AntDesign } from '@expo/vector-icons'; 
 
 
 export default function BasketScreen({ navigation }) {
@@ -41,12 +42,24 @@ export default function BasketScreen({ navigation }) {
   const basketArticles = regroupedArticles.map((data, i) => {
     totalOrder = totalOrder + data.total;
     return (<View style={styles.tableContainerRow} key={i}>
+      <View style={styles.productProperty}>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.name}</Text></View>
-      <TouchableOpacity onPress={()=>dispatch(removeArticleInBasket(data.name))}><Text>-</Text></TouchableOpacity>
-      <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.quantity}</Text></View>
-      <TouchableOpacity onPress={()=>dispatch(addArticleInBasket({price: data.price, name:data.name, image:data.image, id:data.id, note:data.note, description:data.description, stock:data.stock, categoryName:data.categoryName, countryName:data.countryName, continentOfCountry:data.continentOfCountry}))}><Text>+</Text></TouchableOpacity>
+      </View>
+      <View style={styles.productProperty}> 
+      <View style={styles.tableProductTextContainer}>
+        <View style={styles.number}> 
+        <TouchableOpacity style={styles.quantityButton} onPress={()=>dispatch(removeArticleInBasket(data.name))}><AntDesign name="minuscircleo" size={18} color="black" /></TouchableOpacity>
+        <Text style={styles.tableProductText}>{data.quantity}</Text>
+        <TouchableOpacity style={styles.quantityButton} onPress={()=>dispatch(addArticleInBasket({price: data.price, name:data.name, image:data.image, id:data.id, note:data.note, description:data.description, stock:data.stock, categoryName:data.categoryName, countryName:data.countryName, continentOfCountry:data.continentOfCountry}))}><AntDesign name="pluscircleo" size={18} color="black" /></TouchableOpacity>
+        </View>
+      </View>
+      </View>
+      <View style={styles.productProperty}>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{numberFormatFunction.format(data.price)}</Text></View>
+      </View>
+      <View style={styles.productProperty}>
       <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{numberFormatFunction.format(data.total)}</Text></View>
+      </View>
     </View>)
   })
 
@@ -61,6 +74,7 @@ export default function BasketScreen({ navigation }) {
       ]);
       return;
     }
+    dispatch(addTotalInBasket(totalOrder + deliveryCost))
     if (users.token && users.address.length > 0) {
       navigation.navigate("Payment")
     } else if (users.token && users.address.length <= 0) {
@@ -167,6 +181,11 @@ const styles = StyleSheet.create({
   },
   tableProductTextContainer: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  number: {
+    flexDirection: 'row',
   },
   tableProductText: {
     textAlign: 'center',
@@ -182,7 +201,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
 
   },
-
+  productProperty: {
+  flexDirection: 'row',
+  width: "25%",
+  },
   totalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -193,8 +215,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: '#4B7285',
   },
-
-
+quantityButton: {
+marginLeft: 7,
+marginRight: 7,
+},
   buttonContainer: {
     marginTop: 30,
     flexDirection: 'row',

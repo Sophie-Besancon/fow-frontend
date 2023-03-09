@@ -90,9 +90,8 @@ export default function MarketScreen({ route, navigation }) {
   }, [continent, category, searchName]);
 
   const cards = articlesData.map((data, i) => {
- 
-    const isLikeinFavorite = users.articleInFavorite.some(article => article.name === data.name);
-    return <Card key={i} price={data.price} name={data.name} image={data.image} id={data.id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} flagOfCountry={data.flagOfCountry}  isLikeinFavorite={isLikeinFavorite}/>;
+    const isLikeinFavorite = users.articleInFavorite.some(article => article.id === data.id);
+    return <Card key={i} price={data.price} name={data.name} image={data.image} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} flagOfCountry={data.flagOfCountry}  isLikeinFavorite={isLikeinFavorite}/>;
   });
 
 //Permet de trier les articles par prix

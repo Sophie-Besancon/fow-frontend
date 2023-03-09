@@ -7,18 +7,57 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    ScrollView,
+    ImageBackground,
 } from 'react-native';
 import Header from '../components/Header';
 import Card from '../components/Card';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function ContinentScreen({ navigation }) {
 
-// const cards = articlesData.map((data, i) => {
-//     const isLikeinFavorite = users.articleInFavorite.some(article => article._id === data._id);
-//     return <Card key={i} price={data.price} name={data.name} image={data.image[0]} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} isLikeinFavorite={isLikeinFavorite} />;
-// });
+    const [articlesData, setArticlesData] = useState([]);
+
+    const users = useSelector((state) => state.users.value[0]);
+
+    useEffect(() => {
+        fetch("http://192.168.1.88:3000/articles/")
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.result) {
+                    console.log("continent")
+                    setArticlesData(data.allArticles)
+                }
+            });
+    }, []);
+
+    const NewCards = articlesData.map((data, i) => {
+        if (i === 2 || i === 7 || i === 14) {
+            const isLikeinFavorite = users.articleInFavorite.some(article => article.id === data.id);
+            return (
+                <View style={styles.eachCard} key={i}>
+                    <View style={styles.backgroundImage}>
+                        <Text style={styles.newText}>Nouveauté</Text></View>
+                    <Card 
+                    style={styles.cardImage} 
+                    key={i} 
+                    price={data.price} 
+                    name={data.name} 
+                    image={data.image} 
+                    id={data._id} 
+                    note={data.note} 
+                    description={data.description} 
+                    stock={data.stock} 
+                    categoryName={data.categoryName} 
+                    countryName={data.countryName} 
+                    continentOfCountry={data.continentOfCountry} 
+                    flagOfCountry={data.flagOfCountry} 
+                    isLikeinFavorite={isLikeinFavorite} />
+                </View>)
+        }
+    })
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -26,6 +65,9 @@ export default function ContinentScreen({ navigation }) {
             <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.backButton} activeOpacity={0.8}>
                 <Ionicons name="md-arrow-back-circle-outline" size={20} color="white" /><Text style={styles.textButton}> Retour </Text>
             </TouchableOpacity>
+            <ScrollView>
+                {NewCards}
+            </ScrollView>
         </KeyboardAvoidingView>
     )
 }
@@ -49,5 +91,32 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         flexDirection: "row",
         alignSelf: "flex-start",
+    },
+    eachCard: {
+        flex: 1,
+        position:"relative",
+    },
+    newText: {
+fontSize : 14,
+color: "white",
+fontWeight: 800,
+    },
+    backgroundImage: {
+        position: "absolute",
+        top:180,
+        right:40,
+        zIndex:9999,
+        flex:1,
+        borderWidth:1,
+        borderColor: 'white',
+        borderRadius: 9,
+        padding: 5,
+        shadowColor: "white",
+    shadowRadius: 3,
+    shadowOpacity: 0.4,
+    shadowOffset: {
+      width: 3,
+      height:-3,
+    },
     },
 })
