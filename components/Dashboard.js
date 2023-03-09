@@ -43,6 +43,7 @@ const basketData = [
   { name: "mikado", quantity: 2, price: 3.99 },
   { name: "mochi au chocolat", quantity: 3, price: 5.70 },
 ]
+const numberFormatFunction = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 
 let deliveryCost = 7.99;
 let totalOrder= 0;
