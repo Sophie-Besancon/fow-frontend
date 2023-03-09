@@ -126,7 +126,7 @@ const Header = (props) => {
                   activeOpacity={0.8}
                   onPress={() => handleNavigation()}
                 >
-                  <AntDesign name="inbox" size={24} color="#FC9F30" />
+                  <Entypo name="list" size={24} color="#FC9F30" />
                   <Text style={styles.modalText}>Mes commandes</Text>
                 </TouchableOpacity>
 
@@ -136,7 +136,7 @@ const Header = (props) => {
                   onPress={() => handleContactForm()}
                 >
                   <Feather name="mail" size={24} color="#FC9F30" />
-                  <Text style={styles.modalText}>Contactez Nous</Text>
+                  <Text style={styles.modalText}>Contactez-nous</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
