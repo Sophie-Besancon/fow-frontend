@@ -58,14 +58,12 @@ export default function MarketScreen({ route, navigation }) {
   const isFocused = useIsFocused();
   useEffect(()=> {
     if (!isFocused) {
-      console.log('unfocus')
       navigation.setParams({ destination: undefined, name: undefined });
       setContinent(null);
       setCategory(null);
       setSearchName(null);
     }
   }, [isFocused])
-// cyril
   //useEffet qui détecte un params venu depuis HomeScreen (click sur une image de continent ou recherche)
   useEffect(() => {
     setContinent(route.params?.destination)

@@ -64,7 +64,6 @@ export default function PaymentScreen({ navigation }) {
                     <AntDesign name="checkcircle" size={18} color="white" />
                     <Text style={styles.textButton}>Valider ma commande</Text>
                 </TouchableOpacity>
-
             </View>
         </KeyboardAvoidingView>
     )
