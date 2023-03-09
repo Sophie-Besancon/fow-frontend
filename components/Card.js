@@ -28,8 +28,7 @@ const Card = (props) => {
  
   let isLike = props.isLikeinFavorite;
   
-  console.log(isLike);
-   
+  
  
   let backgroundImg = { uri: `${props.image[0]}` };
   let flagImg= props.flagOfCountry
@@ -46,8 +45,10 @@ const Card = (props) => {
         {text: 'Ok'},
       ]);
       return;
-    } else {
-      fetch("http://192.168.1.14:3000/users/updateFavoriteArticle", {
+    } else
+     {
+      console.log('props.id',props._id);
+      fetch("http://192.168.1.47:3000/users/updateFavoriteArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),

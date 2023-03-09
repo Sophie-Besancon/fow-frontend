@@ -26,7 +26,6 @@ export default function Product() {
   const articlesInFavorite = useSelector(
     (state) => state.users.value[0].articleInFavorite)
   
-console.log('ART : ',articlesInFavorite);
 
   const dispatch = useDispatch();
 
