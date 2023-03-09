@@ -24,13 +24,17 @@ export default function FavoriteScreen() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 
-  useEffect(() => {
+   useEffect(() => {
     if (isFocused) {
       if(!users.token){
-        Alert.alert("Erreur", "Veuillez vous connecter pour afficher vos favoris.", [
-          { text: "Ok" },
-          navigation.navigate('Compte')
-        ]);  
+         Alert.alert("Inscrivez-vous", "Veuillez vous connecter pour afficher vos favoris.", [
+          {
+            text: 'Retour',
+            style: 'cancel',
+          },
+          { text: "S'inscrire", onPress:()=>navigation.navigate('Compte') },
+        ]);   
+
       }
     }
   }, [isFocused]);
