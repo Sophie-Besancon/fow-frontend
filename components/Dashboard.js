@@ -248,7 +248,7 @@ const basketArticles = basketData.map((data, i) => {
     return(<View style={styles.myOrderContainer} key={i}>
     <Text>Date de la commande : {dateLocale}</Text>
     <Text>Numéro de la commande : {data._id}</Text>
-    <Text>Total de la commande : {numberFormatFunction.format(data.total)}€</Text>
+    <Text>Total de la commande : {numberFormatFunction.format(data.total)}</Text>
     </View>)
     })
    var getMyOrders = (
