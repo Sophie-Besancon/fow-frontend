@@ -7,18 +7,21 @@ import {
   Image,
   Modal,
   TouchableOpacity,
-  Alert
+  Alert,
+  TextInput,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector, useDispatch } from "react-redux";
-import { AntDesign, Feather, Ionicons, Entypo } from '@expo/vector-icons';
-import {disconnectUser} from "../reducers/users";
+import { AntDesign, Feather, Ionicons, Entypo } from "@expo/vector-icons";
+import { disconnectUser } from "../reducers/users";
 
 const Header = (props) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalContactVisible, setModalContactVisible] = useState(false);
   const user = useSelector((state) => state.users.value[0].firstname);
-
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleOpen = () => {
     setModalVisible(false);
@@ -28,16 +31,23 @@ const Header = (props) => {
     setModalVisible(false);
   };
 
-  const handleDisconnexion= () => {
-    dispatch(disconnectUser())
-  }
+  const handleDisconnexion = () => {
+    dispatch(disconnectUser());
+  };
 
-/*   const handleContactform= () => {
-    
-  } */
+  const handleContactForm = () => {
+    setModalContactVisible(true);
+  };
 
-  
-
+  const handleSubmitForm = () => {
+    // Ici, vous pouvez ajouter la logique pour envoyer le formulaire de contact
+    setModalContactVisible(false);
+    Alert.alert("", "Nous vous répondrons dans les meilleurs délais.", [
+      { text: "Ok" },
+    ]);
+    setName('')
+    setMessage('')
+  };
 
   return (
     <SafeAreaView style={styles.mainContainer}>
@@ -72,55 +82,105 @@ const Header = (props) => {
           </Text>
         </View>
         <Modal visible={modalVisible} animationType="none" transparent>
-            <View style={styles.centeredView}> 
+          <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <TouchableOpacity
                 onPress={() => handleOpen()}
                 style={styles.button}
                 activeOpacity={0.8}
               ></TouchableOpacity>
-              
-              <Image source={require("../assets/logo-fow.png")} style={styles.modalLogo}/>
 
-                  <View style={styles.modalMenu}>
-                  
+              <Image
+                source={require("../assets/logo-fow.png")}
+                style={styles.modalLogo}
+              />
 
-                <TouchableOpacity onPress={() => handleClose()} style={styles.fieldContainer} activeOpacity={0.8}>
-                  <Ionicons name="reload"  size={24} color="#FC9F30" />
-                  <Text style={styles.modalTextBack}>Reprendre la recherche</Text>
-                  </TouchableOpacity>
-      
+              <View style={styles.modalMenu}>
+                <TouchableOpacity
+                  onPress={() => handleClose()}
+                  style={styles.fieldContainer}
+                  activeOpacity={0.8}
+                >
+                  <Ionicons name="reload" size={24} color="#FC9F30" />
+                  <Text style={styles.modalTextBack}>
+                    Reprendre la recherche
+                  </Text>
+                </TouchableOpacity>
 
-                  
-                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8}>
-                  <AntDesign name="inbox"  size={24} color="#FC9F30" />
+                <TouchableOpacity
+                  style={styles.fieldContainer}
+                  activeOpacity={0.8}
+                >
+                  <AntDesign name="inbox" size={24} color="#FC9F30" />
                   <Text style={styles.modalText}>Mes commandes</Text>
-                  </TouchableOpacity>
-               
+                </TouchableOpacity>
 
-                  
-                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8} onPress={() => handleContactform()}>
-                  <Feather name="mail"  size={24} color="#FC9F30" />
+                <TouchableOpacity
+                  style={styles.fieldContainer}
+                  activeOpacity={0.8}
+                  onPress={() => handleContactForm()}
+                >
+                  <Feather name="mail" size={24} color="#FC9F30" />
                   <Text style={styles.modalText}>Contactez Nous</Text>
-                  </TouchableOpacity >
-            
+                </TouchableOpacity>
 
-                 
-                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8} onPress={() => handleDisconnexion()}>
-                  <AntDesign name="disconnect"  size={28} color="#FC9F30" />
+                <TouchableOpacity
+                  style={styles.fieldContainer}
+                  activeOpacity={0.8}
+                  onPress={() => handleDisconnexion()}
+                >
+                  <AntDesign name="disconnect" size={28} color="#FC9F30" />
                   <Text style={styles.modalText}>Se déconnecter</Text>
-                  </TouchableOpacity> 
-              
+                </TouchableOpacity>
 
-{/*                   <TouchableOpacity  style={styles.fieldContainer} activeOpacity={0.8}>
-                  <Entypo name="log-out" size={24} color="black" />
-                  <Text style={styles.modalText}>Fermer</Text>
-                  </TouchableOpacity> */}
+                <View>
+                  <TouchableOpacity
+                    style={styles.fieldContainer}
+                    activeOpacity={0.8}
+                    onPress={handleContactForm}
+                  >
+                    <Feather name="mail" size={24} color="#FC9F30" />
+                    <Text style={styles.modalText}>Contactez Nous</Text>
+                  </TouchableOpacity>
 
-                  </View>
-
+                  <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={modalContactVisible}
+                    onRequestClose={() => setModalContactVisible(false)}
+                  >
+                    <View style={styles.modalContainer}>
+                      <View style={styles.modalContent}>
+                        <Text style={styles.modalTitle}>
+                          Formulaire de Contact
+                        </Text>
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Votre Nom"
+                          onChangeText={setName}
+                          value={name}
+                        />
+                        <TextInput
+                          style={[styles.input, styles.messageInput]}
+                          placeholder="Votre Message"
+                          multiline={true}
+                          numberOfLines={4}
+                          onChangeText={setMessage}
+                          value={message}
+                        />
+                        <TouchableOpacity
+                          style={styles.button}
+                          onPress={handleSubmitForm}
+                        >
+                          <Text style={styles.buttonText}>Valider</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </Modal>
+                </View>
+              </View>
             </View>
-           </View>
+          </View>
         </Modal>
       </View>
     </SafeAreaView>
@@ -131,7 +191,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor:'#fff',
+    backgroundColor: "#fff",
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -153,7 +213,7 @@ const styles = StyleSheet.create({
   modalLogo: {
     height: 200,
     width: 200,
-    alignSelf:'center',
+    alignSelf: "center",
   },
   title: {
     justifyContent: "center",
@@ -174,31 +234,31 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: "70%",
     height: "96.5%",
-    justifyContent:'center',
+    justifyContent: "center",
     borderWidth: 1,
   },
   modalMenu: {
     height: "50%",
-    margin:10,
-    justifyContent: 'space-around',
+    margin: 10,
+    justifyContent: "space-around",
   },
-  modalText:{
+  modalText: {
     fontSize: 17,
     marginLeft: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#FC9F30',
-    color:'#4B7285',
+    borderBottomColor: "#FC9F30",
+    color: "#4B7285",
   },
-  modalTextBack:{
-    fontWeight:'bold',
+  modalTextBack: {
+    fontWeight: "bold",
     fontSize: 17,
     marginLeft: 10,
     borderBottomWidth: 1,
-    borderBottomColor: '#FC9F30',
-    color:'#4B7285',
+    borderBottomColor: "#FC9F30",
+    color: "#4B7285",
   },
-  fieldContainer:{
-    flexDirection: 'row',
+  fieldContainer: {
+    flexDirection: "row",
   },
   userIconContainer: {
     flexDirection: "column",
@@ -208,6 +268,45 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     fontSize: 12,
     color: "gray",
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 20,
+    borderBottomWidth: 1,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#fc9f30",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 20,
+    width: 200,
+  },
+  messageInput: {
+    height: 120,
+    width: 200,
+  },
+  button: {
     
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
