@@ -30,11 +30,10 @@ export default function Dashboard() {
   // Etats généraux concernant l'affichage déroulants des menus
   const [addNewAdressDisplay, setAddNewAdressDisplay] = useState(false);
   const [myOrdersDisplay, setMyOrdersDisplay] = useState(false);
-  const [personalInformationsDisplay, setPersonalInformationsDisplay] =
-    useState(false);
+  const [personalInformationsDisplay, setPersonalInformationsDisplay] = useState(false);
   const [ChangeOrDeleteMyAddress, setChangeOrDeleteMyAddress] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const user = useSelector((state) => state.users.value[0]);
 

@@ -35,7 +35,7 @@ export default function ContinentScreen({ navigation }) {
 
     const NewCards = articlesData.map((data, i) => {
         if (i === 2 || i === 7 || i === 14) {
-            const isLikeinFavorite = users.articleInFavorite.some(article => article.id === data.id);
+            const isLikeinFavorite = users.articleInFavorite.some(article => article.id === data._id);
             return (
                 <View style={styles.eachCard} key={i}>
                     <View style={styles.backgroundImage}>
