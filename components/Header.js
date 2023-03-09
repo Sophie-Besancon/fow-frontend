@@ -7,6 +7,7 @@ import {
   Image,
   Modal,
   TouchableOpacity,
+  Alert
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,6 +31,10 @@ const Header = (props) => {
   const handleDisconnexion= () => {
     dispatch(disconnectUser())
   }
+
+/*   const handleContactform= () => {
+    
+  } */
 
 
 
@@ -82,7 +87,7 @@ const Header = (props) => {
 
                 <TouchableOpacity onPress={() => handleClose()} style={styles.fieldContainer} activeOpacity={0.8}>
                   <Ionicons name="reload"  size={24} color="#FC9F30" />
-                  <Text style={styles.modalText}>Reprendre la recherche</Text>
+                  <Text style={styles.modalTextBack}>Reprendre la recherche</Text>
                   </TouchableOpacity>
       
 
@@ -94,7 +99,7 @@ const Header = (props) => {
                
 
                   
-                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8}>
+                  <TouchableOpacity style={styles.fieldContainer} activeOpacity={0.8} onPress={() => handleContactform()}>
                   <Feather name="mail"  size={24} color="#FC9F30" />
                   <Text style={styles.modalText}>Contactez Nous</Text>
                   </TouchableOpacity >
@@ -174,10 +179,18 @@ const styles = StyleSheet.create({
   },
   modalMenu: {
     height: "50%",
-    margin:20,
+    margin:10,
     justifyContent: 'space-around',
   },
   modalText:{
+    fontSize: 17,
+    marginLeft: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#FC9F30',
+    color:'#4B7285',
+  },
+  modalTextBack:{
+    fontWeight:'bold',
     fontSize: 17,
     marginLeft: 10,
     borderBottomWidth: 1,
