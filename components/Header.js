@@ -14,14 +14,18 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector, useDispatch } from "react-redux";
 import { AntDesign, Feather, Ionicons, Entypo } from "@expo/vector-icons";
 import { disconnectUser } from "../reducers/users";
+import { useNavigation } from '@react-navigation/native';
 
 const Header = (props) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContactVisible, setModalContactVisible] = useState(false);
   const user = useSelector((state) => state.users.value[0].firstname);
+  const userToken = useSelector((state) => state.users.value[0].token)
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [mail, setMail] = useState("");
+  const navigation = useNavigation();
 
   const handleOpen = () => {
     setModalVisible(false);
@@ -39,14 +43,24 @@ const Header = (props) => {
     setModalContactVisible(true);
   };
 
+  const handleNavigation = () => {
+    if (!userToken) {
+      Alert.alert("Erreur", "Veuillez vous connecter pour afficher vos commandes.", [
+        { text: "Ok" },
+      ]);  
+  } else {
+    navigation.navigate('Compte')
+  }
+  };
+
   const handleSubmitForm = () => {
-    // Ici, vous pouvez ajouter la logique pour envoyer le formulaire de contact
     setModalContactVisible(false);
     Alert.alert("", "Nous vous répondrons dans les meilleurs délais.", [
       { text: "Ok" },
     ]);
     setName('')
     setMessage('')
+    setMail('')
   };
 
   return (
@@ -110,6 +124,7 @@ const Header = (props) => {
                 <TouchableOpacity
                   style={styles.fieldContainer}
                   activeOpacity={0.8}
+                  onPress={() => handleNavigation()}
                 >
                   <AntDesign name="inbox" size={24} color="#FC9F30" />
                   <Text style={styles.modalText}>Mes commandes</Text>
@@ -134,14 +149,7 @@ const Header = (props) => {
                 </TouchableOpacity>
 
                 <View>
-                  <TouchableOpacity
-                    style={styles.fieldContainer}
-                    activeOpacity={0.8}
-                    onPress={handleContactForm}
-                  >
-                    <Feather name="mail" size={24} color="#FC9F30" />
-                    <Text style={styles.modalText}>Contactez Nous</Text>
-                  </TouchableOpacity>
+          
 
                   <Modal
                     animationType="fade"
@@ -159,6 +167,12 @@ const Header = (props) => {
                           placeholder="Votre Nom"
                           onChangeText={setName}
                           value={name}
+                        />
+                        <TextInput
+                          style={styles.input}
+                          placeholder="Votre eMail"
+                          onChangeText={setMail}
+                          value={mail}
                         />
                         <TextInput
                           style={[styles.input, styles.messageInput]}
@@ -300,12 +314,10 @@ const styles = StyleSheet.create({
     width: 200,
   },
   button: {
-    
     padding: 10,
     borderRadius: 5,
   },
   buttonText: {
-
     fontSize: 18,
     fontWeight: 'bold',
   },
