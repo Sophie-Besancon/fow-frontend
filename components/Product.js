@@ -3,14 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   TouchableOpacity,
   ScrollView,
   Alert,
 } from "react-native";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
-import Popover, { PopoverPlacement } from "react-native-popover-view";
 import { addArticleInBasket, manageArticleInFavorite } from "../reducers/users";
 import Gallery from "react-native-image-gallery";
 
@@ -22,17 +20,16 @@ export default function Product() {
     (state) => state.users.value[0].articleInfo[0]
   );
   const userToken = useSelector((state) => state.users.value[0].token);
-  
+
   const articlesInFavorite = useSelector(
-    (state) => state.users.value[0].articleInFavorite)
-  
+    (state) => state.users.value[0].articleInFavorite
+  );
 
   const dispatch = useDispatch();
 
-let isLike = articlesInFavorite.some(
-  (article) => article.name === informations.name
- 
-)
+  let isLike = articlesInFavorite.some(
+    (article) => article.name === informations.name
+  );
 
   // useEffect qui permet de passer la valeur de isLoaded à true 500 ms apres le chargement de la page
   // parce que les images se chargent trop vite sinon
@@ -49,26 +46,16 @@ let isLike = articlesInFavorite.some(
   // l'utilisateur DOIT être connecté
 
   let handleLike = () => {
-
-    
-    
-      fetch(`https://fow-backend.vercel.app/users/updateFavoriteArticle`, {
+    fetch(`https://fow-backend.vercel.app/users/updateFavoriteArticle`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: userToken, articleId: informations.id }),
     })
       .then((response) => response.json())
-      .then((data) => {
-            console.log('informations :', informations);
-            dispatch(manageArticleInFavorite(informations))
-          
-        
-      });  
-    
-
+      .then(() => {
+        dispatch(manageArticleInFavorite(informations));
+      });
   };
-
-
 
   // fonction qui permet d'afficher un message d'alerte en cas de like sur un article mais utilisateur non connecté
   let isDisconnected = () => {
@@ -119,8 +106,8 @@ let isLike = articlesInFavorite.some(
 
   /* <------------- RETURN -------------> */
   return (
-    <View style={styles.container}>
-      <ScrollView>
+    <ScrollView>
+      <View style={styles.container}>
         <View>
           {isLoaded && (
             <Gallery
@@ -197,8 +184,8 @@ let isLike = articlesInFavorite.some(
             </View>
           </View>
         </View>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 

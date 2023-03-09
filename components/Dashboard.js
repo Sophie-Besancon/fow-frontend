@@ -28,7 +28,6 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]);
 
   // Etats généraux concernant l'affichage déroulants des menus
-  const [addNewAdressDisplay, setAddNewAdressDisplay] = useState(false);
   const [myOrdersDisplay, setMyOrdersDisplay] = useState(false);
   const [personalInformationsDisplay, setPersonalInformationsDisplay] = useState(false);
   const [ChangeOrDeleteMyAddress, setChangeOrDeleteMyAddress] = useState(false);
@@ -37,27 +36,39 @@ export default function Dashboard() {
 
   const user = useSelector((state) => state.users.value[0]);
 
-/* <------ INFORMATIONS CONCERNANT LES COMMANDES UTILISATEURS ------> */
-const basketData = [
-  { name: "mikado", quantity: 2, price: 3.99 },
-  { name: "mochi au chocolat", quantity: 3, price: 5.70 },
-]
-const numberFormatFunction = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
+  /* <------ INFORMATIONS CONCERNANT LES COMMANDES UTILISATEURS ------> */
+  const basketData = [
+    { name: "mikado", quantity: 2, price: 3.99 },
+    { name: "mochi au chocolat", quantity: 3, price: 5.7 },
+  ];
+  const numberFormatFunction = new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "EUR",
+  });
 
-let deliveryCost = 7.99;
-let totalOrder= 0;
+  let deliveryCost = 7.99;
+  let totalOrder = 0;
 
-const basketArticles = basketData.map((data, i) => {
-  const totalPerArticle = basketData[i].quantity * basketData[i].price;
-  totalOrder = totalOrder + totalPerArticle 
-  return (<View style={styles.tableContainerRow} key={i}>
-    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.name}</Text></View>
-    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.quantity}</Text></View>
-    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{data.price.toFixed(2)}</Text></View>
-    <View style={styles.tableProductTextContainer}><Text style={styles.tableProductText}>{totalPerArticle}</Text></View>
-  </View>)
-})
-
+  const basketArticles = basketData.map((data, i) => {
+    const totalPerArticle = basketData[i].quantity * basketData[i].price;
+    totalOrder = totalOrder + totalPerArticle;
+    return (
+      <View style={styles.tableContainerRow} key={i}>
+        <View style={styles.tableProductTextContainer}>
+          <Text style={styles.tableProductText}>{data.name}</Text>
+        </View>
+        <View style={styles.tableProductTextContainer}>
+          <Text style={styles.tableProductText}>{data.quantity}</Text>
+        </View>
+        <View style={styles.tableProductTextContainer}>
+          <Text style={styles.tableProductText}>{data.price.toFixed(2)}</Text>
+        </View>
+        <View style={styles.tableProductTextContainer}>
+          <Text style={styles.tableProductText}>{totalPerArticle}</Text>
+        </View>
+      </View>
+    );
+  });
 
   /* <---> GETTER : Récupération de toutes les informations utilisateur provenant de la base de données <---> */
 
@@ -112,14 +123,13 @@ const basketArticles = basketData.map((data, i) => {
       .then((response) => response.json())
       .then((data) => {
         setMessageAddAdress(data.message);
-        setNewAddress('');
-        setNewZipCode('');
-        setNewCity('');
-        setNewCountry('');
+        setNewAddress("");
+        setNewZipCode("");
+        setNewCity("");
+        setNewCountry("");
         setCheckedDelivery(false);
         setCheckedBilling(false);
-        setMessageUpdate('')
-        
+        setMessageUpdate("");
       });
   };
 
@@ -157,7 +167,7 @@ const basketArticles = basketData.map((data, i) => {
       .then((response) => response.json())
       .then((data) => {
         setMessageUpdate(data.message);
-       dispatch(modifyFirstname(data.data.firstname))
+        dispatch(modifyFirstname(data.data.firstname));
       });
   };
 
@@ -171,7 +181,7 @@ const basketArticles = basketData.map((data, i) => {
           <View style={styles.inputsArea}>
             <TextInput
               placeholder="Prénom"
-               value={firstname} 
+              value={firstname}
               style={styles.input}
               onChangeText={(value) => {
                 setFirstname(value);
@@ -237,27 +247,29 @@ const basketArticles = basketData.map((data, i) => {
 
   /* <------------> AFFICHAGE CONDITIONNEL: CHANGEMENT ADRESSE PAR DEFAUT <------------> */
 
-
-    /* <------------> AFFICHAGE CONDITIONNEL: MES COMMANDES <------------> */
-  if (myOrdersDisplay){
-   const myOrders = orders.map((data, i) => {
-    // https://stackoverflow.com/questions/61653453/convert-date-string-from-iso-8601-format-yyyy-mm-ddthhmmss-sssz-to-dd-mm-y
-    [yyyy,mm,dd,hh,mi] = data.purchaseDate.split(/[/:\-T]/)
-    const dateLocale = `${dd}-${mm}-${yyyy} ${hh}:${mi}`;
-    return(<View style={styles.myOrderContainer} key={i}>
-    <Text>Date de la commande : {dateLocale}</Text>
-    <Text>Numéro de la commande : {data._id}</Text>
-    <Text>Total de la commande : {numberFormatFunction.format(data.total)}</Text>
-    </View>)
-    })
-   var getMyOrders = (
-   <>
-    <Text style={styles.myOrdersText}>Mes Commandes :</Text>
-      {myOrders}
-    </>
-   )
+  /* <------------> AFFICHAGE CONDITIONNEL: MES COMMANDES <------------> */
+  if (myOrdersDisplay) {
+    const myOrders = orders.map((data, i) => {
+      // https://stackoverflow.com/questions/61653453/convert-date-string-from-iso-8601-format-yyyy-mm-ddthhmmss-sssz-to-dd-mm-y
+      [yyyy, mm, dd, hh, mi] = data.purchaseDate.split(/[/:\-T]/);
+      const dateLocale = `${dd}-${mm}-${yyyy} ${hh}:${mi}`;
+      return (
+        <View style={styles.myOrderContainer} key={i}>
+          <Text>Date de la commande : {dateLocale}</Text>
+          <Text>Numéro de la commande : {data._id}</Text>
+          <Text>
+            Total de la commande : {numberFormatFunction.format(data.total)}
+          </Text>
+        </View>
+      );
+    });
+    var getMyOrders = (
+      <>
+        <Text style={styles.myOrdersText}>Mes Commandes :</Text>
+        {myOrders}
+      </>
+    );
   }
-
 
   /* <----------------------> RETURN <----------------------> */
   return (
@@ -275,7 +287,6 @@ const basketArticles = basketData.map((data, i) => {
           }
           onPress={() => {
             setPersonalInformationsDisplay(!personalInformationsDisplay);
-            setAddNewAdressDisplay(false);
             setMyOrdersDisplay(false);
             setChangeOrDeleteMyAddress(false);
           }}
@@ -304,7 +315,6 @@ const basketArticles = basketData.map((data, i) => {
           }
           onPress={() => {
             setPersonalInformationsDisplay(false);
-            setAddNewAdressDisplay(false);
             setMyOrdersDisplay(!myOrdersDisplay);
             setChangeOrDeleteMyAddress(false);
           }}
@@ -327,11 +337,9 @@ const basketArticles = basketData.map((data, i) => {
         </TouchableOpacity>
         {getMyOrders}
 
-{/* AJOUTER UNE NOUVELLE ADRESSE (depuis le composant NewAddress) */}
+        {/* AJOUTER UNE NOUVELLE ADRESSE (depuis le composant NewAddress) */}
 
-              <NewAddress/>
-
-
+        <NewAddress />
 
         {/* <------>  BOUTON METTRE A JOUR MES ADRESSES  <------> */}
 
@@ -343,7 +351,6 @@ const basketArticles = basketData.map((data, i) => {
           }
           onPress={() => {
             setMyOrdersDisplay(false);
-            setAddNewAdressDisplay(false);
             setPersonalInformationsDisplay(false);
             setChangeOrDeleteMyAddress(!ChangeOrDeleteMyAddress);
           }}
@@ -366,7 +373,10 @@ const basketArticles = basketData.map((data, i) => {
 
         {/* <------>  BOUTONS : DECONNEXION ET SUPPRESSION DE COMPTE  <------> */}
 
-        <TouchableOpacity style={styles.disconnectContainer} onPress={()=>dispatch(disconnectUser())}>
+        <TouchableOpacity
+          style={styles.disconnectContainer}
+          onPress={() => dispatch(disconnectUser())}
+        >
           <AntDesign name="disconnect" size={24} color="#5D6D7E" />
           <Text style={styles.textDisconnect}>Me déconnecter</Text>
         </TouchableOpacity>
@@ -410,7 +420,7 @@ const styles = StyleSheet.create({
     borderColor: "#4B7285",
   },
   valid_button_Text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#4B7285",
     paddingLeft: 15,
@@ -420,7 +430,6 @@ const styles = StyleSheet.create({
 
   SelectAdressContainer: {
     flexDirection: "row",
-
   },
 
   updateAddress_enable: {
@@ -451,7 +460,7 @@ const styles = StyleSheet.create({
   },
   updateAddressText_enable: {
     color: "white",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     paddingLeft: 10,
     textShadowColor: "rgba(0, 0, 0, 0.45)",
@@ -483,8 +492,6 @@ const styles = StyleSheet.create({
       width: 0,
       height: 0,
     },
-    
-
   },
   PIDisplay_disable: {
     flexDirection: "row",
@@ -494,27 +501,23 @@ const styles = StyleSheet.create({
     width: "100%",
     alignContent: "center",
     marginTop: 10,
-  
   },
   personalInformations_disable: {
     color: "#FC9F30",
     fontSize: 18,
     fontWeight: "bold",
     paddingLeft: 10,
-
   },
   personalInformations_enable: {
     color: "white",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     paddingLeft: 10,
     textShadowColor: "rgba(0, 0, 0, 0.45)",
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1,
-    
-
   },
-  
+
   /* <------ STYLE : MES COMMANDES------> */
 
   myOrders_enable: {
@@ -545,7 +548,7 @@ const styles = StyleSheet.create({
   },
   myOrdersText_enable: {
     color: "white",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     paddingLeft: 10,
     textShadowColor: "rgba(0, 0, 0, 0.45)",
@@ -559,31 +562,31 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   /* <- tableau de mes commandes -> */
-  myOrdersText:{
-      fontSize:24,
-      fontWeight:'500',
-      marginVertical:15
-    },
+  myOrdersText: {
+    fontSize: 24,
+    fontWeight: "500",
+    marginVertical: 15,
+  },
   myOrderContainer: {
     borderRadius: 8,
     borderColor: "#4B7285",
     borderWidth: 1,
     padding: 15,
-      },
+  },
   tableContainerRowTitle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginLeft: 10,
     marginRight: 10,
     marginTop: 15,
     padding: 10,
     borderColor: "#4B7285",
     borderWidth: 1,
-    backgroundColor: '#4B7285',
+    backgroundColor: "#4B7285",
   },
   tableContainerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginLeft: 10,
     marginRight: 10,
     padding: 10,
@@ -598,18 +601,17 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     fontSize: 14,
     color: "white",
-    textAlign: 'center',
-
+    textAlign: "center",
   },
   tableProductTextContainer: {
     flex: 1,
   },
   tableProductText: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   deliveryCostContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginLeft: 10,
     marginRight: 10,
     marginTop: 15,
@@ -620,14 +622,14 @@ const styles = StyleSheet.create({
   },
 
   totalContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginLeft: 10,
     marginRight: 10,
     padding: 10,
     borderColor: "#4B7285",
     borderWidth: 1,
-    backgroundColor: '#4B7285',
+    backgroundColor: "#4B7285",
     width: "85%",
   },
   /* <------ STYLE : ME DECONNECTER ------> */
@@ -636,26 +638,24 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#5D6D7E",
     paddingLeft: 15,
-    fontWeight:'bold'
+    fontWeight: "bold",
   },
   disconnectContainer: {
     flexDirection: "row",
     marginVertical: 100,
     justifyContent: "center",
-    alignSelf:'center',
+    alignSelf: "center",
     backgroundColor: "#F2F3F4",
     borderRadius: 10,
     padding: 15,
-    borderWidth:0.4,
     shadowColor: "#5D6D7E",
-    shadowRadius: 5,
-    shadowOpacity: 0.6,
+    shadowRadius: 3,
+    shadowOpacity: 0.4,
     elevation: 8,
     shadowOffset: {
       width: 0,
       height: 0,
     },
-
   },
   /* <------ STYLE : DELETE ACCOUNT ------> */
 
@@ -668,11 +668,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FADBD8",
     borderRadius: 10,
   },
-  deleteAccountText: { 
+  deleteAccountText: {
     color: "#CD6155",
     fontSize: 18,
     paddingLeft: 10,
-    fontWeight:'bold'
-
+    fontWeight: "bold",
   },
 });

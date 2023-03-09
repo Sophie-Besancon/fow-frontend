@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   value: [
     {
-        firstname:null,
-        token:null,
-        articleInfo: [],
-        articleInBasket: [],
-        totalInBasket: 0,
-        articleInFavorite: [],
-        address: [],
-    }
+      firstname: null,
+      token: null,
+      articleInfo: [],
+      articleInBasket: [],
+      totalInBasket: 0,
+      articleInFavorite: [],
+      address: [],
+    },
   ],
 };
 
@@ -36,45 +36,58 @@ export const usersSlice = createSlice({
     addArticleInBasket: (state, action) => {
       state.value[0].articleInBasket.push(action.payload);
     },
-    addTotalInBasket: (state,action) => {
-      state.value[0].totalInBasket = action.payload
+    addTotalInBasket: (state, action) => {
+      state.value[0].totalInBasket = action.payload;
     },
     addAddress: (state, action) => {
       state.value[0].address.push(action.payload);
     },
     removeArticleInBasket: (state, action) => {
       // https://stackoverflow.com/questions/56365514/js-delete-first-element-from-array-by-value
-      state.value[0].articleInBasket.splice(state.value[0].articleInBasket.findIndex(a => a.name === action.payload), 1)
+      state.value[0].articleInBasket.splice(
+        state.value[0].articleInBasket.findIndex(
+          (a) => a.name === action.payload
+        ),
+        1
+      );
     },
     clearBasket: (state, action) => {
       state.value[0].articleInBasket = [];
-    },        
+    },
     clearArticleInfo: (state, action) => {
       state.value[0].articleInfo = [];
     },
     manageArticleInFavorite: (state, action) => {
-      console.log('action payload :',action.payload);
       if (
-        
         state.value[0].articleInFavorite.some(
           (article) => article.name === action.payload.name
-         
         )
       ) {
-        state.value[0].articleInFavorite = state.value[0].articleInFavorite.filter(
-          (article) => article.name != action.payload.name
-        ); console.log('IF')
+        state.value[0].articleInFavorite =
+          state.value[0].articleInFavorite.filter(
+            (article) => article.name != action.payload.name
+          );
       } else {
         state.value[0].articleInFavorite.push(action.payload);
-        console.log('ELSE')
       }
     },
-    modifyFirstname:(state,action)=>{
+    modifyFirstname: (state, action) => {
       state.value[0].firstname = action.payload;
-
-    }
+    },
   },
 });
 
-export const { clearBasket, addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket, manageArticleInFavorite, removeArticleInBasket, addAddress, addTotalInBasket, modifyFirstname } = usersSlice.actions;
+export const {
+  clearBasket,
+  addUser,
+  disconnectUser,
+  addArticleInfo,
+  clearArticleInfo,
+  addArticleInBasket,
+  manageArticleInFavorite,
+  removeArticleInBasket,
+  addAddress,
+  addTotalInBasket,
+  modifyFirstname,
+} = usersSlice.actions;
 export default usersSlice.reducer;

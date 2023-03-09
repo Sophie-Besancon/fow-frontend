@@ -1,15 +1,5 @@
-import React, { useState } from "react";
-import { TextInput } from "react-native";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  Button,
-  
-} from "react-native";
+import React from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
 export default function Orders() {
@@ -24,16 +14,15 @@ export default function Orders() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 55,
-    },
-    infosAndOrdersText: {
-      fontSize: 20,
-      fontWeight: "bold",
-      margin: 10,
-      color: "#4B7285",
-      paddingLeft: 15,
-    },
-
-})
+  container: {
+    flex: 1,
+    paddingTop: 55,
+  },
+  infosAndOrdersText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    margin: 10,
+    color: "#4B7285",
+    paddingLeft: 15,
+  },
+});

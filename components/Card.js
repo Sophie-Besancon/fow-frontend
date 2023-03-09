@@ -1,73 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Text,
   StyleSheet,
-  Image,
-  Modal,
-  Pressable,
-  TextInput,
   TouchableOpacity,
   ImageBackground,
-  Platform,
   Alert,
 } from "react-native";
-import { addArticleInfo, addArticleInBasket, manageArticleInFavorite} from "../reducers/users";
+import {
+  addArticleInfo,
+  addArticleInBasket,
+  manageArticleInFavorite,
+} from "../reducers/users";
 import CountryFlag from "react-native-country-flag";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { AntDesign } from "@expo/vector-icons";
-
-
 
 const Card = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const users = useSelector((state) => state.users.value[0]);
- 
-  let isLike = props.isLikeinFavorite;
-  
-  
- 
-  let backgroundImg = { uri: `${props.image[0]}` };
-  let flagImg= props.flagOfCountry
 
-   
+  let isLike = props.isLikeinFavorite;
+
+  let backgroundImg = { uri: `${props.image[0]}` };
+  let flagImg = props.flagOfCountry;
 
   const handleLike = () => {
     if (!users.token) {
-      Alert.alert('Non connecté', "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.", [
-        {
-          text: 'Retour',
-          style: 'cancel',
-        },
-        {text: 'Ok'},
-      ]);
+      Alert.alert(
+        "Non connecté",
+        "Veuillez d'abord vous connecter afin d'ajouter des articles à vos favoris.",
+        [
+          {
+            text: "Retour",
+            style: "cancel",
+          },
+          { text: "Ok" },
+        ]
+      );
       return;
-    } else
-     {
-      console.log('props.id',props.id);
+    } else {
       fetch("https://fow-backend.vercel.app/users/updateFavoriteArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: users.token, articleId: props.id }),
       })
         .then((response) => response.json())
-        .then((data) => {
+        .then(() => {
           dispatch(manageArticleInFavorite(props));
         });
     }
   };
 
   const handleCart = () => {
-    dispatch(addArticleInBasket(props))
+    dispatch(addArticleInBasket(props));
   };
 
   const handleInfo = () => {
-   
-    dispatch(addArticleInfo(props))
-    navigation.navigate('Article')
+    dispatch(addArticleInfo(props));
+    navigation.navigate("Article");
   };
 
   return (
@@ -80,8 +74,12 @@ const Card = (props) => {
         <View style={styles.imgCardContainer}>
           <View style={styles.textImgCardContainer}>
             <View style={styles.splitContainerFlag}>
-            <CountryFlag isoCode={flagImg} size={20} style={styles.countryFlag} />           
-             </View>
+              <CountryFlag
+                isoCode={flagImg}
+                size={20}
+                style={styles.countryFlag}
+              />
+            </View>
             <View style={styles.splitContainerPrice}>
               <Text style={styles.price}>{props.price}€</Text>
             </View>
@@ -93,9 +91,11 @@ const Card = (props) => {
           <Text>{props.name}</Text>
         </View>
         <View style={styles.buttonProductContainer}>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity
+            onPress={() => {
               handleInfo();
-            }}>
+            }}
+          >
             <FontAwesome name="info-circle" size={24} color="#4B7285" />
           </TouchableOpacity>
 
@@ -110,9 +110,11 @@ const Card = (props) => {
               <AntDesign name="hearto" size={24} color="#E74C3C" />
             )}
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => {
+          <TouchableOpacity
+            onPress={() => {
               handleCart();
-            }}>
+            }}
+          >
             <FontAwesome name="cart-plus" size={24} color="#4B7285" />
           </TouchableOpacity>
         </View>
@@ -125,14 +127,21 @@ export default Card;
 
 const styles = StyleSheet.create({
   cardContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     alignSelf: "center",
     marginTop: 20,
     marginBottom: 20,
     width: "95%",
     padding: 8,
-    borderWidth: 1,
     borderRadius: 7,
+    shadowColor: "#5D6D7E",
+    shadowRadius: 5,
+    shadowOpacity: 0.9,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
   },
 
   imgCardContainer: {
@@ -148,7 +157,8 @@ const styles = StyleSheet.create({
 
   splitContainerPrice: {
     width: "50%",
-    paddingLeft: 105,
+    paddingLeft: 125,
+    marginTop: 10,
     justifyContent: "center",
   },
 
@@ -173,5 +183,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
     height: "50%",
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: "400",
   },
 });

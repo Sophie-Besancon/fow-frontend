@@ -14,14 +14,14 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useSelector, useDispatch } from "react-redux";
 import { AntDesign, Feather, Ionicons, Entypo } from "@expo/vector-icons";
 import { disconnectUser } from "../reducers/users";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-const Header = (props) => {
+const Header = () => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [modalContactVisible, setModalContactVisible] = useState(false);
   const user = useSelector((state) => state.users.value[0].firstname);
-  const userToken = useSelector((state) => state.users.value[0].token)
+  const userToken = useSelector((state) => state.users.value[0].token);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [mail, setMail] = useState("");
@@ -45,12 +45,14 @@ const Header = (props) => {
 
   const handleNavigation = () => {
     if (!userToken) {
-      Alert.alert("Erreur", "Veuillez vous connecter pour afficher vos commandes.", [
-        { text: "Ok" },
-      ]);  
-  } else {
-    navigation.navigate('Compte')
-  }
+      Alert.alert(
+        "Erreur",
+        "Veuillez vous connecter pour afficher vos commandes.",
+        [{ text: "Ok" }]
+      );
+    } else {
+      navigation.navigate("Compte");
+    }
   };
 
   const handleSubmitForm = () => {
@@ -58,9 +60,9 @@ const Header = (props) => {
     Alert.alert("", "Nous vous répondrons dans les meilleurs délais.", [
       { text: "Ok" },
     ]);
-    setName('')
-    setMessage('')
-    setMail('')
+    setName("");
+    setMessage("");
+    setMail("");
   };
 
   return (
@@ -149,8 +151,6 @@ const Header = (props) => {
                 </TouchableOpacity>
 
                 <View>
-          
-
                   <Modal
                     animationType="fade"
                     transparent={true}
@@ -319,6 +319,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
