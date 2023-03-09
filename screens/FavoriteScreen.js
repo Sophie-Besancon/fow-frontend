@@ -24,7 +24,7 @@ export default function FavoriteScreen() {
     
   
   const cards = users.articleInFavorite.map((data, i) => {
-      return <Card key={i} price={data.price} name={data.name} image={data.image} id={data._id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} flagOfCountry={data.flagOfCountry} isLikeinFavorite/>;
+      return <Card key={i} price={data.price} name={data.name} image={data.image} id={data.id} note={data.note} description={data.description} stock={data.stock} categoryName={data.categoryName} countryName={data.countryName} continentOfCountry={data.continentOfCountry} flagOfCountry={data.flagOfCountry} isLikeinFavorite/>;
     });
 
 
