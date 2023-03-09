@@ -118,9 +118,9 @@ let isLike = articlesInFavorite.some(
   }
 
   /* <------------- RETURN -------------> */
-  return (
+  return (<ScrollView>
     <View style={styles.container}>
-      <ScrollView>
+      
         <View>
           {isLoaded && (
             <Gallery
@@ -197,8 +197,9 @@ let isLike = articlesInFavorite.some(
             </View>
           </View>
         </View>
-      </ScrollView>
+     
     </View>
+    </ScrollView>
   );
 }
 

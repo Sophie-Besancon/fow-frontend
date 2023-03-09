@@ -131,8 +131,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: "95%",
     padding: 8,
-    borderWidth: 1,
     borderRadius: 7,
+    shadowColor: "#5D6D7E",
+    shadowRadius: 5,
+    shadowOpacity: 0.9,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
   },
 
   imgCardContainer: {
@@ -148,7 +155,8 @@ const styles = StyleSheet.create({
 
   splitContainerPrice: {
     width: "50%",
-    paddingLeft: 105,
+    paddingLeft: 125,
+    marginTop:10,
     justifyContent: "center",
   },
 
@@ -174,4 +182,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: "50%",
   },
+  price:{
+    fontSize:16,
+    fontWeight:'400'
+  }
 });
