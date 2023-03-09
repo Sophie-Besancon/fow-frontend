@@ -40,21 +40,21 @@ export default function ContinentScreen({ navigation }) {
                 <View style={styles.eachCard} key={i}>
                     <View style={styles.backgroundImage}>
                         <Text style={styles.newText}>Nouveauté</Text></View>
-                    <Card 
-                    style={styles.cardImage} 
-                    key={i} 
-                    price={data.price} 
-                    name={data.name} 
-                    image={data.image} 
-                    id={data._id} 
-                    note={data.note} 
-                    description={data.description} 
-                    stock={data.stock} 
-                    categoryName={data.categoryName} 
-                    countryName={data.countryName} 
-                    continentOfCountry={data.continentOfCountry} 
-                    flagOfCountry={data.flagOfCountry} 
-                    isLikeinFavorite={isLikeinFavorite} />
+                    <Card
+                        style={styles.cardImage}
+                        key={i}
+                        price={data.price}
+                        name={data.name}
+                        image={data.image}
+                        id={data._id}
+                        note={data.note}
+                        description={data.description}
+                        stock={data.stock}
+                        categoryName={data.categoryName}
+                        countryName={data.countryName}
+                        continentOfCountry={data.continentOfCountry}
+                        flagOfCountry={data.flagOfCountry}
+                        isLikeinFavorite={isLikeinFavorite} />
                 </View>)
         }
     })
@@ -94,29 +94,29 @@ const styles = StyleSheet.create({
     },
     eachCard: {
         flex: 1,
-        position:"relative",
+        position: "relative",
     },
     newText: {
-fontSize : 14,
-color: "white",
-fontWeight: 800,
+        fontSize: 14,
+        color: "white",
+        fontWeight: 800,
     },
     backgroundImage: {
         position: "absolute",
-        top:180,
-        right:40,
-        zIndex:9999,
-        flex:1,
-        borderWidth:1,
+        top: 180,
+        right: 40,
+        zIndex: 9999,
+        flex: 1,
+        borderWidth: 1,
         borderColor: 'white',
         borderRadius: 9,
         padding: 5,
         shadowColor: "white",
-    shadowRadius: 3,
-    shadowOpacity: 0.4,
-    shadowOffset: {
-      width: 3,
-      height:-3,
-    },
+        shadowRadius: 3,
+        shadowOpacity: 0.4,
+        shadowOffset: {
+            width: 3,
+            height: -3,
+        },
     },
 })
