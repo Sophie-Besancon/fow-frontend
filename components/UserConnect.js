@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
@@ -49,7 +49,6 @@ export default function UserConnect() {
       .then((response) => response.json())
       .then((data) => {
         if (data.result && passwordSignUp === passwordConfirm) {
-          console.log("data :", data);
           dispatch(addUser(data.data));
           setFirstname("");
           setLastname("");
@@ -80,9 +79,6 @@ export default function UserConnect() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("data :", data);
-
-
         if (data.result) {
           dispatch(addUser(data.data));
           setMailSignin("");
@@ -227,10 +223,9 @@ export default function UserConnect() {
 }
 
 const styles = StyleSheet.create({
-
   mainContainer: {
-    alignContent:'center',
-    alignSelf:'center',
+    alignContent: "center",
+    alignSelf: "center",
   },
   signinContent: {
     paddingVertical: 10,

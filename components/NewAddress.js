@@ -12,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addAddress } from "../reducers/users";
 
 
-export default function NewAddress(props){
+export default function NewAddress(){
 
       // Déclaration des états pour 'AJOUTER UNE NOUVELLE ADRESSE'
   const [newAdress, setNewAddress] = useState("");
@@ -66,7 +66,7 @@ export default function NewAddress(props){
         setCheckedBilling(false);
         // setMessageUpdate n'est pas défini dans NewAddress donc ca provoque un message warning
         // Notamment lorsqu'on utilise NewAddress dans OrderConnectionScreen
-        // setMessageUpdate('')
+        
       });
   };
 
@@ -145,10 +145,6 @@ export default function NewAddress(props){
         );
       }
 
-
-
-
-
     return(
         <>
                 {/* <------>  BOUTON AJOUTER NOUVELLE ADRESSE  <------> */}
@@ -212,7 +208,7 @@ const styles = StyleSheet.create({
   },
   addAddressText_enable: {
     color: "white",
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     paddingLeft: 10,
     textShadowColor: "rgba(0, 0, 0, 0.45)",
@@ -261,7 +257,7 @@ const styles = StyleSheet.create({
     borderColor: "#4B7285",
   },
   valid_button_Text: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#4B7285",
     paddingLeft: 15,
