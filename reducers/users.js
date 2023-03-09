@@ -69,8 +69,12 @@ export const usersSlice = createSlice({
         console.log('ELSE')
       }
     },
+    modifyFirstname:(state,action)=>{
+      state.value[0].firstname = action.payload;
+
+    }
   },
 });
 
-export const { clearBasket, addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket, manageArticleInFavorite, removeArticleInBasket, addAddress, addTotalInBasket } = usersSlice.actions;
+export const { clearBasket, addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket, manageArticleInFavorite, removeArticleInBasket, addAddress, addTotalInBasket, modifyFirstname } = usersSlice.actions;
 export default usersSlice.reducer;

@@ -47,7 +47,7 @@ const Card = (props) => {
       return;
     } else
      {
-      console.log('props.id',props._id);
+      console.log('props.id',props.id);
       fetch("https://fow-backend.vercel.app/users/updateFavoriteArticle", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -65,8 +65,9 @@ const Card = (props) => {
   };
 
   const handleInfo = () => {
-    navigation.navigate('Article')
+   
     dispatch(addArticleInfo(props))
+    navigation.navigate('Article')
   };
 
   return (

@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { disconnectUser } from "../reducers/users";
 import { useDispatch } from "react-redux";
 import NewAddress from "../components/NewAddress";
-import { addUser } from "../reducers/users";
+import { modifyFirstname } from "../reducers/users";
 
 export default function Dashboard() {
   // Déclaration des états pour 'INFORMATIONS PERSONNELLES' de l'utilisateur
@@ -158,7 +158,7 @@ const basketArticles = basketData.map((data, i) => {
       .then((response) => response.json())
       .then((data) => {
         setMessageUpdate(data.message);
-       //dispatch(addUser(data.data.firstname))
+       dispatch(modifyFirstname(data.data.firstname))
       });
   };
 
