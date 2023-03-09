@@ -7,6 +7,7 @@ import {
     TextInput,
     TouchableOpacity,
     View,
+    ScrollView,
 } from 'react-native';
 import Header from '../components/Header';
 import { AntDesign } from '@expo/vector-icons';
@@ -50,8 +51,10 @@ export default function PaymentScreen({ navigation }) {
                 <FontAwesome name="user" size={20} color="#4B7285" style={styles.deleteIcon} />
                 <FontAwesome name="money" size={20} color="#FC9F30" style={styles.deleteIcon} />
             </View>
+            
             <Text style={styles.textContainer}>Paiement</Text>
-            <View style={styles.inputContainer}>
+            <ScrollView style={styles.inputContainer}>
+            <View >
                 <Text style={styles.inputLabel}>Nom de la carte</Text>
                 <TextInput inputMode="text" placeholder="Nom de la carte" onChangeText={(value) => { setNameCard(value) }} value={nameCard} style={styles.input} />
                 <Text style={styles.inputLabel}>Numéro de carte</Text>
@@ -65,6 +68,7 @@ export default function PaymentScreen({ navigation }) {
                     <Text style={styles.textButton}>Valider ma commande</Text>
                 </TouchableOpacity>
             </View>
+            </ScrollView>
         </KeyboardAvoidingView>
     )
 }
