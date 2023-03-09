@@ -24,6 +24,7 @@ export default function Dashboard() {
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
   const [messageUpdate, setMessageUpdate] = useState(null);
+  const [orders, setOrders] = useState([]);
 
   // Etats généraux concernant l'affichage déroulants des menus
   const [addNewAdressDisplay, setAddNewAdressDisplay] = useState(false);
@@ -71,7 +72,17 @@ const basketArticles = basketData.map((data, i) => {
           setMailAddress(data.data.mail);
         }
       });
-  }, []);
+  }, [user.token]);
+
+  useEffect(() => {
+    fetch(`http://192.168.1.88:3000/orders/${user.token}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setOrders(data.data);
+        }
+      });
+  }, [user]);
 
   /* <---> SETTER : Envoi la nouvelle adresse vers la base de données <---> */
 
@@ -229,30 +240,23 @@ const basketArticles = basketData.map((data, i) => {
 
     /* <------------> AFFICHAGE CONDITIONNEL: MES COMMANDES <------------> */
   if (myOrdersDisplay){
+   const myOrders = orders.map((data, i) => {
+    // https://stackoverflow.com/questions/61653453/convert-date-string-from-iso-8601-format-yyyy-mm-ddthhmmss-sssz-to-dd-mm-y
+    [yyyy,mm,dd,hh,mi] = data.purchaseDate.split(/[/:\-T]/)
+    const dateLocale = `${dd}-${mm}-${yyyy} ${hh}:${mi}`;
+    return(<View style={styles.myOrderContainer} key={i}>
+    <Text>Date de la commande : {dateLocale}</Text>
+    <Text>Numéro de la commande : {data._id}</Text>
+    <Text>Total de la commande : {numberFormatFunction.format(data.total)}€</Text>
+    </View>)
+    })
    var getMyOrders = (
    <>
     <Text style={styles.myOrdersText}>Mes Commandes :</Text>
-    <View style={styles.myOrderContainer}>
-      <Text>Date de la commande : 17/01/2023</Text>
-      <View>
-        <View style={styles.tableContainerRowTitle}>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Produit</Text></View>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Quantité</Text></View>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>PU (€)</Text></View>
-          <View style={styles.tableTitleTextContainer}><Text style={styles.tableTitleText}>Total (€)</Text></View>
-        </View>
-        {basketArticles}
-      </View>
-      <View style={styles.deliveryCostContainer}>
-        <View style={styles.deliveryCostContainerText}><Text>Frais de port</Text></View>
-        <View style={styles.deliveryCost}><Text style={styles.tableProductText}>{basketData.length > 9 ? {deliveryCost} : 0}€</Text></View>
-      </View>
-    </View>
+      {myOrders}
     </>
    )
   }
-
-
 
 
   /* <----------------------> RETURN <----------------------> */
@@ -559,8 +563,13 @@ const styles = StyleSheet.create({
       fontSize:24,
       fontWeight:'500',
       marginVertical:15
-
-  },
+    },
+  myOrderContainer: {
+    borderRadius: 8,
+    borderColor: "#4B7285",
+    borderWidth: 1,
+    padding: 15,
+      },
   tableContainerRowTitle: {
     flexDirection: 'row',
     justifyContent: 'space-between',

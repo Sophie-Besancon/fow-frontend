@@ -7,6 +7,7 @@ const initialState = {
         token:null,
         articleInfo: [],
         articleInBasket: [],
+        totalInBasket: 0,
         articleInFavorite: [],
         address: [],
     }
@@ -35,13 +36,19 @@ export const usersSlice = createSlice({
     addArticleInBasket: (state, action) => {
       state.value[0].articleInBasket.push(action.payload)
     },
+    addTotalInBasket: (state,action) => {
+      state.value[0].totalInBasket = action.payload
+    },
     addAddress: (state, action) => {
       state.value[0].address.push(action.payload)
     },
     removeArticleInBasket: (state, action) => {
       // https://stackoverflow.com/questions/56365514/js-delete-first-element-from-array-by-value
       state.value[0].articleInBasket.splice(state.value[0].articleInBasket.findIndex(a => a.name === action.payload), 1)
-    },      
+    },
+    clearBasket: (state, action) => {
+      state.value[0].articleInBasket = [];
+    },        
     clearArticleInfo: (state, action) => {
       state.value[0].articleInfo = []
     },
@@ -51,5 +58,5 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket, manageArticleInFavorite, removeArticleInBasket, addAddress } = usersSlice.actions;
+export const { clearBasket, addUser, disconnectUser, addArticleInfo, clearArticleInfo, addArticleInBasket, manageArticleInFavorite, removeArticleInBasket, addAddress, addTotalInBasket } = usersSlice.actions;
 export default usersSlice.reducer;

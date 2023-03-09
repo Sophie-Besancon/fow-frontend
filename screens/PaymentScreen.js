@@ -12,8 +12,13 @@ import Header from '../components/Header';
 import { AntDesign } from '@expo/vector-icons';
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { clearBasket } from "../reducers/users";
+
 
 export default function PaymentScreen({ navigation }) {
+    const users = useSelector((state) => state.users.value[0]);
+    const dispatch = useDispatch()
 
     const [nameCard, setNameCard] = useState('');
     const [numberCard, setNumberCard] = useState('');
@@ -21,8 +26,21 @@ export default function PaymentScreen({ navigation }) {
     const [securityNumber, setSecurityNumber] = useState('');
 
     const handleConfirmation = () => {
-        navigation.navigate('Confirmation');
-    }
+        const articlesIds = users.articleInBasket.map(data => data.id)
+        fetch("http://192.168.1.88:3000/orders/", {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            total: users.totalInBasket, 
+            user: users.token,
+            articles: articlesIds,
+         }),
+        }).then((response) =>
+          response.json()).then((data) => {
+            dispatch(clearBasket())
+            navigation.navigate('Confirmation');
+            });
+      }
 
     return (
         <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
