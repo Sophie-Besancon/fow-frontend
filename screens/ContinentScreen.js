@@ -19,7 +19,7 @@ export default function ContinentScreen({ navigation }) {
   const users = useSelector((state) => state.users.value[0]);
 
   useEffect(() => {
-    fetch("https://fow-backend.vercel.app/articles/")
+    fetch("https://fow-backend-nine.vercel.app/articles/")
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {

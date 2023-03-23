@@ -47,7 +47,7 @@ export default function NewAddress(){
       };
     }
 
-    fetch(`https://fow-backend.vercel.app/users/add_address/${user.token}`, {
+    fetch(`https://fow-backend-nine.vercel.app/users/add_address/${user.token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -46,7 +46,7 @@ export default function Product() {
   // l'utilisateur DOIT être connecté
 
   let handleLike = () => {
-    fetch(`https://fow-backend.vercel.app/users/updateFavoriteArticle`, {
+    fetch(`https://fow-backend-nine.vercel.app/users/updateFavoriteArticle`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token: userToken, articleId: informations.id }),

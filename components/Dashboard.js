@@ -73,7 +73,7 @@ export default function Dashboard() {
   /* <---> GETTER : Récupération de toutes les informations utilisateur provenant de la base de données <---> */
 
   useEffect(() => {
-    fetch(`https://fow-backend.vercel.app/users/infos/${user.token}`)
+    fetch(`https://fow-backend-nine.vercel.app/users/infos/${user.token}`)
       .then((response) => response.json())
       .then((data) => {
         if (data) {
@@ -85,7 +85,7 @@ export default function Dashboard() {
   }, [user.token]);
 
   useEffect(() => {
-    fetch(`https://fow-backend.vercel.app/orders/${user.token}`)
+    fetch(`https://fow-backend-nine.vercel.app/orders/${user.token}`)
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
@@ -113,7 +113,7 @@ export default function Dashboard() {
       };
     }
 
-    fetch(`https://fow-backend.vercel.app/users/add_address/${user.token}`, {
+    fetch(`https://fow-backend-nine.vercel.app/users/add_address/${user.token}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export default function Dashboard() {
     }
 
     fetch(
-      `https://fow-backend.vercel.app/users/updateUserInformations/${user.token}`,
+      `https://fow-backend-nine.vercel.app/users/updateUserInformations/${user.token}`,
       {
         method: "PUT",
         headers: {

@@ -64,7 +64,7 @@ export default function MarketScreen({ route, navigation }) {
   //par defaut, si pas de catégorie sélectionner, tous les articles du site seront renvoyés
   useEffect(() => {
     setIsLoading(true);
-    fetch("https://fow-backend.vercel.app/articles/", {
+    fetch("https://fow-backend-nine.vercel.app/articles/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
